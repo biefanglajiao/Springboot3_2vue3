@@ -20,6 +20,14 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import(/* webpackChunkName: "about" */ '../views/about.vue')
   },
   {
+    path: '/login',
+    name: 'Login',
+    /****
+     *@解释: route level code-splitting 路由级代码分解  this generates a separate chunk (about.[hash].js) for this route 这将为该路由生成一个单独的块(约.[hash].js)  which is lazy-loaded when the route is visited. 它在访问路由时是惰性加载的。
+     */
+        component: () => import(/* webpackChunkName: "about" */ '../views/login.vue')
+  },
+  {
     path: '/admin/ebook',
     name: 'AdminEbook',
     meta:{loginRequire:true},
