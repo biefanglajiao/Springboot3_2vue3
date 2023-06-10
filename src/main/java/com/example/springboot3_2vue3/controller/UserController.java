@@ -28,7 +28,7 @@ import java.util.concurrent.TimeUnit;
  **/
 @RestController
 @RequestMapping("/user")
-public class Controller {
+public class UserController {
     private static final Logger LOG = LoggerFactory.getLogger(LogAspect.class);
 @Resource
 private UserService userService;
