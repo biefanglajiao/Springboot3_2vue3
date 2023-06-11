@@ -14,10 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.DigestUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.concurrent.TimeUnit;
 
@@ -50,5 +47,14 @@ private SnowFlake snowFlake;
 //前后端都用tostring  才能保证数据一直可以被对比
         resp.setContent(login);
         return resp;
+    }
+
+    @GetMapping("/logout/{token}")
+    public CommonResp logout(@PathVariable String token) {//@PathVariable 用于获取url中的数据
+        CommonResp objectComminResp = new CommonResp<>();
+        redisTemplate.delete(token);//删除redis中的token
+        LOG.info("从redis中删除token：{}", token);
+
+        return objectComminResp;
     }
 }

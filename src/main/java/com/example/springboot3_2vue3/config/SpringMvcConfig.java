@@ -24,7 +24,7 @@ LogInterceptor logInterceptor;
                 .addPathPatterns("/**")
                 .excludePathPatterns(
                         "/a/a",
-                        "/login",
+                        "/login/**",
                         "/text/**",
                         "/redis/**",
                         "/user/**",

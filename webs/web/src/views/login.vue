@@ -8,7 +8,6 @@
                     :label-col="{ span: 8 }"
                     :wrapper-col="{ span: 16 }"
                     autocomplete="off"
-                    @click="login"
             >
                 <a-form-item
                         label="Username"
@@ -28,7 +27,7 @@
 
 
                 <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
-                    <a-button type="primary" html-type="登录">Submit</a-button>
+                    <a-button type="primary" html-type="登录" @click="login">Submit</a-button>
                 </a-form-item>
             </a-form>
 
@@ -40,6 +39,7 @@ import {computed, defineComponent, ref} from 'vue';
 import axios from "axios";
 import {message} from "ant-design-vue";
 import store from "@/store";
+import router from '@/router';
 
 declare let hexMd5: any;
 declare let KEY: any;
@@ -56,7 +56,7 @@ export default defineComponent({
             //密码长度不能小于8位且要包含英文和数字
             const reg = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,}$/;
             return reg.test(password);
-
+//默认密码test   tset1234
         }
         //登录
         const login = () => {
@@ -71,8 +71,9 @@ export default defineComponent({
 
                 const data = response.data;
                 if (data.success) {
-                 message.success(data.message);
+                    message.success("登录成功");
                     store.commit('setUser', data.content);//将用户信息存入store
+                   router.push({path: '/home'});//跳转到首页
                 } else {
                     message.error(data.message);
 
@@ -80,7 +81,6 @@ export default defineComponent({
 
             });
         }
-
 
 
         return {
