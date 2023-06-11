@@ -26,28 +26,15 @@ export default defineComponent({
   name: 'Home',
 
   components: {
-    HomeOutlined,
-    FireOutlined,
-    UserOutlined,
-    FileTextOutlined,
     TheView,
   },
   setup() {
     console.log("setup")
-
     const isshowwelcome = ref(true);
-
-
-
-
     onMounted(() => {//生命周期函数
-
     });
     return {
       // pagination,
-
-
-
       isshowwelcome,  //互斥方法显示是否显示欢迎页面
 
     }
@@ -62,8 +49,6 @@ export default defineComponent({
   line-height: 50px;
   border-radius: 8%;
   margin: 5px 0;
-
-
 }</style>
 <style>
 
