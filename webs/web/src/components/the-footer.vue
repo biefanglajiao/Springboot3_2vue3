@@ -1,6 +1,6 @@
 <!--将header写成自定义组件-->
 <template>
-<a-layout-footer style="text-align: center">
+<a-layout-footer style="text-align: center" v-show=flag>
   Ant Design ©2018 Created by CZH <span v-show="user.id">，当前登录用户为：{{user.username}}</span>
 </a-layout-footer>
 </template>
@@ -14,6 +14,7 @@ export default defineComponent({
   name: 'the-footer',
 setup(){
     const user=computed(()=>store.state.user);
+  const flag = computed(() => store.state.flag); //从store中获取header是否显示标志
   let websocket: any;
   let token: any;
   const onOpen = () => {
@@ -60,7 +61,8 @@ setup(){
     }
   });
     return{
-        user
+        user,
+      flag
     }
 }
 });
