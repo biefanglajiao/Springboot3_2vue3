@@ -1,25 +1,7 @@
 <!--将可视化写成自定义组件-->
 <template>
   <div id="login">
-    <vue-particles
-        class="login-bg"
-        color="#39AFFD"
-        :particleOpacity="0.7"
-        :particlesNumber="100"
-        shapeType="circle"
-        :particleSize="4"
-        linesColor="#8DD1FE"
-        :linesWidth="1"
-        :lineLinked="true"
-        :lineOpacity="0.4"
-        :linesDistance="150"
-        :moveSpeed="3"
-        :hoverEffect="true"
-        hoverMode="grab"
-        :clickEffect="true"
-        clickMode="push"
-    >
-    </vue-particles>
+
   </div>
 
     <div >
@@ -79,7 +61,6 @@
 import {defineComponent, onMounted, ref} from 'vue';
 import axios from "axios";
 import {UserOutlined, ArrowUpOutlined, ArrowDownOutlined, LikeOutlined} from '@ant-design/icons-vue';
-
 declare  let echarts: any;
 export default defineComponent({
     name: 'the-welcome',
