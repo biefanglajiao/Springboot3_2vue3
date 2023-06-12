@@ -55,6 +55,78 @@
                 <div id="main" style="width: 100%;height:300px;"></div>
             </a-col>
         </a-row>
+      <br>
+      <a-row>
+        <a-col :span="24">
+          <a-card>
+            <a-row>
+              <a-col :span="8">
+
+              </a-col>
+              <a-col :span="8">
+
+              </a-col>
+              <a-col :span="8">
+
+              </a-col>
+            </a-row>
+          </a-card>
+        </a-col>
+      </a-row>
+      <br>
+      <a-row>
+        <a-col :span="24">
+          <a-card>
+            <a-row>
+              <a-col :span="8">
+
+              </a-col>
+              <a-col :span="8">
+
+              </a-col>
+              <a-col :span="8">
+
+              </a-col>
+            </a-row>
+          </a-card>
+        </a-col>
+      </a-row>
+      <br>
+      <a-row>
+        <a-col :span="24">
+          <a-card>
+            <a-row>
+              <a-col :span="8">
+
+              </a-col>
+              <a-col :span="8">
+
+              </a-col>
+              <a-col :span="8">
+
+              </a-col>
+            </a-row>
+          </a-card>
+        </a-col>
+      </a-row>
+      <br>
+      <a-row>
+        <a-col :span="24">
+          <a-card>
+            <a-row>
+              <a-col :span="8">
+
+              </a-col>
+              <a-col :span="8">
+
+              </a-col>
+              <a-col :span="8">
+
+              </a-col>
+            </a-row>
+          </a-card>
+        </a-col>
+      </a-row>
     </div>
 </template>
 <script lang="ts">
