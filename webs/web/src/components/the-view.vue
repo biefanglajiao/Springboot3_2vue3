@@ -1,34 +1,40 @@
 <!--将可视化写成自定义组件-->
 <template>
+  <div id="login">
+    <vue-particles
+        class="login-bg"
+        color="#39AFFD"
+        :particleOpacity="0.7"
+        :particlesNumber="100"
+        shapeType="circle"
+        :particleSize="4"
+        linesColor="#8DD1FE"
+        :linesWidth="1"
+        :lineLinked="true"
+        :lineOpacity="0.4"
+        :linesDistance="150"
+        :moveSpeed="3"
+        :hoverEffect="true"
+        hoverMode="grab"
+        :clickEffect="true"
+        clickMode="push"
+    >
+    </vue-particles>
+  </div>
 
-    <div>
+    <div >
         <a-row>
             <a-col :span="24">
                 <a-card>
                     <a-row>
                         <a-col :span="8">
-                            <a-statistic title="总阅读量" :value="statistic.viewCount">
-                                <template #suffix>
-                                    <UserOutlined/>
-                                </template>
-                            </a-statistic>
+
                         </a-col>
                         <a-col :span="8">
-                            <a-statistic title="总点赞量" :value="statistic.voteCount">
-                                <template #suffix>
-                                    <Like-outlined/>
-                                </template>
-                            </a-statistic>
+
                         </a-col>
                         <a-col :span="8">
-                            <a-statistic title="点赞率" :value="statistic.voteCount/statistic.viewCount*100"
-                                         :precision="2"
-                                         suffix="%"
-                                         :value-style="{color: '#cf1322'}">
-                                <template #suffix>
-                                    <Like-outlined/>
-                                </template>
-                            </a-statistic>
+
                         </a-col>
                     </a-row>
                 </a-card>
@@ -40,18 +46,10 @@
                 <a-card>
                     <a-row>
                         <a-col :span="12">
-                            <a-statistic title="昨日阅读量" :value="statistic.todayViewCount">
-                                <template #suffix>
-                                    <UserOutlined/>
-                                </template>
-                            </a-statistic>
+
                         </a-col>
                         <a-col :span="12">
-                            <a-statistic title="昨日点赞量" :value="statistic.todayVoteCount">
-                                <template #suffix>
-                                    <like-outlined/>
-                                </template>
-                            </a-statistic>
+
                         </a-col>
                     </a-row>
                 </a-card>
@@ -60,23 +58,10 @@
                 <a-card>
                     <a-row>
                         <a-col :span="12">
-                            <a-statistic title="预计今日阅读量" :value="statistic.todayViewIncrease">
-                                <template #suffix>
-                                    <UserOutlined/>
-                                </template>
-                            </a-statistic>
+
                         </a-col>
                         <a-col :span="12">
-                            <a-statistic title="预计今日阅读增长" :value="statistic.todayViewIncreaseRateAbs"
-                                         :precision="2"
-                                         suffix="%"
-                                         :value-style="statistic.todayViewIncreaseRate <0 ?{color: '#3f8600'} : {color: '#cf1322'}"
-                            >
-                                <template #prefix>
-                                    <arrow-down-outlined v-if="statistic.todayViewIncreaseRate<0"/>
-                                    <arrow-up-outlined v-else/>
-                                </template>
-                            </a-statistic>
+
                         </a-col>
                     </a-row>
                 </a-card>

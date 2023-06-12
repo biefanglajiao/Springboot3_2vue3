@@ -6,8 +6,11 @@ import Antd from  'ant-design-vue'
 import 'ant-design-vue/dist/antd.css'
 import axios from 'axios'
 import {Tool} from "@/utils/tool";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import VueParticles from 'vue-particles';
 
-createApp(App).use(store).use(router).use(Antd).mount('#app');
+createApp(App).use(store).use(router).use(Antd).use(VueParticles).mount('#app');
 
 
 console.log('环境',process.env.NODE_ENV);
