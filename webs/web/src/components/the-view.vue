@@ -4,65 +4,100 @@
 
   </div>
 
-    <div >
-        <a-row >
-            <a-col :span="24">
-<!--                <a-card>-->
-                    <a-row >
-                        <a-col :span="3">
-                          <a-card>
-                          <div id="XiaoHaoDianNeng" style="width: 100%;height:200px;"></div>
-                          </a-card>
-                        </a-col>
-                        <a-col :span="13">
-                          <a-card>
-   <div id="main" style="width: 100%;height:200px;"></div>
-                          </a-card>
-                        </a-col>
-                        <a-col :span="8">
- <div id="main" style="width: 100%;height:200px;"></div>
-                        </a-col>
-                    </a-row>
+  <div>
+    <a-row>
+      <a-col :span="24">
+        <!--                <a-card>-->
+        <a-row>
+          <a-col :span="3">
+            <a-card>
+              <div id="XiaoHaoDianNeng" style="width: 100%;height:200px;"></div>
+            </a-card>
+          </a-col>
+          <a-col :span="13">
+            <a-card>
+              <div id="RiLi" style="width: 100%;height:200px;"></div>
+            </a-card>
+          </a-col>
+          <a-col :span="8">
+            <a-card>
+              <div id="XJXH" style="width: 100%;height:200px;"></div>
 
-<!--                </a-card>-->
-            </a-col>
-          <br>
-          <a-row >
-            <a-col :span="24">
-              <a-card>
-                <a-row>
-                  <a-col :span="12">
-
-                  </a-col>
-                  <a-col :span="12">
-
-                  </a-col>
-                </a-row>
-              </a-card>
-            </a-col>
-            <a-col :span="12">
-              <a-card>
-                <a-row>
-                  <a-col :span="12">
-
-                  </a-col>
-                  <a-col :span="12">
-
-                  </a-col>
-                </a-row>
-              </a-card>
-            </a-col>
-          </a-row>
-          <br>
-          <a-row>
-            <a-col :span="24">
-              <div id="main" style="width: 100%;height:300px;"></div>
-            </a-col>
-          </a-row>
-          <br>
+            </a-card>
+          </a-col>
         </a-row>
 
-    </div>
+        <!--                </a-card>-->
+      </a-col>
+      <br>
+
+    </a-row>
+    <a-row>
+      <a-col :span="24">
+
+        <a-row>
+          <a-col :span="7">
+            <a-card>
+              <div style="width: 100%;height:647px;">
+                <a-row>
+                  <a-col :span="24">
+                    <a-card style="width: 100%;height:400px;">
+                      <h1>提醒列表  分两个轮播 一个提醒  一个警告   提醒有一键已读</h1>
+                    </a-card>
+                  </a-col>
+                </a-row>
+                <a-row>
+                  <a-col :span="9">
+                    <a-card color="red">
+                      <div id="ZSBSZYXS" style="width: 100%;height:200%;"></div>
+
+                    </a-card>
+                  </a-col>
+                  <a-col :span="15" style="width: 100%;height:248px;">
+                    <a-card>
+
+                      <themarquee></themarquee>
+
+                    </a-card>
+                  </a-col>
+                </a-row>
+              </div>
+            </a-card>
+          </a-col>
+          <a-col :span="10">
+<a-card>
+  <div style="width: 100%;height:647px;">设备状态图  按xxxx分类</div>
+</a-card>
+          </a-col>
+          <a-col :span="7">
+            <a-card>
+              <div style="width: 100%;height:647px;">
+                <a-card style="width: 100%;height:400px;">
+
+                    <div style="width: 100%;height:50px;">
+                      <h1>天气</h1>
+                    </div>
+
+                </a-card>
+                <a-card style="width: 100%;height:248px;">
+                  <div >
+                    <h1>当前为xxxxx模式  全部都展示（轮播图） 按钮确定形式</h1>
+                  </div>
+
+                </a-card>
+
+              </div>
+            </a-card>
+
+
+          </a-col>
+        </a-row>
+
+      </a-col>
+
+    </a-row>
+
+  </div>
 
 
 </template>
@@ -70,405 +105,811 @@
 import {defineComponent, onMounted, ref} from 'vue';
 import axios from "axios";
 import {UserOutlined, ArrowUpOutlined, ArrowDownOutlined, LikeOutlined} from '@ant-design/icons-vue';
-declare  let echarts: any;
+import Themarquee from "@/components/the-marquee.vue";
+
+declare let echarts: any;
 export default defineComponent({
-    name: 'the-welcome',
-    components: {
-        UserOutlined,
-        LikeOutlined,
-        ArrowDownOutlined,
-        ArrowUpOutlined
-    },
+  name: 'the-welcome',
+  components: {
+    UserOutlined,
+    LikeOutlined,
+    ArrowDownOutlined,
+    ArrowUpOutlined,
+    Themarquee,
+  },
 
-    setup() {
-        const statistic = ref();
-        statistic.value = {};
-        const getStatistic = () => {
-            axios.get("/ebook-Snapshot/get-statistic").then((res) => {
-                const data = res.data;
-                if (data.success) {
-                    const ststisticResp = data.content;
-                    if (ststisticResp.length < 2) {
-                        //对昨天没有数据的情况做处理
-                        statistic.value.viewCount = ststisticResp[0].viewCount;
-                        statistic.value.voteCount = ststisticResp[0].voteCount;
-                        statistic.value.todayViewCount = statistic.value.viewCount;
-                        statistic.value.todayVoteCount = statistic.value.voteCount;
-                    } else {
-                        statistic.value.viewCount = ststisticResp[1].viewCount;
-                        statistic.value.voteCount = ststisticResp[1].voteCount;
-                        statistic.value.todayViewCount = ststisticResp[0].viewIncrease;
-                        statistic.value.todayVoteCount = ststisticResp[0].voteIncrease;
-                    }
+  setup() {
+    const statistic = ref();
+    statistic.value = {};
+    const getStatistic = () => {
+      axios.get("/ebook-Snapshot/get-statistic").then((res) => {
+        const data = res.data;
+        if (data.success) {
+          const ststisticResp = data.content;
+          if (ststisticResp.length < 2) {
+            //对昨天没有数据的情况做处理
+            statistic.value.viewCount = ststisticResp[0].viewCount;
+            statistic.value.voteCount = ststisticResp[0].voteCount;
+            statistic.value.todayViewCount = statistic.value.viewCount;
+            statistic.value.todayVoteCount = statistic.value.voteCount;
+          } else {
+            statistic.value.viewCount = ststisticResp[1].viewCount;
+            statistic.value.voteCount = ststisticResp[1].voteCount;
+            statistic.value.todayViewCount = ststisticResp[0].viewIncrease;
+            statistic.value.todayVoteCount = ststisticResp[0].voteIncrease;
+          }
 
-                    //按分钟计算当前时间点站一天的百分比
-                    const now = new Date();
-                    const nowRate = (now.getHours() * 60 + now.getMinutes()) / (24 * 60);
-                    statistic.value.todayViewIncrease = parseInt(String(ststisticResp[1].viewIncrease / nowRate));
-                    statistic.value.todayViewIncreaseRate = (statistic.value.todayViewIncrease - ststisticResp[0].viewIncrease) / ststisticResp[0].viewIncrease * 100;
-                    statistic.value.todayViewIncreaseRateAbs = Math.abs(statistic.value.todayViewIncreaseRate);
-                }
+          //按分钟计算当前时间点站一天的百分比
+          const now = new Date();
+          const nowRate = (now.getHours() * 60 + now.getMinutes()) / (24 * 60);
+          statistic.value.todayViewIncrease = parseInt(String(ststisticResp[1].viewIncrease / nowRate));
+          statistic.value.todayViewIncreaseRate = (statistic.value.todayViewIncrease - ststisticResp[0].viewIncrease) / ststisticResp[0].viewIncrease * 100;
+          statistic.value.todayViewIncreaseRateAbs = Math.abs(statistic.value.todayViewIncreaseRate);
+        }
 
-            });
-        };
-        const testEcharts = () => {
-
-
-           const chartDom = document.getElementById('main');
-            const  myChart = echarts.init(chartDom);
+      });
+    };
+    const testEcharts = () => {
 
 
-         const   option = {
-                xAxis: {
-                    type: 'category',
-                    data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-                },
-                yAxis: {
-                    type: 'value'
-                },
-                series: [
-                    {
-                        data: [150, 230, 224, 218, 135, 147, 260],
-                        type: 'line'
-                    }
-                ]
-            };
+      const chartDom = document.getElementById('main');
+      const myChart = echarts.init(chartDom);
 
-           myChart.setOption(option);
-        };
-        // const init30DayEchaerts=(list:any)=>{
-        //     const mychart = echarts.init(document.getElementById('main'));
-        //
-        //     const xAxis=[];//横坐标
-        //     const seriesView=[];//纵坐标
-        //     const seriesVote=[];//纵坐标
-        //     for (let i=0;i<list.length;i++){
-        //         const record=list[i];
-        //         xAxis.push(record.date);
-        //         seriesView.push(record.viewIncrease);
-        //         seriesVote.push(record.voteIncrease);
-        //     }
-        //     const option={
-        //         title:{
-        //             text:'最近30天阅读量和点赞量'
-        //         },
-        //         tooltip:{
-        //             trigger:'axis'
-        //         },
-        //         legend: {
-        //             data: ['点赞量', '阅读量', ]
-        //         },
-        //         grid: {
-        //             left: '3%',
-        //             right: '4%',
-        //             bottom: '3%',
-        //             containLabel: true
-        //         },
-        //         toolbox: {
-        //             feature: {
-        //                 saveAsImage: {}
-        //             }
-        //         },
-        //         xAxis: {
-        //             type: 'category',
-        //             boundaryGap: false,
-        //             data: xAxis,
-        //         },
-        //         yAxis: {
-        //             type: 'value'
-        //         },
-        //         series: [
-        //             {
-        //                 name: '阅读量',
-        //                 type: 'line',
-        //                 stack: 'Total',
-        //                 smooth: true,
-        //                 data: seriesView,
-        //             },
-        //             {
-        //                 name: '点赞量',
-        //                 type: 'line',
-        //                 stack: 'Total',
-        //                 smooth: true,
-        //                 data: seriesVote
-        //             },]
-        //     };
-        //     mychart.setOption(option);
-        // };
 
-        // const get30DayStatistic=()=>{
-        //     axios.get("/ebook-Snapshot/get-30statistic").then((res)=>{
-        //         const data=res.data;
-        //         if (data.success){
-        //             const list=data.content;
-        //             init30DayEchaerts(list);
-        //         }
-        //     });
-        // };
-        onMounted(() => {
-            getStatistic();
-           testEcharts();
-          mychartsXHDN();
-            // get30DayStatistic();
-        });
-      /****
-       * @description: 消耗电能表（仪表盘形式）
-       */
-      const mychartsXHDN=()=>{
-          const mychartXiaoHaoDianNeng = echarts.init(document.getElementById('XiaoHaoDianNeng'));
-          const colorStyle = [[1,new echarts.graphic.LinearGradient(
-              0, 0, 1, 0, [
-                {
-                  offset: 0,
-                  color: 'rgba(22, 148, 255, 0.1)',
-                },
-                {
-                  offset: 1,
-                  color:'rgba(63, 250, 250, 0.9)',
-                }
-              ]
-          )]]
-          const option = {
-            backgroundColor: "#0b3c66",
-            series: [
-              //最外的圆圈（外层刻度）
-              {
-                type: 'gauge',
-                center: [
-                  '50%',
-                  '55%'
-                ],
-                radius: '90%',
-                startAngle: 220,
-                endAngle: -40,
-                min: 0,
-                max: 100,
-                axisLine: {
-                  show: true,
-                  lineStyle: {
-                    width: 3,
-                    color:colorStyle
-                  }
-                },
-                axisLabel: {
-                  show: 0
-                },
-                axisTick: {
-                  lineStyle: {
-                    color:'rgba(63,250,250,0.7)',
-                    width: 1
-                  },
-                  length: 5
-                },
-                splitLine: {
-                  length: 8,
-                  lineStyle: {
-                    color:'rgba(63,250,250,0.8)',
-                    width: 3
-                  }
-                },
+      const option = {
+        xAxis: {
+          type: 'category',
+          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+        },
+        yAxis: {
+          type: 'value'
+        },
+        series: [
+          {
+            data: [150, 230, 224, 218, 135, 147, 260],
+            type: 'line'
+          }
+        ]
+      };
+
+      myChart.setOption(option);
+    };
+    // const init30DayEchaerts=(list:any)=>{
+    //     const mychart = echarts.init(document.getElementById('main'));
+    //
+    //     const xAxis=[];//横坐标
+    //     const seriesView=[];//纵坐标
+    //     const seriesVote=[];//纵坐标
+    //     for (let i=0;i<list.length;i++){
+    //         const record=list[i];
+    //         xAxis.push(record.date);
+    //         seriesView.push(record.viewIncrease);
+    //         seriesVote.push(record.voteIncrease);
+    //     }
+    //     const option={
+    //         title:{
+    //             text:'最近30天阅读量和点赞量'
+    //         },
+    //         tooltip:{
+    //             trigger:'axis'
+    //         },
+    //         legend: {
+    //             data: ['点赞量', '阅读量', ]
+    //         },
+    //         grid: {
+    //             left: '3%',
+    //             right: '4%',
+    //             bottom: '3%',
+    //             containLabel: true
+    //         },
+    //         toolbox: {
+    //             feature: {
+    //                 saveAsImage: {}
+    //             }
+    //         },
+    //         xAxis: {
+    //             type: 'category',
+    //             boundaryGap: false,
+    //             data: xAxis,
+    //         },
+    //         yAxis: {
+    //             type: 'value'
+    //         },
+    //         series: [
+    //             {
+    //                 name: '阅读量',
+    //                 type: 'line',
+    //                 stack: 'Total',
+    //                 smooth: true,
+    //                 data: seriesView,
+    //             },
+    //             {
+    //                 name: '点赞量',
+    //                 type: 'line',
+    //                 stack: 'Total',
+    //                 smooth: true,
+    //                 data: seriesVote
+    //             },]
+    //     };
+    //     mychart.setOption(option);
+    // };
+
+    // const get30DayStatistic=()=>{
+    //     axios.get("/ebook-Snapshot/get-30statistic").then((res)=>{
+    //         const data=res.data;
+    //         if (data.success){
+    //             const list=data.content;
+    //             init30DayEchaerts(list);
+    //         }
+    //     });
+    // };
+    onMounted(() => {
+      getStatistic();
+      // testEcharts();
+      mychartsXHDN();
+      mychartXJXH();
+      mychartRL();
+      mychartZSBSZYXS();
+      // get30DayStatistic();
+    });
+    /****
+     * @description: 消耗电能表（仪表盘形式）
+     */
+    const mychartsXHDN = () => {
+      const mychartXiaoHaoDianNeng = echarts.init(document.getElementById('XiaoHaoDianNeng'));
+      const colorStyle = [[1, new echarts.graphic.LinearGradient(
+          0, 0, 1, 0, [
+            {
+              offset: 0,
+              color: 'rgba(22, 148, 255, 0.1)',
+            },
+            {
+              offset: 1,
+              color: 'rgba(63, 250, 250, 0.9)',
+            }
+          ]
+      )]]
+      const option = {
+        backgroundColor: "#0b3c66",
+        series: [
+          //最外的圆圈（外层刻度）
+          {
+            type: 'gauge',
+            center: [
+              '50%',
+              '55%'
+            ],
+            radius: '90%',
+            startAngle: 220,
+            endAngle: -40,
+            min: 0,
+            max: 100,
+            axisLine: {
+              show: true,
+              lineStyle: {
+                width: 3,
+                color: colorStyle
+              }
+            },
+            axisLabel: {
+              show: 0
+            },
+            axisTick: {
+              lineStyle: {
+                color: 'rgba(63,250,250,0.7)',
+                width: 1
               },
-              // 外围刻度（第二层）
-              {
-                type: 'gauge',
-                center: [
-                  '50%',
-                  '55%'
-                ],
-                radius: '82%', // 1行3个
-                min: 0,
-                max: 100,
-                startAngle: 220,
-                endAngle: -40,
-                axisLine: { // 坐标轴线
-                  lineStyle: { // 属性lineStyle控制线条样式
-                    color: colorStyle,
-                    fontSize: 20,
-                    width: 2,
-                    opacity: 1, //刻度背景宽度
-                  }
-                },
-                splitLine: {
-                  show: false
-                },
-                axisLabel: {
-                  show: false
-                },
-                axisTick: {
-                  show: false
-                },
+              length: 5
+            },
+            splitLine: {
+              length: 8,
+              lineStyle: {
+                color: 'rgba(63,250,250,0.8)',
+                width: 3
+              }
+            },
+          },
+          // 外围刻度（第二层）
+          {
+            type: 'gauge',
+            center: [
+              '50%',
+              '55%'
+            ],
+            radius: '82%', // 1行3个
+            min: 0,
+            max: 100,
+            startAngle: 220,
+            endAngle: -40,
+            axisLine: { // 坐标轴线
+              lineStyle: { // 属性lineStyle控制线条样式
+                color: colorStyle,
+                fontSize: 20,
+                width: 2,
+                opacity: 1, //刻度背景宽度
+              }
+            },
+            splitLine: {
+              show: false
+            },
+            axisLabel: {
+              show: false
+            },
+            axisTick: {
+              show: false
+            },
+          },
+          // 外围刻度（中间有背景颜色那块，包括里面的刻度）
+          {
+            type: 'gauge',
+            center: [
+              '50%',
+              '55%'
+            ],
+            radius: '82%', // 1行3个
+            splitNumber: 10,
+            min: 0,
+            max: 100,
+            startAngle: 220,
+            endAngle: -40,
+            //分隔线样式
+            axisTick: {
+              lineStyle: {
+                color: 'rgba(63,250,250,0.8)',
+                width: 1
               },
-              // 外围刻度（中间有背景颜色那块，包括里面的刻度）
-              {
-                type: 'gauge',
-                center: [
-                  '50%',
-                  '55%'
-                ],
-                radius: '82%', // 1行3个
-                splitNumber: 10,
-                min: 0,
-                max: 100,
-                startAngle: 220,
-                endAngle: -40,
-                //分隔线样式
-                axisTick: {
-                  lineStyle: {
-                    color:'rgba(63,250,250,0.8)',
-                    width: 1
-                  },
-                  length: 5
-                },
-                //刻度样式
-                axisLine: {
-                  show: true,
-                  lineStyle: {
-                    width: 100,
-                    color: colorStyle
-                  }
-                },
-                //整数分隔线
-                splitLine: {
-                  show: true,
-                  length: 7,
-                  lineStyle: {
-                    color:'rgba(63, 250, 250, 0.8)',
-                    width: 2
-                  }
-                },
-                //刻度数字
-                axisLabel: {
-                  show: true,
-                  distance: 1,
-                  textStyle: {
-                    color:'rgba(63, 250, 250, 0.8)',
-                    fontSize: '18',
-                    fontWeight: 'bold'
-                  }
-                },
-              },
-              //从外数第三条线
-              {
-                type: 'gauge',
-                center: [
-                  '50%',
-                  '55%'
-                ],
-                radius: '65%', // 1行3个
-                splitNumber: 10,
-                min: 0,
-                max: 100,
-                startAngle: 220,
-                endAngle: -40,
-                axisLine: { // 坐标轴线
-                  lineStyle: { // 属性lineStyle控制线条样式
-                    color: colorStyle,
-                    fontSize: 20,
-                    width: 2,
-                    opacity: 1, //刻度背景宽度
-                  }
-                },
-                splitLine: {
-                  show: false
-                },
-                axisLabel: {
-                  show: false
-                },
-                pointer: {
-                  show: false
-                },
-                axisTick: {
-                  show: false
-                },
-                detail: {
-                  show: 0
-                }
-              },
-              // 内侧指针、数值显示
-              {
-                name: '',
-                center: [
-                  '50%',
-                  '50%'
-                ],
-                type: 'gauge',
-                radius: '74%', // 1行3个
-                splitNumber: 10,
-                min: 0,
-                max: 100,
-                startAngle: 220,
-                endAngle: -40,
-                axisLine: {
-                  show: true,
-                  lineStyle: {
-                    width: 50,
-                    color: [
-                      [
-                        1,
-                        new echarts.graphic.LinearGradient(
-                            0, 0, 1, 0, [
-                              {
-                                offset: 0,
-                                color: 'rgba(0, 199, 187, 0)',
-                              },
-                              {
-                                offset: 1,
-                                color: 'rgba(0, 199, 187, 0)',
-                              }
-                            ]
-                        )
-                      ],
-                    ]
-                  }
-                },
-                axisTick: {
-                  show: 0,
-                },
-                splitLine: {
-                  show: 0,
-                },
-                axisLabel: {
-                  show: 0
-                },
-                pointer: {
-                  show: true,
-                  length: '102%',
-                  width: 8,
-                  itemStyle: {
-                    color:colorStyle
-                  }
-                },
-                data: [
-                  {
-                    value: 22.8,
-                    name: '消耗电能\nKWh',
-                    title: {
-                      offsetCenter: ['0%', '50%'],
-                      fontSize: 30,
-                      color:'#4fe8d6'
-                    },
-                    detail: {
-                      offsetCenter: ['0%', '20%'],
-                      valueAnimation: true,
-                      fontSize: 40,
-                      color:'#4fe8d6'
-                    }
-                  }
+              length: 5
+            },
+            //刻度样式
+            axisLine: {
+              show: true,
+              lineStyle: {
+                width: 100,
+                color: colorStyle
+              }
+            },
+            //整数分隔线
+            splitLine: {
+              show: true,
+              length: 7,
+              lineStyle: {
+                color: 'rgba(63, 250, 250, 0.8)',
+                width: 2
+              }
+            },
+            //刻度数字
+            axisLabel: {
+              show: true,
+              distance: 1,
+              textStyle: {
+                color: 'rgba(63, 250, 250, 0.8)',
+                fontSize: '10',
+                fontWeight: 'bold'
+              }
+            },
+          },
+          //从外数第三条线
+          {
+            type: 'gauge',
+            center: [
+              '50%',
+              '55%'
+            ],
+            radius: '65%', // 1行3个
+            splitNumber: 10,
+            min: 0,
+            max: 100,
+            startAngle: 220,
+            endAngle: -40,
+            axisLine: { // 坐标轴线
+              lineStyle: { // 属性lineStyle控制线条样式
+                color: colorStyle,
+                fontSize: 5,
+                width: 2,
+                opacity: 1, //刻度背景宽度
+              }
+            },
+            splitLine: {
+              show: false
+            },
+            axisLabel: {
+              show: false
+            },
+            pointer: {
+              show: false
+            },
+            axisTick: {
+              show: false
+            },
+            detail: {
+              show: 0
+            }
+          },
+          // 内侧指针、数值显示
+          {
+            name: '',
+            center: [
+              '50%',
+              '50%'
+            ],
+            type: 'gauge',
+            radius: '74%', // 1行3个
+            splitNumber: 10,
+            min: 0,
+            max: 100,
+            startAngle: 220,
+            endAngle: -40,
+            axisLine: {
+              show: true,
+              lineStyle: {
+                width: 50,
+                color: [
+                  [
+                    1,
+                    new echarts.graphic.LinearGradient(
+                        0, 0, 1, 0, [
+                          {
+                            offset: 0,
+                            color: 'rgba(0, 199, 187, 0)',
+                          },
+                          {
+                            offset: 1,
+                            color: 'rgba(0, 199, 187, 0)',
+                          }
+                        ]
+                    )
+                  ],
                 ]
               }
+            },
+            axisTick: {
+              show: 0,
+            },
+            splitLine: {
+              show: 0,
+            },
+            axisLabel: {
+              show: 0
+            },
+            pointer: {
+              show: true,
+              length: '102%',
+              width: 8,
+              itemStyle: {
+                color: colorStyle
+              }
+            },
+            data: [
+              {
+                value: 22.8,
+                name: '今日消耗电能\nKWh',
+                title: {
+                  offsetCenter: ['0%', '50%'],
+                  fontSize: 10,
+                  color: '#4fe8d6'
+                },
+                detail: {
+                  offsetCenter: ['0%', '20%'],
+                  valueAnimation: true,
+                  fontSize: 20,
+                  color: '#4fe8d6'
+                }
+              }
             ]
-          };
-          mychartXiaoHaoDianNeng.setOption(option);
+          }
+        ]
+      };
+      mychartXiaoHaoDianNeng.setOption(option);
+    }
+
+
+    /***
+     * @description: 各个设备的消耗：
+     */
+    const mychartXJXH = () => {
+      const mychartXiJieXiaoHao = echarts.init(document.getElementById('XJXH'));
+      const option = {
+        backgroundColor: "#03213D",
+        color: ["#5090FF", "#01B3E4", "#FF7E00", "#99004c"],
+        tooltip: {
+          trigger: "axis",
+          backgroundColor: "rgba(0,0,0,.6)",
+          borderColor: "rgba(147, 235, 248, .8)",
+          textStyle: {
+            color: "#FFF",
+          },
+        },
+        grid: {
+          left: "2%",
+          right: "5%",
+          bottom: "5%",
+          top: "30px",
+          containLabel: true,
+        },
+
+        legend: {
+          show: true,
+          icon: "rect",
+          orient: "horizontal",
+          left: "right",
+          itemWidth: 12,
+          itemHeight: 12,
+          formatter: ["{a|{name}}"].join("\n"),
+          textStyle: {
+            fontSize: 12,
+            color: "#6A93B9",
+            height: 8,
+            rich: {
+              a: {
+                verticalAlign: "bottom",
+              },
+            },
+          },
+          data: ["一号窗口", "二号窗口", "三号窗口", "四号窗口"],
+        },
+        xAxis: {
+          type: "category",
+          axisLine: {
+            lineStyle: {
+              color: "#BDD8FB",
+              fontSize: 12,
+            },
+          },
+          axisLabel: {
+            // interval:0,
+            color: "#BDD8FB",
+            fontSize: 12,
+          },
+          axisTick: {
+            show: false,
+          },
+          data: [
+            "计生",
+            "劳保医保",
+            "房屋租赁",
+            "退役军人",
+          ],
+        },
+        yAxis: {
+          type: "value",
+          min: 0,
+          minInterval: 1,
+          nameTextStyle: {
+            fontSize: 12,
+            color: "#BDD8FB",
+            align: "center",
+          },
+          splitLine: {
+            lineStyle: {
+              color: "rgba(255, 255, 255, 0.15)",
+            },
+          },
+          splitArea: {show: false},
+          axisLine: {
+            show: false,
+          },
+          axisTick: {
+            show: false,
+          },
+          axisLabel: {
+            fontSize: 12,
+            fontFamily: "Bebas",
+            color: "#BDD8FB",
+          },
+        },
+        series: [
+          {
+            type: "line",
+            smooth: true, // 是否曲线
+            name: "一号窗口", // 图例对应类别
+            data: [4000, 6000, 7000, 2000, 5000, 7000, 9000], // 纵坐标数据
+            areaStyle: {
+              color: {
+                type: 'linear',
+                x: 0,  //右
+                y: 0,  //下
+                x2: 0,  //左
+                y2: 1,  //上
+                colorStops: [
+                  {
+                    offset: 0.1,
+                    color: '#5090FF' // 0% 处的颜色
+                  },
+                  {
+                    offset: 1,
+                    color: '#1057E500' // 100% 处的颜色
+                  }
+                ]
+              },
+            },
+          },
+          {
+            type: "line",
+            smooth: true,
+            name: "二号窗口",
+            data: [1000, 4000, 5000, 6000, 3000, 8000, 7000],
+            areaStyle: {
+              color: {
+                type: 'linear',
+                x: 0,  //右
+                y: 0,  //下
+                x2: 0,  //左
+                y2: 1,  //上
+                colorStops: [
+                  {
+                    offset: 0.1,
+                    color: '#01B3E4' // 0% 处的颜色
+                  },
+                  {
+                    offset: 1,
+                    color: '#86DCF300' // 100% 处的颜色
+                  }
+                ]
+              },
+            },
+          },
+          {
+            type: "line",
+            smooth: true,
+            name: "三号窗口",
+            data: [1230, 4520, 5620, 7220, 3520, 8600, 7630],
+            areaStyle: {
+              color: {
+                type: 'linear',
+                x: 0,  //右
+                y: 0,  //下
+                x2: 0,  //左
+                y2: 1,  //上
+                colorStops: [
+                  {
+                    offset: 0.1,
+                    color: '#FF7E00' // 0% 处的颜色
+                  },
+                  {
+                    offset: 1,
+                    color: '#FF000000' // 100% 处的颜色
+                  }
+                ]
+              },
+            },
+          },
+          {
+            type: "line",
+            smooth: true,
+            name: "四号窗口",
+            data: [230, 4520, 5520, 6620, 3620, 8620, 7620],
+            areaStyle: {
+              color: {
+                type: 'linear',
+                x: 0,  //右
+                y: 0,  //下
+                x2: 0,  //左
+                y2: 1,  //上
+                colorStops: [
+                  {
+                    offset: 0.1,
+                    color: '#99004c' // 0% 处的颜色
+                  },
+                  {
+                    offset: 1,
+                    color: '#FF000000' // 100% 处的颜色
+                  }
+                ]
+              },
+            },
+          },
+        ],
+      };
+      mychartXiJieXiaoHao.setOption(option);
+    }
+
+    /*****
+     * @description: 日历图
+     */
+    const mychartRL = () => {
+      const mychartRiLi = echarts.init(document.getElementById("RiLi"));
+
+      function getVirtulData(year: any) {
+        year = year || '2017';
+        var date = +echarts.number.parseDate(year + '-01-01');
+        var end = +echarts.number.parseDate((+year + 1) + '-01-01');
+        var dayTime = 3600 * 24 * 1000;
+        var data = [];
+        for (var time = date; time < end; time += dayTime) {
+          data.push([
+            echarts.format.formatTime('yyyy-MM-dd', time),
+            Math.floor(Math.random() * 1000)
+          ]);
         }
+        return data;
+      }
 
-        return {
-            statistic,
+      var data = {
+        '2015': getVirtulData(2015),
+        '2016': getVirtulData(2016),
+        '2017': getVirtulData(2017)
+      };
 
 
-        }
+      const option = {
+        legend: {
+          top: 250,
+          selected: {
+            '2015': true,
+
+          },
+          selectedMode: 'single'
+        },
+        tooltip: {
+          position: 'top'
+        },
+        visualMap: {
+          min: 0,
+          max: 1000,
+          calculable: true,
+          orient: 'horizontal',
+          left: 'center',
+          top: 'top'
+        },
+
+        calendar: {
+          range: '2015',
+          cellSize: ['auto', 20]
+        },
+
+        series: [{
+          type: 'heatmap',
+          coordinateSystem: 'calendar',
+          calendarIndex: 0,
+          data: data[2015],
+          name: '2015'
+        }]
+      };
+
+
+      mychartRiLi.setOption(option);
+    }
+    /****
+     * @description: 总设备数在运行数
+     */
+    const mychartZSBSZYXS = () => {
+      const mychart = echarts.init(document.getElementById("ZSBSZYXS"));
+      let max = 100;
+      let value = 32;
+
+
+      const option = {
+        backgroundColor: 'rgba(255,255,255,0)',
+        title: [
+          {
+            text: '{a|设备启动比}\n\n\n\n{b|' + value + ':' + max + '}',
+            show: true,
+            x: 'center',
+            y: 'top',
+            textStyle: {
+              rich: {
+                a: {
+                  fontSize: 20,
+                  color: 'rgba(4,127,171,.4)',
+                  padding: [0, 0, 25, 0],
+                },
+                b: {
+                  fontSize: 20,
+                  color: '#0479ab',
+                  fontFamily: 'alibabaPuhuiM',
+                },
+              },
+            },
+          },
+        ],
+        polar: {
+          center: ['50%', '50%'],
+          radius: ['60%', '75%'],
+        },
+        angleAxis: {
+          max: max,
+          show: false,
+        },
+        radiusAxis: {
+          type: 'category',
+          show: true,
+          axisLabel: {
+            show: false,
+          },
+          axisLine: {
+            show: false,
+          },
+          axisTick: {
+            show: false,
+          },
+        },
+        series: [
+          {
+            name: '',
+            type: 'bar',
+            roundCap: true,
+            showBackground: true,
+            backgroundStyle: {
+              color: 'rgba(19, 84, 146, .4)',
+            },
+            data: [value],
+            coordinateSystem: 'polar',
+            itemStyle: {
+              normal: {
+                color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [
+                  {
+                    offset: 0,
+                    color: '#005DCF',
+                  },
+                  {
+                    offset: 1,
+                    color: '#00CCFF',
+                  },
+                ]),
+              },
+            },
+          },
+          {
+            name: '',
+            type: 'gauge',
+            radius: '54%',
+            axisLine: {
+              lineStyle: {
+                color: [
+                  [
+                    1,
+                    new echarts.graphic.LinearGradient(0, 1, 0, 0, [
+                      {
+                        offset: 0,
+                        color: 'rgba(0, 182, 253, 0)',
+                      },
+                      {
+                        offset: 0.5,
+                        color: 'rgba(0, 182, 253, .2)',
+                      },
+                      {
+                        offset: 1,
+                        color: 'rgba(0, 182, 253, .4)',
+                      },
+                    ]),
+                  ],
+                ],
+                width: 1,
+              },
+            },
+            axisLabel: {
+              show: false,
+            },
+            axisTick: {
+              show: false,
+            },
+            splitLine: {
+              show: false,
+            },
+            itemStyle: {
+              show: false,
+            },
+            detail: {
+              show: false,
+            },
+            data: [],
+            pointer: {
+              show: false,
+            },
+          },
+        ],
+      };
+
+      mychart.setOption(option);
+    }
+    return {
+      statistic,
 
 
     }
+
+
+  }
 });
 
 
