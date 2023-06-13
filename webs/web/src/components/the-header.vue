@@ -11,7 +11,7 @@
 
       >
         <a-menu-item key="home" class="menu-left">
-          <router-link to="/">首页</router-link>
+          <router-link to="/home">首页</router-link>
         </a-menu-item>
         <a-menu-item key="admin_book" v-if="user.id">
           <router-link to="/admin/ebook">电子书管理</router-link>
