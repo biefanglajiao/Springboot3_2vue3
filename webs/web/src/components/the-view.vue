@@ -249,7 +249,8 @@ export default defineComponent({
       mychartsXHDN();
       mychartXJXH();
       mychartRL();
-      mychartZSBSZYXS();
+      getOpenAndSum();
+       // mychartZSBSZYXS();
       // get30DayStatistic();
     });
     /****
@@ -770,12 +771,14 @@ export default defineComponent({
       mychartRiLi.setOption(option);
     }
     /****
-     * @description: 总设备数在运行数
+     * @description: 总设备数在运行数仪表盘
      */
-    const mychartZSBSZYXS = () => {
+    const mychartZSBSZYXS = (list:any) => {
+
       const mychart = echarts.init(document.getElementById("ZSBSZYXS"));
-      let max = 100;
-      let value = 32;
+      console.log(list[0]+"ssssssssssssssssssssssssssssssssssssssss")
+      let max = list[1];
+      let value = list[0];
 
 
       const option = {
@@ -902,6 +905,21 @@ export default defineComponent({
 
       mychart.setOption(option);
     }
+    /****
+     * @description: 获取总设备数在运行数
+     */
+    const getOpenAndSum=() => {
+      axios.get("/equipment/all").then((res) => {
+        const data= res.data;
+        if (data.success){
+          const list=data.content;
+
+          mychartZSBSZYXS(list);
+        }
+
+      });
+    }
+
     return {
       statistic,
 
