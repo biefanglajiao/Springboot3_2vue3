@@ -75,7 +75,7 @@
                 <a-card style="width: 100%;height:400px;">
 
                     <div style="width: 100%;height:50px;">
-                      <h1>天气</h1>
+                      <TheWeather></TheWeather>
                     </div>
 
                 </a-card>
@@ -104,13 +104,15 @@
 <script lang="ts">
 import {defineComponent, onMounted, ref} from 'vue';
 import axios from "axios";
+
 import {UserOutlined, ArrowUpOutlined, ArrowDownOutlined, LikeOutlined} from '@ant-design/icons-vue';
 import Themarquee from "@/components/the-marquee.vue";
-
+import TheWeather from "@/components/the-weather.vue";
 declare let echarts: any;
 export default defineComponent({
   name: 'the-welcome',
   components: {
+    TheWeather,
     UserOutlined,
     LikeOutlined,
     ArrowDownOutlined,

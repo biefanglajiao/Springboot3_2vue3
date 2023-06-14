@@ -6,6 +6,7 @@ import Antd from  'ant-design-vue'
 import 'ant-design-vue/dist/antd.css'
 import axios from 'axios'
 import {Tool} from "@/utils/tool";
+
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import VueParticles from 'vue-particles';

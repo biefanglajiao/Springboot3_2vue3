@@ -2,6 +2,7 @@ package com.example.springboot3_2vue3.controller;
 
 import com.alibaba.fastjson.JSONObject;
 
+import com.example.springboot3_2vue3.resp.CommonResp;
 import com.example.springboot3_2vue3.service.WeatherService;
 import jakarta.annotation.Resource;
 
@@ -21,14 +22,24 @@ public class WeatherController {
     private WeatherService weatherService;
 
     @GetMapping("/now")
-    public JSONObject getWeatherNow(){
-//      weatherService.getWeatherNow();
+//    public CommonResp getWeatherNow(){
+////      weatherService.getWeatherNow();
 
-        return weatherService.getWeatherNow();
+//        return commonResp;
+//    }
+    public CommonResp getWeatherNow(){
+        JSONObject weather= new JSONObject();
+        weather.fluentPutAll(weatherService.getWeatherNow());
+        CommonResp<JSONObject> commonResp=new CommonResp<>();
+commonResp.setContent(weather);
+        return commonResp;
     }
     @GetMapping("/yubao")
-    public JSONObject getWeatherYubao(){
-
-        return weatherService.getWeatherYubao();
+    public CommonResp getWeatherYubao(){
+        JSONObject weather= new JSONObject();
+        weather.fluentPutAll(weatherService.getWeatherYubao());
+        CommonResp<JSONObject> commonResp=new CommonResp<>();
+       commonResp.setContent(weather);
+        return commonResp;
     }
 }

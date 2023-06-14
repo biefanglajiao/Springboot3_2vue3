@@ -13,8 +13,8 @@ import org.springframework.web.client.RestTemplate;
 public class WeatherService {
 
     RestTemplate restTemplate = new RestTemplate();
-    String urlnow="https://restapi.amap.com/v3/weather/weatherInfo?city=110101&key=f55562896643a8c0373ad564feee1e86";
-    String urlyubao="https://restapi.amap.com/v3/weather/weatherInfo?city=110101&key=f55562896643a8c0373ad564feee1e86&extensions=all";
+    String urlnow="https://restapi.amap.com/v3/weather/weatherInfo?city=140700&key=f55562896643a8c0373ad564feee1e86";
+    String urlyubao="https://restapi.amap.com/v3/weather/weatherInfo?city=140700&key=f55562896643a8c0373ad564feee1e86&extensions=all";
 
     public JSONObject getWeatherNow(){
         JSONObject weather= restTemplate.getForObject(urlnow, JSONObject.class);

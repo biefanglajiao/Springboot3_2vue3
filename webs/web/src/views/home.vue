@@ -76,6 +76,7 @@ import {FullscreenOutlined,FullscreenExitOutlined} from '@ant-design/icons-vue';
 import {Tool} from "@/utils/tool";
 import {message} from "ant-design-vue";
 import TheView from "@/components/the-view.vue";
+
 import screenfull from "screenfull";
 import store from "@/store";
 export default defineComponent({
