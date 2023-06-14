@@ -23,12 +23,16 @@ LogInterceptor logInterceptor;
         registry.addInterceptor(logInterceptor)
                 .addPathPatterns("/**")
                 .excludePathPatterns(
-                        "/a/a",
                         "/login/**",
-                        "/text/**",
                         "/redis/**",
                         "/user/**",
-                        "/equipment/all"
+
+
+
+                        "/equipment/all",
+                        "/text/**",
+                        "/a/a",
+                        "/weather/**"
                 );//拦截所有请求，除了exculdePathPatterns中的请求
     }
 

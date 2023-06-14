@@ -776,7 +776,6 @@ export default defineComponent({
     const mychartZSBSZYXS = (list:any) => {
 
       const mychart = echarts.init(document.getElementById("ZSBSZYXS"));
-      console.log(list[0]+"ssssssssssssssssssssssssssssssssssssssss")
       let max = list[1];
       let value = list[0];
 
