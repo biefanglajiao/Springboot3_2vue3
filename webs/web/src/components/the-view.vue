@@ -42,7 +42,7 @@
                 <a-row>
                   <a-col :span="24">
                     <a-card style="width: 100%;height:400px;">
-                      <h1>提醒列表  分两个轮播 一个提醒  一个警告   提醒有一键已读</h1>
+                      <h1>提醒列表 分两个轮播 一个提醒 一个警告 提醒有一键已读</h1>
                     </a-card>
                   </a-col>
                 </a-row>
@@ -65,23 +65,56 @@
             </a-card>
           </a-col>
           <a-col :span="10">
-<a-card>
-  <div style="width: 100%;height:647px;">设备状态图  按xxxx分类</div>
-</a-card>
+            <a-card>
+              <div style="width: 100%;height:647px;">设备状态图 按xxxx分类</div>
+            </a-card>
           </a-col>
           <a-col :span="7">
+            <!--            天气接口-->
             <a-card>
               <div style="width: 100%;height:647px;">
                 <a-card style="width: 100%;height:400px;">
 
-                    <div style="width: 100%;height:50px;">
-                      <TheWeather></TheWeather>
+
+                  <div class="container">
+                    <div class="nav">
+                      <div class="time">上次更新时间：{{ listnow.reporttime }}</div>
                     </div>
+                    <div>
+                      <div class="city-info"><p class="city">{{ listnow.province }}省 {{ listnow.city }}</p>
+                        <p class="weather">天气： {{ listnow.weather }}</p>
+                        <h2 class="temp"><em></em>温度： {{ listnow.temperature }}℃ </h2>
+                        <div class="detail"><span>风力：{{ listnow.windpower }}级</span>|
+                          <span>风向：{{ listnow.winddirection }}</span>| <span>空气湿度：{{ listnow.humidity }}</span>
+                        </div>
+                      </div>
+                      <div class="future">
+                        <div class="time">上次更新时间：{{ listyubao.reporttime }}</div>
+                        <div class="group"> 明天： <span
+                            class="tm">白天: {{ listyubao.dayweather0 }} {{
+                            listyubao.daytemp0
+                          }}℃ {{ listyubao.daypower0 }}级 {{ listyubao.daywind0 }}风  </span> <span
+                            class="tm"> 夜间: {{ listyubao.nightweather0 }} {{
+                            listyubao.nighttemp0
+                          }} ℃ {{ listyubao.nightpower0 }}级 {{ listyubao.nightwind0 }}风             </span>
+                        </div>
+                        <div class="group"> 后天： <span
+                            class="tm">白天: {{ listyubao.dayweather1 }} {{
+                            listyubao.daytemp1
+                          }}℃ {{ listyubao.daypower1 }}级 {{ listyubao.daywind1 }}风  </span> <span
+                            class="tm"> 夜间: {{ listyubao.nightweather1 }} {{
+                            listyubao.nighttemp1
+                          }} ℃ {{ listyubao.nightpower1 }}级 {{ listyubao.nightwind1 }}风             </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
 
                 </a-card>
                 <a-card style="width: 100%;height:248px;">
-                  <div >
-                    <h1>当前为xxxxx模式  全部都展示（轮播图） 按钮确定形式</h1>
+                  <div>
+                    <h1>当前为xxxxx模式 全部都展示（轮播图） 按钮确定形式</h1>
                   </div>
 
                 </a-card>
@@ -107,12 +140,12 @@ import axios from "axios";
 
 import {UserOutlined, ArrowUpOutlined, ArrowDownOutlined, LikeOutlined} from '@ant-design/icons-vue';
 import Themarquee from "@/components/the-marquee.vue";
-import TheWeather from "@/components/the-weather.vue";
+
 declare let echarts: any;
 export default defineComponent({
   name: 'the-welcome',
   components: {
-    TheWeather,
+
     UserOutlined,
     LikeOutlined,
     ArrowDownOutlined,
@@ -252,9 +285,13 @@ export default defineComponent({
       mychartXJXH();
       mychartRL();
       getOpenAndSum();
-       // mychartZSBSZYXS();
+      // mychartZSBSZYXS();
       // get30DayStatistic();
+      getweathernow();
+      getweather3d();
+
     });
+
     /****
      * @description: 消耗电能表（仪表盘形式）
      */
@@ -775,7 +812,7 @@ export default defineComponent({
     /****
      * @description: 总设备数在运行数仪表盘
      */
-    const mychartZSBSZYXS = (list:any) => {
+    const mychartZSBSZYXS = (list: any) => {
 
       const mychart = echarts.init(document.getElementById("ZSBSZYXS"));
       let max = list[1];
@@ -909,27 +946,136 @@ export default defineComponent({
     /****
      * @description: 获取总设备数在运行数
      */
-    const getOpenAndSum=() => {
+    const getOpenAndSum = () => {
       axios.get("/equipment/all").then((res) => {
-        const data= res.data;
-        if (data.success){
-          const list=data.content;
+        const data = res.data;
+        if (data.success) {
+          const list = data.content;
 
           mychartZSBSZYXS(list);
         }
 
       });
     }
+    /*****
+     * @description: 天气相关开始
+     */
+    const listnow = ref();
+    listnow.value = {};
+    const getweathernow = () => {
+      axios.get("/weather/now").then((res) => {
+        const data = res.data;
+        if (data.success) {
+          // console.log("now:     ",data);
+          // console.log(data.content); console.log(data.content.lives);console.log(data.content.lives[0].province);
+          listnow.value.province = data.content.lives[0].province;
+          listnow.value.city = data.content.lives[0].city;
+          listnow.value.weather = data.content.lives[0].weather;
+          listnow.value.temperature = data.content.lives[0].temperature;
+          listnow.value.winddirection = data.content.lives[0].winddirection;
+          listnow.value.windpower = data.content.lives[0].windpower;
+          listnow.value.humidity = data.content.lives[0].humidity;
+          listnow.value.reporttime = data.content.lives[0].reporttime;
 
+          // console.log("now:     ", listnow);
+        } else {
+          console.log(data);
+        }
+      })
+
+
+    }
+    const listyubao = ref();
+    listyubao.value = {};//
+    const getweather3d = () => {
+      axios.get("/weather/yubao").then((res) => {
+        const data = res.data;
+        if (data.success) {
+          listyubao.value = data.content.forecasts[0].casts;
+          // console.log("yubao:     ", data);
+          // console.log("yubao:     ", data.content.forecasts[0].casts);
+
+          listyubao.value.reporttime = data.content.forecasts[0].reporttime;
+          listyubao.value.daypower0 = data.content.forecasts[0].casts[1].daypower;
+          listyubao.value.daywind0 = data.content.forecasts[0].casts[1].daywind;
+          listyubao.value.daytemp0 = data.content.forecasts[0].casts[1].daytemp;
+          listyubao.value.dayweather0 = data.content.forecasts[0].casts[1].dayweather;
+          listyubao.value.nightpower0 = data.content.forecasts[0].casts[1].nightpower;
+          listyubao.value.nightwind0 = data.content.forecasts[0].casts[1].nightwind;
+          listyubao.value.nighttemp0 = data.content.forecasts[0].casts[1].nighttemp;
+          listyubao.value.nightweather0 = data.content.forecasts[0].casts[1].nightweather;
+          listyubao.value.daypower1 = data.content.forecasts[0].casts[2].daypower;
+          listyubao.value.daywind1 = data.content.forecasts[0].casts[2].daywind;
+          listyubao.value.daytemp1 = data.content.forecasts[0].casts[2].daytemp;
+          listyubao.value.dayweather1 = data.content.forecasts[0].casts[2].dayweather;
+          listyubao.value.nightpower1 = data.content.forecasts[0].casts[2].nightpower;
+          listyubao.value.nightwind1 = data.content.forecasts[0].casts[2].nightwind;
+          listyubao.value.nighttemp1 = data.content.forecasts[0].casts[2].nighttemp;
+          listyubao.value.nightweather1 = data.content.forecasts[0].casts[2].nightweather;
+          // console.log("yubao:     ", data.content.forecasts[0].casts[1].daypower);
+          // console.log("yubao1:     ",listyubao.value.data1);
+
+
+        } else {
+          console.log(data);
+        }
+      })
+    }
+
+    // --------------------------------------------------------------------@description: 天气相关结束----------------------------------------------------
     return {
       statistic,
-
+      //天气相关
+      listnow,
+      listyubao,
 
     }
 
 
-  }
+  },
+
 });
 
 
 </script>
+<style scoped>
+.container {
+  background: #000;
+  opacity: 0.7;
+  color: #fff;
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+.city-info {
+  text-align: center;
+
+  .temp {
+    font-size: 24px;
+    color: #a0a5a8;
+
+    em {
+      font-size: 32px;
+      font-style: normal;
+    }
+  }
+}
+
+.future {
+  padding: 0 10px;
+  margin-top: 30px;
+
+  .group {
+    height: 44px;
+    line-height: 44px;
+    background: rgba(255, 255, 255, 0.3);
+    margin-bottom: 10px;
+    padding: 0 10px;
+    font-size: 13px;
+    border-radius: 5px;
+  }
+}</style>
