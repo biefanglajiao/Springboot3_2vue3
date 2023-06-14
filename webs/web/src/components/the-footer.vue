@@ -7,14 +7,18 @@
 <script lang="ts">
 import { defineComponent ,computed, onMounted} from 'vue';
 import store from "@/store";
-import { Tool } from '@/utils/tool';
-import { notification } from 'ant-design-vue';
+import {notification} from "ant-design-vue";
+import {Tool} from "@/utils/tool";
+
 
 export default defineComponent({
   name: 'the-footer',
 setup(){
     const user=computed(()=>store.state.user);
   const flag = computed(() => store.state.flag); //从store中获取header是否显示标志
+  /*************
+   * websocket相关
+   */
   let websocket: any;
   let token: any;
   const onOpen = () => {
@@ -22,10 +26,10 @@ setup(){
   };
   const onMessage = (event: any) => {
     console.log('WebSocket收到消息：', event.data);
-  notification['success']({
-    message: '收到新消息',
-    description: event.data
-  });
+    notification['success']({
+      message: '收到新消息',
+      description: event.data
+    });
 
   };
   const onError = () => {
@@ -46,7 +50,7 @@ setup(){
     websocket.onclose = onClose;
   };
 
-  onMounted(() => {
+  const open = () => {
     // WebSocket
     if ('WebSocket' in window) {
       token = Tool.uuid(10);
@@ -59,7 +63,11 @@ setup(){
     } else {
       alert('当前浏览器 不支持')
     }
-  });
+  }
+
+  onMounted(() => {
+    open();
+   });
     return{
         user,
       flag

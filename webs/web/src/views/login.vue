@@ -37,9 +37,10 @@
 <script lang="ts">
 import {computed, defineComponent, ref} from 'vue';
 import axios from "axios";
-import {message} from "ant-design-vue";
+import {message, notification} from "ant-design-vue";
 import store from "@/store";
 import router from '@/router';
+import {Tool} from "@/utils/tool";
 
 declare let hexMd5: any;
 declare let KEY: any;
@@ -73,6 +74,7 @@ export default defineComponent({
                 if (data.success) {
                     message.success("登录成功");
                     store.commit('setUser', data.content);//将用户信息存入store
+
                    router.push({path: '/home'});//跳转到首页
                 } else {
                     message.error(data.message);
