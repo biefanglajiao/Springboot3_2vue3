@@ -10,17 +10,19 @@
         <!--                <a-card>-->
         <a-row>
           <a-col :span="3">
-            <a-card>
+            <div class="schedule_card2">
+            <a-card :bodyStyle=" {background: '#ffffff14'}" >
               <div id="XiaoHaoDianNeng" style="width: 100%;height:200px;"></div>
             </a-card>
+            </div>
           </a-col>
           <a-col :span="13">
             <a-card>
-              <div id="RiLi" style="width: 100%;height:200px;"></div>
+              <div  id="RiLi" style="width: 100%;height:200px;"></div>
             </a-card>
           </a-col>
           <a-col :span="8">
-            <a-card>
+            <a-card class="schedule_card2">
               <div id="XJXH" style="width: 100%;height:200px;"></div>
 
             </a-card>
@@ -37,6 +39,7 @@
 
         <a-row>
           <a-col :span="7">
+
             <a-card>
               <div style="width: 100%;height:647px;">
                 <a-row>
@@ -1078,4 +1081,14 @@ export default defineComponent({
     font-size: 13px;
     border-radius: 5px;
   }
+
 }</style>
+
+<style lang="less" scoped>
+.schedule_card2  {
+  :deep( .ant-card ) {
+    background: #ffffff14;
+
+  }
+}
+</style>

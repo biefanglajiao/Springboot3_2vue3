@@ -11,7 +11,10 @@
       </div>
     </template>
 
-    <div style="width: 100%;height:248px;"  v-for="a in aa" :key="a.id"><h3>{{a.name}}</h3></div>
+    <div style="width: 100%;height:248px;"  v-for="item in templists" :key="item.id">
+      <h3>当前设备为：{{item.description}}</h3>
+
+    </div>
 
   </a-carousel>
 </template>
@@ -19,25 +22,40 @@
 import { LeftCircleOutlined, RightCircleOutlined } from '@ant-design/icons-vue';
 import {defineComponent, onMounted, ref} from 'vue';
 import axios from "axios";
+declare let echarts: any;
 export default defineComponent({
   components: {
     LeftCircleOutlined,
     RightCircleOutlined,
   },
   setup (){
+
+    //============================================================================================================================================================
     const aa=ref();
     const a = () => {
       axios.get("/a/a").then((res) => {
-        console.log(res.data.content,"aaaaa");
+        // console.log(res.data.content,"aaaaa");
         aa.value=res.data.content;
       });
 
     };
+    const templists=ref();
+    const  tempall=()=>{
+      axios.get("/equipment/tempall").then((res)=>{
+        const data = res.data;
+        if (data.success) {
+          // console.log(data,"dataaaaa")
+          templists.value=res.data.content;
+        }
+      })
+    }
     onMounted(() => {
+      // tempall()
       a();
     });
     return {
       aa,
+      templists,
     }
 
   }
@@ -73,4 +91,5 @@ export default defineComponent({
 .ant-carousel :deep(.slick-slide h3) {
   color: #fff;
 }
+
 </style>
