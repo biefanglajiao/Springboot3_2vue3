@@ -11,14 +11,14 @@
         <a-row>
           <a-col :span="3">
             <div class="schedule_card2">
-            <a-card  >
-              <div id="XiaoHaoDianNeng" style="width: 100%;height:200px;"></div>
-            </a-card>
+              <a-card>
+                <div id="XiaoHaoDianNeng" style="width: 100%;height:200px;"></div>
+              </a-card>
             </div>
           </a-col>
           <a-col :span="13">
             <a-card>
-              <div  id="RiLi" style="width: 100%;height:200px;"></div>
+              <div id="RiLi" style="width: 100%;height:200px;"></div>
             </a-card>
           </a-col>
           <a-col :span="8">
@@ -39,33 +39,37 @@
 
         <a-row>
           <a-col :span="7">
+            <div class="schedule_card2">
+<!--              开启透明-->
+              <a-card>
+                <div style="width: 100%;height:647px;">
+                  <a-row>
+                    <a-col :span="24">
+                      <a-card style="width: 100%;height:400px;">
+                        <h1>提醒列表 分两个轮播 一个提醒 一个警告 提醒有一键已读</h1>
+                      </a-card>
+                    </a-col>
+                  </a-row>
+                  <a-row>
+                    <a-col :span="9">
+                      <a-card color="red">
+                        <div id="ZSBSZYXS" style="width: 100%;height:200%;"></div>
 
-            <a-card>
-              <div style="width: 100%;height:647px;">
-                <a-row>
-                  <a-col :span="24">
-                    <a-card style="width: 100%;height:400px;">
-                      <h1>提醒列表 分两个轮播 一个提醒 一个警告 提醒有一键已读</h1>
-                    </a-card>
-                  </a-col>
-                </a-row>
-                <a-row>
-                  <a-col :span="9">
-                    <a-card color="red">
-                      <div id="ZSBSZYXS" style="width: 100%;height:200%;"></div>
+                      </a-card>
+                    </a-col>
+                    <a-col :span="15" style="width: 100%;height:248px;">
+                      <div class="schedule_card2">
+                        <a-card>
 
-                    </a-card>
-                  </a-col>
-                  <a-col :span="15" style="width: 100%;height:248px;">
-                    <a-card>
+                          <themarquee></themarquee>
 
-                      <themarquee></themarquee>
-
-                    </a-card>
-                  </a-col>
-                </a-row>
-              </div>
-            </a-card>
+                        </a-card>
+                      </div>
+                    </a-col>
+                  </a-row>
+                </div>
+              </a-card>
+            </div>
           </a-col>
           <a-col :span="10">
             <a-card>
@@ -1085,7 +1089,7 @@ export default defineComponent({
 }</style>
 
 <style lang="less" scoped>
-.schedule_card2  {
+.schedule_card2 {
   :deep( .ant-card ) {
     background: #ffffff14;
 

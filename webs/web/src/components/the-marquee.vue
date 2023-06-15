@@ -1,16 +1,16 @@
 <template style="width: 100%;height:248px;">
 
     <a-carousel autoplay>
-      <div style="width: 100%;height:248px;"  v-for="item in templists" :key="item.id">
+      <div   class="card1" style="width: 100%;height:248px;"  v-for="item in templists" :key="item.id">
         <a-card>
           <h1>当前设备为：{{item.name}}</h1>
-          <h1>位置：{{item.location}}</h1>
-          <h2   v-if="item.classes&&item.temperatures>24 " >当前温度为：{{item.temperatures}}℃</h2>
-          <h1 v-else-if="item.classes&&item.temperatures<=24"  >当前温度为：{{item.temperatures}}℃</h1>
+          <h3>位置：{{item.location}}</h3>
+          <h2    class="aaa" v-if="item.classes&&item.temperatures>24 " >当前温度为：{{item.temperatures}}℃</h2>
+          <h2 v-else-if="item.classes&&item.temperatures<=24"  >当前温度为：{{item.temperatures}}℃</h2>
 
 
-          <h2   v-else-if="!item.classes&&item.temperatures>70 " >当前湿度为：{{item.temperatures}}%</h2>
-          <h1 v-else>当前湿度为：{{item.temperatures}}%</h1>
+          <h2 class="aaa"  v-else-if="!item.classes&&item.temperatures>70 " >当前湿度为：{{item.temperatures}}%</h2>
+          <h2 v-else>当前湿度为：{{item.temperatures}}%</h2>
 
 
         </a-card>
@@ -85,15 +85,23 @@ export default defineComponent({
   text-align: center;
   height: 200px;
   line-height: 160px;
-  background: #364d79;
+  background: #364D790D;
   overflow: hidden;
 }
 
 .ant-carousel :deep(.slick-slide div) {
   color: #1185cc;
 }
-.ant-carousel :deep(.slick-slide h2) {
+.ant-carousel :deep(.slick-slide .aaa) {
   color: #dc0000;
 }
 
+</style>
+
+<style lang="less" scoped>
+.card1  {
+  :deep( .ant-card ) {
+    background: rgba(255, 255, 255, 0.08);
+  }
+}
 </style>
