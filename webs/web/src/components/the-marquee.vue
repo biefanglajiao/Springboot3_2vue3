@@ -10,20 +10,38 @@
         <right-circle-outlined />
       </div>
     </template>
-    <div style="width: 100%;height:248px;"><h3>1</h3></div>
-    <div><h3>2</h3></div>
-    <div><h3>3</h3></div>
-    <div><h3>4</h3></div>
+
+    <div style="width: 100%;height:248px;"  v-for="a in aa" :key="a.id"><h3>{{a.name}}</h3></div>
+
   </a-carousel>
 </template>
 <script lang="ts">
 import { LeftCircleOutlined, RightCircleOutlined } from '@ant-design/icons-vue';
-import { defineComponent } from 'vue';
+import {defineComponent, onMounted, ref} from 'vue';
+import axios from "axios";
 export default defineComponent({
   components: {
     LeftCircleOutlined,
     RightCircleOutlined,
   },
+  setup (){
+    const aa=ref();
+    const a = () => {
+      axios.get("/a/a").then((res) => {
+        console.log(res.data.content,"aaaaa");
+        aa.value=res.data.content;
+      });
+
+    };
+    onMounted(() => {
+      a();
+    });
+    return {
+      aa,
+    }
+
+  }
+
 });
 </script>
 <style scoped>
