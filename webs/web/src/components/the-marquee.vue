@@ -1,22 +1,39 @@
 <template style="width: 100%;height:248px;">
-  <a-carousel arrows>
-    <template #prevArrow>
-      <div class="custom-slick-arrow" style="left: 10px; z-index: 1">
-        <left-circle-outlined />
+
+    <a-carousel autoplay>
+      <div style="width: 100%;height:248px;"  v-for="item in templists" :key="item.id">
+        <a-card>
+          <h1>当前设备为：{{item.name}}</h1>
+          <h1>位置：{{item.location}}</h1>
+          <h2   v-if="item.classes&&item.temperatures>24 " >当前温度为：{{item.temperatures}}℃</h2>
+          <h1 v-else-if="item.classes&&item.temperatures<=24"  >当前温度为：{{item.temperatures}}℃</h1>
+
+
+          <h2   v-else-if="!item.classes&&item.temperatures>70 " >当前湿度为：{{item.temperatures}}%</h2>
+          <h1 v-else>当前湿度为：{{item.temperatures}}%</h1>
+
+
+        </a-card>
+
       </div>
-    </template>
-    <template #nextArrow>
-      <div class="custom-slick-arrow" style="right: 10px" >
-        <right-circle-outlined />
-      </div>
-    </template>
 
-    <div style="width: 100%;height:248px;"  v-for="item in templists" :key="item.id">
-      <h3>当前设备为：{{item.description}}</h3>
+    </a-carousel>
+<!--  </template>-->
 
-    </div>
+<!--  <a-carousel arrows>-->
+<!--    <template #prevArrow>-->
+<!--      <div class="custom-slick-arrow" style="left: 10px; z-index: 1">-->
+<!--        <left-circle-outlined />-->
+<!--      </div>-->
+<!--    </template>-->
+<!--    <template #nextArrow>-->
+<!--      <div class="custom-slick-arrow" style="right: 10px" >-->
+<!--        <right-circle-outlined />-->
+<!--      </div>-->
+<!--    </template>-->
 
-  </a-carousel>
+<!-- -->
+<!--  </a-carousel>-->
 </template>
 <script lang="ts">
 import { LeftCircleOutlined, RightCircleOutlined } from '@ant-design/icons-vue';
@@ -44,13 +61,13 @@ export default defineComponent({
       axios.get("/equipment/tempall").then((res)=>{
         const data = res.data;
         if (data.success) {
-          // console.log(data,"dataaaaa")
+         // console.log(data.content,"dataaaaa")
           templists.value=res.data.content;
         }
       })
     }
     onMounted(() => {
-      // tempall()
+     tempall()
       a();
     });
     return {
@@ -66,30 +83,17 @@ export default defineComponent({
 /* For demo */
 .ant-carousel :deep(.slick-slide) {
   text-align: center;
-  height: 210px;
-  line-height: 210px;
+  height: 200px;
+  line-height: 160px;
   background: #364d79;
   overflow: hidden;
 }
 
-.ant-carousel :deep(.slick-arrow.custom-slick-arrow) {
-  width: 25px;
-  height: 25px;
-  font-size: 25px;
-  color: #fff;
-  background-color: rgba(31, 45, 61, 0.11);
-  opacity: 0.3;
-  z-index: 1;
+.ant-carousel :deep(.slick-slide div) {
+  color: #1185cc;
 }
-.ant-carousel :deep(.custom-slick-arrow:before) {
-  display: none;
-}
-.ant-carousel :deep(.custom-slick-arrow:hover) {
-  opacity: 0.5;
-}
-
-.ant-carousel :deep(.slick-slide h3) {
-  color: #fff;
+.ant-carousel :deep(.slick-slide h2) {
+  color: #dc0000;
 }
 
 </style>

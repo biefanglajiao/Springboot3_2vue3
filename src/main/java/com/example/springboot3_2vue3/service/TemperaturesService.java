@@ -29,6 +29,8 @@ public class TemperaturesService {
             resp.setName(temp.getEquipment().getName());
             resp.setLevel(temp.isLevel());
             resp.setLocation(temp.getEquipment().getLocation());
+            resp.setTemperatures(temp.getTemperatures());
+            resp.setEquipid(temp.getEquipment().getId());
             resps.add(resp);
         }
         return resps;

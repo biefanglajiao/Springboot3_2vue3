@@ -11,7 +11,7 @@
         <a-row>
           <a-col :span="3">
             <div class="schedule_card2">
-            <a-card :bodyStyle=" {background: '#ffffff14'}" >
+            <a-card  >
               <div id="XiaoHaoDianNeng" style="width: 100%;height:200px;"></div>
             </a-card>
             </div>
