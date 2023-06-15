@@ -1,6 +1,9 @@
 <template>
+
     <div class="body">
-        <div class="main">
+
+      <div class="box">
+        <span class="borderLine"></span>
 
             <a-form
                     :model="loginUser"
@@ -9,12 +12,17 @@
                     :wrapper-col="{ span: 16 }"
                     autocomplete="off"
             >
+              <a-form-item>   <div style="font-size:23px; width: 292px">欢迎使用智能家居管理系统</div>
+                <div style=font-size:35px>请登录：</div>
+              </a-form-item>
+
                 <a-form-item
                         label="Username"
                         name="username"
                         :rules="[{ required: true, message: 'Please input your username!' }]"
                 >
                     <a-input v-model:value="loginUser.username"/>
+
                 </a-form-item>
 
                 <a-form-item
@@ -22,7 +30,9 @@
                         name="password"
                         :rules="[{ required: true, message: 'Please input your password!' }]"
                 >
+
                     <a-input-password v-model:value="loginUser.password"/>
+
                 </a-form-item>
 
 
@@ -34,6 +44,7 @@
         </div>
     </div>
 </template>
+<style scoped src="../styles/index.css"></style>
 <script lang="ts">
 import {computed, defineComponent, ref} from 'vue';
 import axios from "axios";
@@ -110,44 +121,7 @@ export default defineComponent({
     align-items: center;
     font-family: "Montserrat", sans-serif;
     font-size: 12px;
-    background-color: #ecf0f3;
-    color: #a0a5a8;
+  background-image: url('../assets/001.png');
 }
 
-.main {
-    position: relative;
-    width: 1000px;
-    min-width: 1000px;
-    min-height: 600px;
-    height: 600px;
-    padding: 25px;
-    background-color: #ecf0f3;
-    box-shadow: 10px 10px 10px #d1d9e6, -10px -10px 10px #f9f9f9;
-    border-radius: 20px;
-    overflow: hidden;
-}
-
-@media (max-width: 1200px) {
-    .main {
-        transform: scale(0.7);
-    }
-}
-
-@media (max-width: 1000px) {
-    .main {
-        transform: scale(0.6);
-    }
-}
-
-@media (max-width: 800px) {
-    .main {
-        transform: scale(0.5);
-    }
-}
-
-@media (max-width: 600px) {
-    .main {
-        transform: scale(0.4);
-    }
-}
 </style>

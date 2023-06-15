@@ -18,6 +18,11 @@ const routes: Array<RouteRecordRaw> = [
      *@解释: route level code-splitting 路由级代码分解  this generates a separate chunk (about.[hash].js) for this route 这将为该路由生成一个单独的块(约.[hash].js)  which is lazy-loaded when the route is visited. 它在访问路由时是惰性加载的。
      */
     component: () => import(/* webpackChunkName: "about" */ '../views/home.vue')
+  },{
+    path: '/a',
+    name: 'a',
+
+    component: () => import(/* webpackChunkName: "about" */ '../views/a.vue')
   },
   {
     path: '/about',
