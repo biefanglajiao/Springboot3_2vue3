@@ -30,6 +30,7 @@ LogInterceptor logInterceptor;
 
 
                         "/equipment/**",
+                        "/variation/**",
                         "/text/**",
                         "/a/a",
                         "/weather/**"

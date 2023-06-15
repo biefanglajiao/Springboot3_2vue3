@@ -11,7 +11,7 @@
         <a-row>
           <a-col :span="3">
             <div class="schedule_card2">
-              <a-card>
+              <a-card :bordered="false">
                 <div id="XiaoHaoDianNeng" style="width: 100%;height:200px;"></div>
               </a-card>
             </div>
@@ -1093,6 +1093,9 @@ export default defineComponent({
   :deep( .ant-card ) {
     background: #ffffff14;
 
+  }
+  :deep( .ant-card-bordered ) {
+     border: 1px dotted #008cff;
   }
 }
 </style>

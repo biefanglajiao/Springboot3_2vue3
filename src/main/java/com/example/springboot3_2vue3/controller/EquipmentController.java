@@ -1,5 +1,6 @@
 package com.example.springboot3_2vue3.controller;
 
+import com.example.springboot3_2vue3.domain.equipment.Equipment;
 import com.example.springboot3_2vue3.domain.equipment.Temperature;
 import com.example.springboot3_2vue3.resp.CommonResp;
 import com.example.springboot3_2vue3.resp.TemperatureResp;
@@ -45,5 +46,12 @@ private TemperaturesService temperaturesService;
         return listCommonResp;
 
 
+    }
+    //查寻所有已经打开的设备信息
+    @RequestMapping("equipopen")
+    public CommonResp findOpenInfo(){
+        CommonResp<List<Equipment>> listCommonResp=new CommonResp<>();
+        listCommonResp.setContent(equipmentService.findAllOpenInfo());
+        return listCommonResp;
     }
 }

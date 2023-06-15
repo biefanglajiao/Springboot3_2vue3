@@ -1,1 +1,4 @@
 GET http://localhost:8080/equipment/tempall
+###
+
+GET http://localhost:8080/equipment/equipopen

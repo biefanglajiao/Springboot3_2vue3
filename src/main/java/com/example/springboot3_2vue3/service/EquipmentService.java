@@ -6,6 +6,8 @@ import com.example.springboot3_2vue3.mapper.equipmapper.Equipmapper;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @Author: 常兆海
  * @Description:
@@ -24,6 +26,13 @@ public class EquipmentService {
         QueryWrapper<Equipment> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("state",1);
        return  equipmapper.selectCount(queryWrapper);
+    }
+
+
+    public List<Equipment> findAllOpenInfo(){
+        QueryWrapper<Equipment> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("state",1);
+        return equipmapper.selectList(queryWrapper);
     }
 
 
