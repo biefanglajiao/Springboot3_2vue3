@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.springboot3_2vue3.domain.equipment.Equipment;
 import com.example.springboot3_2vue3.domain.equipment.Variation;
 import com.example.springboot3_2vue3.mapper.equipmapper.VariationMapper;
+import com.example.springboot3_2vue3.resp.DeviceusePower;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
@@ -22,15 +23,32 @@ public class VariationService {
     private VariationMapper variationMapper;
 
 
-    public List<Variation> getAllVariation(){
+    public List<Variation> getAllVariation() {
         QueryWrapper<Variation> queryWrapper = new QueryWrapper<>();
 
         //获取今天的日期
-        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date date = new Date(System.currentTimeMillis());
 
-        queryWrapper.like("date",formatter.format(date));
-       return variationMapper.selectList(queryWrapper);
+        queryWrapper.like("date", formatter.format(date));
+        return variationMapper.selectList(queryWrapper);
     }
 
+    //获取所有的设备开启信息 包含power字段
+    public List<DeviceusePower> findall() {
+        List<DeviceusePower> lists = variationMapper.findall();
+        return lists;
+    }
+    //获取一个的设备开启信息 包含power字段
+    public DeviceusePower finone(Long id) {
+       DeviceusePower  deviceusePower = variationMapper.findone(id);
+        return deviceusePower;
+    }
+//插入新数据
+    public boolean insertonedata(Variation variation) {
+        if (variationMapper.insert(variation) == 1) {
+            return true;
+        } else
+            return false;
+    }
 }

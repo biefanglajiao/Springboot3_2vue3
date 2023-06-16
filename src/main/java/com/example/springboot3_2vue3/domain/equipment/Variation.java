@@ -15,7 +15,7 @@ public class Variation {
     private int id;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date date;//记录时间
-    private String data;//耗电量
+    private float data;//耗电量
     private Long equipmentid;//对用设备id
 
     public Date getDate() {
@@ -26,28 +26,26 @@ public class Variation {
         this.date = date;
     }
 
-    public String getData() {
-        return data;
-    }
-
-    public void setData(String data) {
-        this.data = data;
-    }
-
-
-
-    public int getId() {
-        return id;
-    }
-
     @Override
     public String toString() {
         return "Variation{" +
                 "id=" + id +
                 ", date=" + date +
-                ", data='" + data + '\'' +
+                ", data=" + data +
                 ", equipmentid=" + equipmentid +
                 '}';
+    }
+
+    public float getData() {
+        return data;
+    }
+
+    public void setData(float data) {
+        this.data = data;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public Long getEquipmentid() {

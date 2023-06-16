@@ -1,11 +1,18 @@
 package com.example.springboot3_2vue3.schedule;
 
-import com.example.springboot3_2vue3.domain.equipment.Equipment;
+import com.example.springboot3_2vue3.domain.equipment.Deviceuse;
+import com.example.springboot3_2vue3.domain.equipment.Variation;
+import com.example.springboot3_2vue3.resp.DeviceusePower;
+import com.example.springboot3_2vue3.service.DeviceuseService;
 import com.example.springboot3_2vue3.service.EquipmentService;
+import com.example.springboot3_2vue3.service.VariationService;
 import jakarta.annotation.Resource;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -14,16 +21,45 @@ import java.util.List;
  * @Description:
  * @DateTime: 2023/6/15 22:34
  **/
+@Component
 public class equip {
     @Resource
-    private EquipmentService equipmentService;
-    //每小时执行一次
-    @Scheduled(cron = "0 0 0/1 * * ?")
-    public void  耗电量小时统计(){
-        List<Equipment>  list=equipmentService.findAllOpenInfo();
+    private VariationService variationService;
+    @Resource
+    private Variation variation;
 
-        //获取当前时间
-     //todo 根据设备开启状况 每小时写一次耗电量
+
+    //每小时执行一次
+//    @Scheduled(cron = "0 0 0/1 * * ?")
+    @Async
+    @Transactional
+    @Scheduled(cron = "0 0/3 * * * ? ")//没3分钟
+    public void 耗电量小时统计() {
+        //获取开着的设备信息包含power所以用resp接
+        List<DeviceusePower> lists = variationService.findall();
+        //获取今天的日期毫秒型
+        long startTime = System.currentTimeMillis();
+
+        if (!lists.isEmpty()) {
+            for (DeviceusePower list : lists) {
+                //对于每个开着的设备  每小时计算一次耗电量
+                System.out.println(list.getDate());
+                long opendeTime = startTime - list.getDate();
+                System.out.println("opendeTime" + opendeTime + "ms");
+                System.out.println("opendeTime" + opendeTime / 1000 + "s");
+                System.out.println("opendeTime" + opendeTime / 1000 / 60 + "min");
+                float opendeTimemin = opendeTime / 1000 / 60;
+                float opendeTimeHour = opendeTimemin / 60;
+                System.out.println(opendeTimeHour);
+                //给小时耗电量统计表赋值
+                variation.setEquipmentid(list.getEquipmentid());
+
+                variation.setData(list.getPower() * opendeTimeHour);
+                System.out.println(variationService.insertonedata(variation));
+            }
+        }
 
     }
+
+
 }

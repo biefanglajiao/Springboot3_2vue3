@@ -11,7 +11,27 @@ import org.springframework.stereotype.Component;
 public class Equipment {
     private Long id;
     private String name;
-    private String power;
+
+    @Override
+    public String toString() {
+        return "Equipment{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", power=" + power +
+                ", location='" + location + '\'' +
+                ", state=" + state +
+                '}';
+    }
+
+    public float getPower() {
+        return power;
+    }
+
+    public void setPower(float power) {
+        this.power = power;
+    }
+
+    private float power;
     private String location;
     private boolean state;
 
@@ -21,14 +41,6 @@ public class Equipment {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getPower() {
-        return power;
-    }
-
-    public void setPower(String power) {
-        this.power = power;
     }
 
     public String getLocation() {
@@ -45,17 +57,6 @@ public class Equipment {
 
     public void setState(boolean state) {
         this.state = state;
-    }
-
-    @Override
-    public String toString() {
-        return "Equipment{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", power='" + power + '\'' +
-                ", location='" + location + '\'' +
-                ", state=" + state +
-                '}';
     }
 
     public Long getId() {
