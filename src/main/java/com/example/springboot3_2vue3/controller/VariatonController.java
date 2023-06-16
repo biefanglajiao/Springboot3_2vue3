@@ -1,6 +1,7 @@
 package com.example.springboot3_2vue3.controller;
 
 import com.example.springboot3_2vue3.domain.equipment.Variation;
+import com.example.springboot3_2vue3.resp.CommonResp;
 import com.example.springboot3_2vue3.resp.VariationNameResp;
 import com.example.springboot3_2vue3.service.VariationService;
 import jakarta.annotation.Resource;
@@ -21,17 +22,23 @@ public class VariatonController {
     @Resource
     private VariationService variationService;
     @GetMapping("/all")
-    public List<Variation> findAll(){
-        return variationService.getAllVariation();
+    public CommonResp findAll(){
+        CommonResp<List<Variation>> commonResp=new CommonResp<>();
+        commonResp.setContent(variationService.getAllVariation());
+        return  commonResp;
     }
 
     @GetMapping("/allandname")
-    public List<VariationNameResp> findAllAndName(){
-        return variationService.getAllVariationName();
+    public CommonResp findAllAndName(){
+        CommonResp<List<VariationNameResp>> commonRespList=new CommonResp<>();
+        commonRespList.setContent(variationService.getAllVariationName());
+        return commonRespList;
     }
 
     @GetMapping("/getallclass")
-    public List<Variation> getallclass(){
-        return variationService.getallclass();
+    public CommonResp getallclass(){
+        CommonResp<List<Variation>> commonResp=new CommonResp<>();
+        commonResp.setContent(variationService.getallclass());
+        return commonResp   ;
     }
 }
