@@ -67,4 +67,14 @@ public class VariationService {
 
     }
 
+    //获取有几种用过电今天
+    public List<Variation> getallclass(){
+        //获取今天的日期
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date(System.currentTimeMillis());
+
+        String format = formatter.format(date);
+        return variationMapper.getallclass(format);
+    }
+
 }

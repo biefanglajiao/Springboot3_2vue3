@@ -5,6 +5,7 @@ import com.example.springboot3_2vue3.domain.equipment.Temperature;
 import com.example.springboot3_2vue3.domain.equipment.Variation;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @Author: 常兆海
@@ -13,4 +14,6 @@ import java.util.ArrayList;
  **/
 public interface VariationMapper extends BaseMapper<Variation> {
     ArrayList<Variation> findAllInfo(String date);
+
+    List<Variation> getallclass(String date);
 }

@@ -20,4 +20,10 @@
             <result property="location" column="location"></result>
         </association>
     </resultMap>
+
+
+
+    <select id="getallclass" resultMap="temp">
+        select v.equipmentid ,e.name	from variation  v,equipment e where e.id=v.equipmentid and v.date like '${name}%' GROUP BY v.equipmentid
+    </select>
 </mapper>

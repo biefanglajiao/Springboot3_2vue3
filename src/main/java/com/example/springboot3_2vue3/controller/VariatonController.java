@@ -29,4 +29,9 @@ public class VariatonController {
     public List<VariationNameResp> findAllAndName(){
         return variationService.getAllVariationName();
     }
+
+    @GetMapping("/getallclass")
+    public List<Variation> getallclass(){
+        return variationService.getallclass();
+    }
 }

@@ -3,3 +3,6 @@ GET http://localhost:8080/variation/all
 
 
 GET http://localhost:8080/variation/allandname
+
+###
+GET http://localhost:8080/variation/getallclass
