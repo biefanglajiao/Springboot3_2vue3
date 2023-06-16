@@ -1,10 +1,8 @@
 package com.example.springboot3_2vue3.schedule;
 
-import com.example.springboot3_2vue3.domain.equipment.Deviceuse;
 import com.example.springboot3_2vue3.domain.equipment.Variation;
-import com.example.springboot3_2vue3.resp.DeviceusePower;
+import com.example.springboot3_2vue3.resp.DeviceusePowerResp;
 import com.example.springboot3_2vue3.service.DeviceuseService;
-import com.example.springboot3_2vue3.service.EquipmentService;
 import com.example.springboot3_2vue3.service.VariationService;
 import jakarta.annotation.Resource;
 import org.springframework.scheduling.annotation.Async;
@@ -12,8 +10,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -26,6 +22,8 @@ public class equip {
     @Resource
     private VariationService variationService;
     @Resource
+    private  DeviceuseService deviceuseService;
+    @Resource
     private Variation variation;
 
 
@@ -36,12 +34,12 @@ public class equip {
 //    @Scheduled(cron = "0 0/3 * * * ? ")//没3分钟
     public void 耗电量小时统计() {
         //获取开着的设备信息包含power所以用resp接
-        List<DeviceusePower> lists = variationService.findall();
+        List<DeviceusePowerResp> lists = deviceuseService.findall();
         //获取今天的日期毫秒型
         long startTime = System.currentTimeMillis();
 
         if (!lists.isEmpty()) {
-            for (DeviceusePower list : lists) {
+            for (DeviceusePowerResp list : lists) {
                 //对于每个开着的设备  每小时计算一次耗电量
                 System.out.println(list.getDate());
                 long opendeTime = startTime - list.getDate();

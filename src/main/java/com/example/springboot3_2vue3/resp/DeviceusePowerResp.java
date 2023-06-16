@@ -2,10 +2,10 @@ package com.example.springboot3_2vue3.resp;
 
 /**
  * @Author: 常兆海
- * @Description: 接收所有开着的设备信息  包含功率
+ * @Description: 接收所有开着的设备信息  包含功率Deviceuse表+equipment表的power字段
  * @DateTime: 2023/6/16 9:58
  **/
-public class DeviceusePower {
+public class DeviceusePowerResp {
 
     private Long id;
     private Long date;

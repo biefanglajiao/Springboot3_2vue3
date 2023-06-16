@@ -2,9 +2,8 @@ package com.example.springboot3_2vue3.controller;
 
 import com.example.springboot3_2vue3.Utils.SnowFlake;
 import com.example.springboot3_2vue3.domain.equipment.*;
-import com.example.springboot3_2vue3.mapper.equipmapper.DeviceuseMapper;
 import com.example.springboot3_2vue3.resp.CommonResp;
-import com.example.springboot3_2vue3.resp.DeviceusePower;
+import com.example.springboot3_2vue3.resp.DeviceusePowerResp;
 import com.example.springboot3_2vue3.resp.TemperatureResp;
 import com.example.springboot3_2vue3.service.*;
 import jakarta.annotation.Resource;
@@ -108,10 +107,10 @@ Deviceuse2 deviceuse2=new Deviceuse2();
 
             System.out.println("_______________________________________");
             long startTime = System.currentTimeMillis();
-            DeviceusePower deviceusePower = variationService.finone(id);//找到记录
-            System.out.println(deviceusePower.getPower()+          "            power");
-            System.out.println(deviceusePower.getDate()+ "                 date");
-            long opendeTime = startTime - deviceusePower.getDate();
+            DeviceusePowerResp deviceusePowerResp = deviceuseService.finone(id);//找到记录
+            System.out.println(deviceusePowerResp.getPower()+          "            power");
+            System.out.println(deviceusePowerResp.getDate()+ "                 date");
+            long opendeTime = startTime - deviceusePowerResp.getDate();
             float opendeTimemin = opendeTime / 1000 / 60;
             float opendeTimeHour = opendeTimemin / 60;
             System.out.println(opendeTimeHour);
@@ -119,8 +118,8 @@ Deviceuse2 deviceuse2=new Deviceuse2();
 
 
             Variation variation=new Variation();
-            variation.setEquipmentid(deviceusePower.getEquipmentid());
-            float poweruse = deviceusePower.getPower() * opendeTimeHour;
+            variation.setEquipmentid(deviceusePowerResp.getEquipmentid());
+            float poweruse = deviceusePowerResp.getPower() * opendeTimeHour;
             variation.setData(poweruse);
             variationService.insertonedata(variation);//记录一下关闭时间的耗电量
 

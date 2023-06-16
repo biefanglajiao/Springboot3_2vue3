@@ -1,10 +1,10 @@
 package com.example.springboot3_2vue3.mapper.equipmapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.example.springboot3_2vue3.domain.equipment.Temperature;
 import com.example.springboot3_2vue3.domain.equipment.Variation;
-import com.example.springboot3_2vue3.resp.DeviceusePower;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * @Author: 常兆海
@@ -12,6 +12,5 @@ import java.util.List;
  * @DateTime: 2023/6/15 22:50
  **/
 public interface VariationMapper extends BaseMapper<Variation> {
-    List<DeviceusePower> findall();
-    DeviceusePower findone(Long id);
+    ArrayList<Variation> findAllInfo(String date);
 }

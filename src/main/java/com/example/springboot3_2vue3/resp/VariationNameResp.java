@@ -1,45 +1,20 @@
-package com.example.springboot3_2vue3.domain.equipment;
+package com.example.springboot3_2vue3.resp;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
 /**
  * @Author: 常兆海
- * @Description:
- * @DateTime: 2023/6/15 21:59
+ * @Description: 包含日功率曲线数据Variation表+equipment表的name字段
+ * @DateTime: 2023/6/16 16:54
  **/
-@Component
-public class Variation {
+public class VariationNameResp {
     private int id;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date date;//记录时间
     private float data;//耗电量
     private Long equipmentid;//对用设备id
-
-    @TableField(exist = false)
-    private Equipment equipment;
-
-    @Override
-    public String toString() {
-        return "Variation{" +
-                "id=" + id +
-                ", date=" + date +
-                ", data=" + data +
-                ", equipmentid=" + equipmentid +
-                ", equipment=" + equipment +
-                '}';
-    }
-
-    public Equipment getEquipment() {
-        return equipment;
-    }
-
-    public void setEquipment(Equipment equipment) {
-        this.equipment = equipment;
-    }
 
     public Date getDate() {
         return date;
@@ -47,6 +22,26 @@ public class Variation {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+    private String name;
+
+    @Override
+    public String toString() {
+        return "VariationNameResp{" +
+                "id=" + id +
+                ", date=" + date +
+                ", data=" + data +
+                ", equipmentid=" + equipmentid +
+                ", name='" + name + '\'' +
+                '}';
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public float getData() {

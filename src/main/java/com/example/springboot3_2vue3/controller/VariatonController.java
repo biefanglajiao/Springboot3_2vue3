@@ -1,6 +1,7 @@
 package com.example.springboot3_2vue3.controller;
 
 import com.example.springboot3_2vue3.domain.equipment.Variation;
+import com.example.springboot3_2vue3.resp.VariationNameResp;
 import com.example.springboot3_2vue3.service.VariationService;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,5 +23,10 @@ public class VariatonController {
     @GetMapping("/all")
     public List<Variation> findAll(){
         return variationService.getAllVariation();
+    }
+
+    @GetMapping("/allandname")
+    public List<VariationNameResp> findAllAndName(){
+        return variationService.getAllVariationName();
     }
 }

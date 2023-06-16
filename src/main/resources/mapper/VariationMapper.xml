@@ -3,16 +3,21 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.springboot3_2vue3.mapper.equipmapper.VariationMapper">
-    <select id="findall" resultType="com.example.springboot3_2vue3.resp.DeviceusePower">
-        SELECT a.date, a.id ,a.equipmentid ,b.power
-        FROM deviceuse a ,equipment b WHERE a.equipmentid=b.id
-
+    <select id="findAllInfo" resultMap="temp">
+        select * from variation  v,equipment e where e.id=v.equipmentid and v.date like '${name}%';
     </select>
 
-
-    <select id="findone" resultType="com.example.springboot3_2vue3.resp.DeviceusePower">
-        SELECT a.date, a.id ,a.equipmentid ,b.power
-        FROM deviceuse a ,equipment b WHERE a.equipmentid=b.id and b.id=#{id}
-
-    </select>
+    <resultMap id="temp" type="com.example.springboot3_2vue3.domain.equipment.Variation">
+        <id property="id" column="id"></id>
+        <result property="date" column="date"></result>
+        <result property="data" column="data"></result>
+        <result property="equipmentid" column="equipmentid"></result>
+        <association property="equipment" column="id" javaType="com.example.springboot3_2vue3.domain.equipment.Equipment">
+            <result property="id" column="id"></result>
+            <result property="name" column="name"></result>
+            <result property="power" column="power"></result>
+            <result property="state" column="state"></result>
+            <result property="location" column="location"></result>
+        </association>
+    </resultMap>
 </mapper>

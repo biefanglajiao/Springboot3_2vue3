@@ -2,10 +2,9 @@ package com.example.springboot3_2vue3.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.springboot3_2vue3.domain.equipment.Deviceuse;
-import com.example.springboot3_2vue3.domain.equipment.Variation;
 import com.example.springboot3_2vue3.mapper.equipmapper.DeviceuseMapper;
 import com.example.springboot3_2vue3.resp.CommonResp;
-import com.example.springboot3_2vue3.resp.DeviceusePower;
+import com.example.springboot3_2vue3.resp.DeviceusePowerResp;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
@@ -54,5 +53,18 @@ public Long selectByequipmentidGetID(long equipmentid){
           deciveuseMapper.delete(queryWrapper);
       } commonResp.setMessage("设备已关闭，记录信息已经删除");
       return commonResp;
+    }
+
+
+
+    //获取所有的设备开启信息 包含power字段
+    public List<DeviceusePowerResp> findall() {
+        List<DeviceusePowerResp> lists = deciveuseMapper.findall();
+        return lists;
+    }
+    //获取一个的设备开启信息 包含power字段
+    public DeviceusePowerResp finone(Long equipmentid) {
+        DeviceusePowerResp deviceusePowerResp = deciveuseMapper.findone(equipmentid);
+        return deviceusePowerResp;
     }
 }

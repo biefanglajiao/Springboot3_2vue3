@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.springboot3_2vue3.mapper.equipmapper.DeviceuseMapper">
+    <select id="findall" resultType="com.example.springboot3_2vue3.resp.DeviceusePowerResp">
+        SELECT a.date, a.id ,a.equipmentid ,b.power
+        FROM deviceuse a ,equipment b WHERE a.equipmentid=b.id
+
+    </select>
+
+
+    <select id="findone" resultType="com.example.springboot3_2vue3.resp.DeviceusePowerResp">
+        SELECT a.date, a.id ,a.equipmentid ,b.power
+        FROM deviceuse a ,equipment b WHERE a.equipmentid=b.id and b.id=#{id}
+
+    </select>
+</mapper>

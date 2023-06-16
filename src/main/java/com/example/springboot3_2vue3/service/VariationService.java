@@ -1,14 +1,14 @@
 package com.example.springboot3_2vue3.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.example.springboot3_2vue3.domain.equipment.Equipment;
 import com.example.springboot3_2vue3.domain.equipment.Variation;
 import com.example.springboot3_2vue3.mapper.equipmapper.VariationMapper;
-import com.example.springboot3_2vue3.resp.DeviceusePower;
+import com.example.springboot3_2vue3.resp.VariationNameResp;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -34,16 +34,6 @@ public class VariationService {
         return variationMapper.selectList(queryWrapper);
     }
 
-    //获取所有的设备开启信息 包含power字段
-    public List<DeviceusePower> findall() {
-        List<DeviceusePower> lists = variationMapper.findall();
-        return lists;
-    }
-    //获取一个的设备开启信息 包含power字段
-    public DeviceusePower finone(Long equipmentid) {
-       DeviceusePower  deviceusePower = variationMapper.findone(equipmentid);
-        return deviceusePower;
-    }
 //插入新数据
     public boolean insertonedata(Variation variation) {
         if (variationMapper.insert(variation) == 1) {
@@ -51,4 +41,30 @@ public class VariationService {
         } else
             return false;
     }
+//获取今日所有信息 包含equipment表的name字段
+    public List<VariationNameResp> getAllVariationName() {
+        QueryWrapper<Variation> queryWrapper = new QueryWrapper<>();
+
+        //获取今天的日期
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date(System.currentTimeMillis());
+
+        String format = formatter.format(date);
+   List<Variation> variation=variationMapper.findAllInfo(format);
+   List<VariationNameResp> variationNameResps =new ArrayList<>();
+        for (Variation v:variation
+             ) {
+            VariationNameResp resp=new VariationNameResp();
+            resp.setName(v.getEquipment().getName());
+            resp.setId(v.getId());
+            resp.setData(v.getData());
+            resp.setDate(v.getDate());
+            resp.setEquipmentid(v.getEquipmentid());
+            variationNameResps.add(resp);
+
+        }
+        return  variationNameResps;
+
+    }
+
 }

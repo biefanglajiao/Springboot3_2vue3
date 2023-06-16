@@ -2,7 +2,7 @@ package com.example.springboot3_2vue3.resp;
 
 /**
  * @Author: 常兆海
- * @Description:
+ * @Description:检测器字段Temperature表+equipment表 name location字段
  * @DateTime: 2023/6/15 9:10
  **/
 public class TemperatureResp {
