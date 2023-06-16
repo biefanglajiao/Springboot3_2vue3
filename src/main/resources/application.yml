@@ -6,8 +6,9 @@ spring:
     username: springboot3vue3
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
+
     hikari:
-      max-lifetime=120000:
+      max-lifetime: 120000
     #如果需要在一个xml文件中执行多个sql语句 需要在url后面添加：&allowMultiQueries=true
     #  datasource:
     #    driver-class-name: com.mysql.cj.jdbc.Driver
@@ -16,3 +17,4 @@ spring:
     #    password: 020116zh
     #如果需要在一个xml文件中执行多个sql语句 需要在url后面添加：&allowMultiQueries=true
 #mybatisplus
+#以下为连接池的相关参数配置
