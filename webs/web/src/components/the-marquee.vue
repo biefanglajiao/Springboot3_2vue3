@@ -79,13 +79,13 @@ export default defineComponent({
 
     const tempall = () => {
       axios.get("/equipment/tempall").then((res) => {
-        console.log(Tool.isEmpty(templists.value), "              对比")
+        // console.log(Tool.isEmpty(templists.value), "              对比")
         const data = res.data;
         if (data.success && !Tool.isEmpty(templists.value)) {
           // console.log(data.content,"dataaaaa")
           templists.value = res.data.content;
         }
-        console.log(templists, "11111111````````````````````````````````````")
+        // console.log(templists, "11111111````````````````````````````````````")
       })
     }
     onMounted(() => {

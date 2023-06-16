@@ -40,7 +40,7 @@
         <a-row>
           <a-col :span="7">
             <div class="schedule_card2">
-<!--              开启透明-->
+              <!--              开启透明-->
               <a-card>
                 <div style="width: 100%;height:647px;">
                   <a-row>
@@ -147,6 +147,7 @@ import axios from "axios";
 
 import {UserOutlined, ArrowUpOutlined, ArrowDownOutlined, LikeOutlined} from '@ant-design/icons-vue';
 import Themarquee from "@/components/the-marquee.vue";
+import { Tool } from '@/utils/tool';
 
 declare let echarts: any;
 export default defineComponent({
@@ -285,19 +286,6 @@ export default defineComponent({
     //         }
     //     });
     // };
-    onMounted(() => {
-      getStatistic();
-      // testEcharts();
-      mychartsXHDN();
-      mychartXJXH();
-      mychartRL();
-      getOpenAndSum();
-      // mychartZSBSZYXS();
-      // get30DayStatistic();
-      getweathernow();
-      getweather3d();
-
-    });
 
     /****
      * @description: 消耗电能表（仪表盘形式）
@@ -553,9 +541,52 @@ export default defineComponent({
     /***
      * @description: 各个设备的消耗：
      */
-    const mychartXJXH = () => {
+    const mychartXJXH = (allclassinfo:any,allinfo:any) => {
+      console.log(allclassinfo,"allclassinfo")
+      console.log(allinfo,"allinfo")
       const mychartXiJieXiaoHao = echarts.init(document.getElementById('XJXH'));
+      const  category=[];//开启的设备名的列表
+      const  categoryid=[];//开启的设备id的列表
+
+
+      //将所有的分类信息按分类id和分类名 分别存入数组中
+      for (let i=0;i<allclassinfo.length;i++){
+        const record=allclassinfo[i];
+       category.push(record.equipment.name);
+       categoryid.push(record.equipmentid);
+       // console.log(record.equipment.name,"      name")
+
+      }
+      const  records=[];//开启的设备名的对应耗电记录  用来暂时存放某一类的耗电数据
+      const  recordssum=[];//开启的设备名的对应耗电统计   用来按分好的类存放的耗电数据
+      for (let i=0;i<categoryid.length;i++){
+        console.log("i",i)
+        // console.log(categoryid[i],"      categoryid[i]")
+        for (let j=0;j<allinfo.length;j++){
+          console.log("j",j)
+          if (allinfo[j].equipmentid==categoryid[i]){
+         records.push([allinfo[j].date,allinfo[j].data]);
+          // console.log(allinfo[j].date,"      allinfo.date")
+          // console.log(allinfo[j].data,"      allinfo.data")
+// console.log(j)
+          }
+
+        }
+
+        recordssum.push( Tool.copy(records));//使用深拷贝赋值 防止下面pop操作时对recordssum发生影响
+        console.log(recordssum,"      recordssum               aaaaaaaaaaaaaaaa")
+        for (let k=0;k<records.length;k++){
+         records.pop();
+        }
+        // console.log(records,"      records")
+        // console.log(recordssum,"      recordssum")
+      }
+      // console.log(category,"category")
+      // console.log(categoryid,"categoryid")
       const option = {
+        title:{
+          text:'最近30天阅读量和点赞量'
+        },
         // 提示框组件
         tooltip: {
           trigger: 'axis', // 触发类型。坐标轴触发
@@ -577,7 +608,7 @@ export default defineComponent({
           containLabel: true // grid 区域是否包含坐标轴的刻度标签
         },
         legend: {
-          data: ['折线图1', '折线图2', ]
+          data: category,
         },
         // 配置x轴
         xAxis: {
@@ -593,7 +624,7 @@ export default defineComponent({
             fontSize: 12,
             color: '#fff'
           },
-          axisLine: { show: true },
+          axisLine: {show: true},
           splitLine: {
             // 修改背景线条样式  x、y轴都可以给添加
             show: true, // 是否展示
@@ -604,7 +635,10 @@ export default defineComponent({
         },
         // 配置折线图数据
         series: [
-          { smooth: true, // 是否曲线
+          {
+
+
+            smooth: true, // 是否曲线
             name: '折线图1',
             type: 'line',
             data: [
@@ -869,6 +903,7 @@ export default defineComponent({
           const list = data.content;
 
           mychartZSBSZYXS(list);
+          mychartZSBSZYXS(list);
         }
 
       });
@@ -939,11 +974,64 @@ export default defineComponent({
     }
 
     // --------------------------------------------------------------------@description: 天气相关结束----------------------------------------------------
+    //______________________________________________________________________________每日耗电量开始_______________________________________________________
+    //获取日均用电中种类个数
+
+    const getallclass = () => {
+      axios.get("/variation/getallclass").then((res) => {
+        const data = res.data;
+        if (data.success) {
+ const allclassinfo=data.content;
+          console.log("分类数据 ：                                  ：" , allclassinfo)
+
+          allandname(allclassinfo)
+        } else {
+          console.log("分类数据 ：                                  ：" , data)
+        }
+      })
+    }
+    //获取日均用电数据
+    const allandname = (allclassinfo:any) => {
+      axios.get("/variation/allandname").then((res) => {
+        const data = res.data;
+        if (data.success) {
+const allInfo=data.content;
+          console.log("全部数据  ：                                  ：" , allInfo)
+          mychartXJXH(allclassinfo,allInfo)
+
+
+        } else {
+          console.log("全部数据                  ：" , data)
+        }
+      })
+
+    }
+    //____________________________________________________________________获取日耗电量信息结束__________________________________________
+    onMounted(() => {
+      getStatistic();
+      // testEcharts();
+      mychartsXHDN();
+
+      mychartRL();
+      getOpenAndSum();
+      // mychartZSBSZYXS();
+      // get30DayStatistic();
+      getweathernow();
+      getweather3d();
+
+
+      //----_获取日耗电量信息
+
+      getallclass();
+    });
+
     return {
       statistic,
       //天气相关
       listnow,
       listyubao,
+      //日耗电量统计图
+
 
     }
 
@@ -1003,8 +1091,9 @@ export default defineComponent({
     background: #ffffff14;
 
   }
+
   :deep( .ant-card-bordered ) {
-     border: 1px dotted #008cff;
+    border: 1px dotted #008cff;
   }
 }
 </style>
