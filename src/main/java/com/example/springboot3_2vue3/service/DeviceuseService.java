@@ -20,13 +20,16 @@ import java.util.List;
 public class DeviceuseService {
     @Resource
     private DeviceuseMapper deciveuseMapper;
-    @Resource
-    private  Deviceuse deviceuse;
+
 
     public List<Deviceuse> selectList(){
         return  deciveuseMapper.selectList(null);
     }
-
+public Long selectByequipmentidGetID(long equipmentid){
+    QueryWrapper<Deviceuse> queryWrapper = new QueryWrapper<>();
+    queryWrapper.eq("equipmentid",equipmentid);
+        return deciveuseMapper.selectOne(queryWrapper).getId();
+}
 
     public CommonResp opendevice(Deviceuse deviceuse){
         QueryWrapper<Deviceuse> queryWrapper = new QueryWrapper<>();

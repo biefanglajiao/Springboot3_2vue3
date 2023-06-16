@@ -1,17 +1,15 @@
 package com.example.springboot3_2vue3.controller;
 
 import com.example.springboot3_2vue3.Utils.SnowFlake;
-import com.example.springboot3_2vue3.domain.equipment.Deviceuse;
-import com.example.springboot3_2vue3.domain.equipment.Equipment;
-import com.example.springboot3_2vue3.domain.equipment.Temperature;
+import com.example.springboot3_2vue3.domain.equipment.*;
 import com.example.springboot3_2vue3.mapper.equipmapper.DeviceuseMapper;
 import com.example.springboot3_2vue3.resp.CommonResp;
+import com.example.springboot3_2vue3.resp.DeviceusePower;
 import com.example.springboot3_2vue3.resp.TemperatureResp;
-import com.example.springboot3_2vue3.service.DeviceuseService;
-import com.example.springboot3_2vue3.service.EquipmentService;
-import com.example.springboot3_2vue3.service.TemperaturesService;
+import com.example.springboot3_2vue3.service.*;
 import jakarta.annotation.Resource;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,40 +27,44 @@ import java.util.List;
 public class EquipmentController {
     @Resource
     private EquipmentService equipmentService;
-@Resource
-private TemperaturesService temperaturesService;
-
-@Resource
-private SnowFlake snowFlake;
-@Resource
-private Deviceuse deviceuse;
     @Resource
-    private DeviceuseService    deviceuseService;
+    private TemperaturesService temperaturesService;
+    @Resource
+    private VariationService variationService;
+
+    @Resource
+    private SnowFlake snowFlake;
+
+    @Resource
+    private DeviceuseService deviceuseService;
+    @Resource
+    private Deviceuse2Service deviceuse2Service;
 
     @RequestMapping("/all")
-    public CommonResp findOpenAndAll(){
-      List list=new ArrayList();
-      list.add(equipmentService.finopensumnumber());//查询已经启动的设备总数
-      list.add(equipmentService.finsumnumber());//查询所有的设备总数
+    public CommonResp findOpenAndAll() {
+        List list = new ArrayList();
+        list.add(equipmentService.finopensumnumber());//查询已经启动的设备总数
+        list.add(equipmentService.finsumnumber());//查询所有的设备总数
         System.out.println(list);
-      CommonResp commonResp=new CommonResp();
-     commonResp.setContent(list);
+        CommonResp commonResp = new CommonResp();
+        commonResp.setContent(list);
         System.out.println(commonResp);
-     return commonResp;
+        return commonResp;
     }
 
     @RequestMapping("tempall")
-    public CommonResp findTempAll(){
-        CommonResp<List<TemperatureResp>> listCommonResp=new CommonResp<>();
+    public CommonResp findTempAll() {
+        CommonResp<List<TemperatureResp>> listCommonResp = new CommonResp<>();
         listCommonResp.setContent(temperaturesService.findAllTemp());
         return listCommonResp;
 
 
     }
+
     //查寻所有已经打开的设备信息
     @RequestMapping("findequipopen")
-    public CommonResp findOpenInfo(){
-        CommonResp<List<Equipment>> listCommonResp=new CommonResp<>();
+    public CommonResp findOpenInfo() {
+        CommonResp<List<Equipment>> listCommonResp = new CommonResp<>();
         listCommonResp.setContent(equipmentService.findAllOpenInfo());
         return listCommonResp;
     }
@@ -74,35 +76,78 @@ private Deviceuse deviceuse;
      */
     @RequestMapping("openequip")
     @Transactional
-    public CommonResp Openequip(long id){
-        CommonResp<Equipment> commonResp=new CommonResp<>();
-        if (equipmentService.openequip(id)==1){//开启设备
+    public CommonResp Openequip(long id) {
+        CommonResp<Equipment> commonResp = new CommonResp<>();
+        if (equipmentService.openequip(id) == 1) {//开启设备
             commonResp.setMessage("设备开启成功");
             long ids = snowFlake.nextId();
-            Long  date=System.currentTimeMillis();
+            Long date = System.currentTimeMillis();
+            Deviceuse deviceuse=new Deviceuse();
             deviceuse.setEquipmentid(id);
             deviceuse.setId(ids);
             deviceuse.setDate(date);
-            commonResp=deviceuseService.opendevice(deviceuse);//将设备开启时间放到表中
-        }
-        else commonResp.setMessage("开启失败，请稍后刷新重试");
+            commonResp = deviceuseService.opendevice(deviceuse);//将设备开启时间放到表中
+
+
+Deviceuse2 deviceuse2=new Deviceuse2();
+            deviceuse2.setId(ids);
+            deviceuse2.setEquipmentid(id);
+            deviceuse2Service.addbegin(deviceuse2);//将开启时间 设备id等信息传入日志表
+
+        } else commonResp.setMessage("开启失败，请稍后刷新重试");
         return commonResp;
     }
 
 
     @RequestMapping("closeequip")
     @Transactional
-    public CommonResp Closeequip(long id){
-        CommonResp<Equipment> commonResp=new CommonResp<>();
-        if (equipmentService.closeequip(id)){//关闭设备
+    public CommonResp Closeequip(long id) {
+        CommonResp<Equipment> commonResp = new CommonResp<>();
+        if (equipmentService.closeequip(id)) {//关闭设备
             commonResp.setMessage("设备关闭成功");
+
+            System.out.println("_______________________________________");
+            long startTime = System.currentTimeMillis();
+            DeviceusePower deviceusePower = variationService.finone(id);//找到记录
+            System.out.println(deviceusePower.getPower()+          "            power");
+            System.out.println(deviceusePower.getDate()+ "                 date");
+            long opendeTime = startTime - deviceusePower.getDate();
+            float opendeTimemin = opendeTime / 1000 / 60;
+            float opendeTimeHour = opendeTimemin / 60;
+            System.out.println(opendeTimeHour);
+            //给小时耗电量统计表赋值
+
+
+            Variation variation=new Variation();
+            variation.setEquipmentid(deviceusePower.getEquipmentid());
+            float poweruse = deviceusePower.getPower() * opendeTimeHour;
+            variation.setData(poweruse);
+            variationService.insertonedata(variation);//记录一下关闭时间的耗电量
+
+
+
+            Deviceuse deviceuse=new Deviceuse();
             deviceuse.setEquipmentid(id);
-            commonResp=deviceuseService.deletdevice(deviceuse);//将设备开启时间放到设备开启表中的对应数据删除
-        }
-        else commonResp.setMessage("关闭失败，请稍后刷新重试");
+            long ids = deviceuseService.selectByequipmentidGetID(deviceuse.getEquipmentid());
+            commonResp = deviceuseService.deletdevice(deviceuse);//将设备开启时间放到设备开启表中的对应数据删除
+
+
+
+            Deviceuse2 deviceuse2=new Deviceuse2();
+            deviceuse2.setId(ids);
+            deviceuse2.setEquipmentid(id);
+            deviceuse2.setEnddate(startTime);
+            deviceuse2.setPowerconsumption(poweruse);
+            deviceuse2Service.addend(deviceuse2);
+
+        } else commonResp.setMessage("关闭失败，请稍后刷新重试");
         return commonResp;
     }
 
 
 
+    @GetMapping("test")
+    public  void  aa(Long id){
+        equipmentService.openequip(id);
+    }
 }

@@ -30,10 +30,10 @@ public class equip {
 
 
     //每小时执行一次
-//    @Scheduled(cron = "0 0 0/1 * * ?")
+    @Scheduled(cron = "0 0 0/1 * * ?")
     @Async
     @Transactional
-    @Scheduled(cron = "0 0/3 * * * ? ")//没3分钟
+//    @Scheduled(cron = "0 0/3 * * * ? ")//没3分钟
     public void 耗电量小时统计() {
         //获取开着的设备信息包含power所以用resp接
         List<DeviceusePower> lists = variationService.findall();
@@ -53,7 +53,9 @@ public class equip {
                 System.out.println(opendeTimeHour);
                 //给小时耗电量统计表赋值
                 variation.setEquipmentid(list.getEquipmentid());
-
+                System.out.println("list.getPower()"+list.getPower() );
+                System.out.println("opendeTimeHour"+opendeTimeHour);
+                System.out.println("chengji :"+list.getPower() * opendeTimeHour);
                 variation.setData(list.getPower() * opendeTimeHour);
                 System.out.println(variationService.insertonedata(variation));
             }

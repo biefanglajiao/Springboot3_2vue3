@@ -1,6 +1,7 @@
 package com.example.springboot3_2vue3.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.example.springboot3_2vue3.domain.equipment.Equipment;
 import com.example.springboot3_2vue3.domain.equipment.Variation;
 import com.example.springboot3_2vue3.mapper.equipmapper.Equipmapper;
@@ -21,12 +22,7 @@ import java.util.List;
 public class EquipmentService {
     @Resource
     private Equipmapper equipmapper;
-    @Resource
-    private Equipment equipment;
-    @Resource
-    private VariationService variationService;
-    @Resource
-    private Variation variation;
+
 
     public Long finsumnumber(){
 
@@ -46,28 +42,28 @@ public class EquipmentService {
     }
     //开启设备
     public int openequip(Long id){
-        equipment.setId(id);
-        equipment.setState(true);
-return equipmapper.updateById(equipment);
+        UpdateWrapper<Equipment> updateWrapper = new UpdateWrapper();
+        updateWrapper.eq("id", id);
+        updateWrapper.set("state",  1);
+      return equipmapper.update(null, updateWrapper);
+
+//        Equipment equipment=new Equipment();
+//        equipment.setId(id);
+//        equipment.setState(true);
+//return equipmapper.updateById(equipment);
     }
     //关闭设备   关闭的同时计算一次耗电量
     @Transactional
     public boolean closeequip(Long id){
-        equipment.setId(id);
-        equipment.setState(false);
-        equipmapper.updateById(equipment);
-        long startTime = System.currentTimeMillis();
-      DeviceusePower deviceusePower = variationService.finone(id);//找到记录
-        System.out.println(deviceusePower.getDate());
-        long opendeTime = startTime - deviceusePower.getDate();
-        float opendeTimemin = opendeTime / 1000 / 60 ;
-        float opendeTimeHour=opendeTimemin/60;
-        System.out.println(opendeTimeHour);
-        //给小时耗电量统计表赋值
-        variation.setEquipmentid(deviceusePower.getEquipmentid());
+        UpdateWrapper<Equipment> updateWrapper = new UpdateWrapper();
+        updateWrapper.eq("id", id);
+        updateWrapper.set("state",  0);
 
-        variation.setData(deviceusePower.getPower() * opendeTimeHour);
-     return  variationService.insertonedata(variation);
+     if (equipmapper.update(null, updateWrapper)==1){
+         return true;
+     }else
+         return false;
+
 
     }
 

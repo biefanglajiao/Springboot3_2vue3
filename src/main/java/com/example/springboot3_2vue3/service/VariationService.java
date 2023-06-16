@@ -40,8 +40,8 @@ public class VariationService {
         return lists;
     }
     //获取一个的设备开启信息 包含power字段
-    public DeviceusePower finone(Long id) {
-       DeviceusePower  deviceusePower = variationMapper.findone(id);
+    public DeviceusePower finone(Long equipmentid) {
+       DeviceusePower  deviceusePower = variationMapper.findone(equipmentid);
         return deviceusePower;
     }
 //插入新数据
