@@ -17,9 +17,11 @@
             </div>
           </a-col>
           <a-col :span="13">
+            <div class="schedule_card2">
             <a-card>
               <div id="RiLi" style="width: 100%;height:200px;"></div>
             </a-card>
+            </div>
           </a-col>
           <a-col :span="8">
             <div class="schedule_card2">
@@ -166,34 +168,6 @@ export default defineComponent({
   setup() {
     const statistic = ref();
     statistic.value = {};
-    const getStatistic = () => {
-      axios.get("/ebook-Snapshot/get-statistic").then((res) => {
-        const data = res.data;
-        if (data.success) {
-          const ststisticResp = data.content;
-          if (ststisticResp.length < 2) {
-            //对昨天没有数据的情况做处理
-            statistic.value.viewCount = ststisticResp[0].viewCount;
-            statistic.value.voteCount = ststisticResp[0].voteCount;
-            statistic.value.todayViewCount = statistic.value.viewCount;
-            statistic.value.todayVoteCount = statistic.value.voteCount;
-          } else {
-            statistic.value.viewCount = ststisticResp[1].viewCount;
-            statistic.value.voteCount = ststisticResp[1].voteCount;
-            statistic.value.todayViewCount = ststisticResp[0].viewIncrease;
-            statistic.value.todayVoteCount = ststisticResp[0].voteIncrease;
-          }
-
-          //按分钟计算当前时间点站一天的百分比
-          const now = new Date();
-          const nowRate = (now.getHours() * 60 + now.getMinutes()) / (24 * 60);
-          statistic.value.todayViewIncrease = parseInt(String(ststisticResp[1].viewIncrease / nowRate));
-          statistic.value.todayViewIncreaseRate = (statistic.value.todayViewIncrease - ststisticResp[0].viewIncrease) / ststisticResp[0].viewIncrease * 100;
-          statistic.value.todayViewIncreaseRateAbs = Math.abs(statistic.value.todayViewIncreaseRate);
-        }
-
-      });
-    };
     const testEcharts = () => {
 
 
@@ -720,67 +694,61 @@ export default defineComponent({
     /*****
      * @description: 日历图
      */
-    const mychartRL = () => {
+    const mychartRL = (list:any) => {
       const mychartRiLi = echarts.init(document.getElementById("RiLi"));
+      const datas: unknown[][] = [];//开启的设备id的列表
 
-      function getVirtulData(year: any) {
-        year = year || '2017';
-        var date = +echarts.number.parseDate(year + '-01-01');
-        var end = +echarts.number.parseDate((+year + 1) + '-01-01');
-        var dayTime = 3600 * 24 * 1000;
-        var data = [];
-        for (var time = date; time < end; time += dayTime) {
-          data.push([
-            echarts.format.formatTime('yyyy-MM-dd', time),
-            Math.floor(Math.random() * 1000)
-          ]);
-        }
+
+      //将所有的分类信息按分类id和分类名 分别存入数组中
+      for (let i = 0; i < list.length; i++) {
+        const record = list[i];
+        datas.push([Tool.copy(record.date), Tool.copy(record.poweruse)]);
+
+
+      }
+      // console.log(datas, "datas~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+      function getVirtulData() {
+        var data =datas;
         return data;
       }
 
-      var data = {
-        '2015': getVirtulData(2015),
-        '2016': getVirtulData(2016),
-        '2017': getVirtulData(2017)
-      };
+     const option = {
+        backgroundColor: 'rgba(89,148,246,0.22)',
+        title: {
+          top: 5,
+          left: 'left',//'center',
+          text: '年日用电量情况   kwh'
 
-
-      const option = {
-        legend: {
-          top: 250,
-          selected: {
-            '2015': true,
-
-          },
-          selectedMode: 'single'
         },
         tooltip: {
           position: 'top'
         },
         visualMap: {
           min: 0,
-          max: 1000,
+          max: 30,
           calculable: true,
           orient: 'horizontal',
           left: 'center',
           top: 'top'
         },
 
-        calendar: {
-          range: '2015',
-          cellSize: ['auto', 20]
-        },
+        calendar: [
+          {
+            range: ['2023-01-01', '2023-12-31'],//'2011',
+            cellSize: ['auto', 15],
+            left: 70,
+            right: 30,
+          },
+        ],
 
         series: [{
           type: 'heatmap',
           coordinateSystem: 'calendar',
           calendarIndex: 0,
-          data: data[2015],
-          name: '2015'
-        }]
+          data: getVirtulData()
+        },]
+
       };
-
-
       mychartRiLi.setOption(option);
     }
     /****
@@ -1006,11 +974,11 @@ export default defineComponent({
         const data = res.data;
         if (data.success) {
           const allclassinfo = data.content;
-          console.log("分类数据 ：                                  ：", allclassinfo)
+          // console.log("分类数据 ：                                  ：", allclassinfo)
 
           allandname(allclassinfo)
         } else {
-          console.log("分类数据 ：                                  ：", data)
+          // console.log("分类数据 ：                                  ：", data)
         }
       })
     }
@@ -1045,15 +1013,28 @@ export default defineComponent({
       })
 
     }
-
-
     //__________________________________________获取日总耗电量信息结束__________________________________________
+//______________________________________________________________________获取年耗电量信息开始__________________________________________
+    const getallpoweruse = () => {
+      axios.get("/yearpoweruse/getallpoweruse").then((res) => {
+        const data = res.data;
+        if (data.success) {
+          const list = data.content;
+console.log("年耗电量信息：",list)
+       mychartRL(list);
+
+        }
+
+      });
+    }
+    //______________________________________________________________________获取年耗电量信息结束__________________________________________
+
     onMounted(() => {
-      getStatistic();
+
       // testEcharts();
 
 
-      mychartRL();
+
       getOpenAndSum();
       // mychartZSBSZYXS();
       // get30DayStatistic();
@@ -1066,6 +1047,8 @@ export default defineComponent({
       getallclass();
       //---获取日总耗电量信息
       getpoweruse();
+      //--获取年耗电量信息
+      getallpoweruse();
     });
 
     return {
