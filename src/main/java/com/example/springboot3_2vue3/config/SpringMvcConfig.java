@@ -8,12 +8,11 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 
-
 @Configuration
 public class SpringMvcConfig implements WebMvcConfigurer {
 
-@Resource
-LogInterceptor logInterceptor;
+    @Resource
+    LogInterceptor logInterceptor;
 
     /***
      * 添加拦截器  为什么用拦截器：因为他可以针对某些请求进行拦截，然后做一些处理
@@ -28,7 +27,7 @@ LogInterceptor logInterceptor;
                         "/user/**",
 
 
-
+                        "/yearpoweruse/**",
                         "/equipment/**",
                         "/variation/**",
                         "/text/**",
