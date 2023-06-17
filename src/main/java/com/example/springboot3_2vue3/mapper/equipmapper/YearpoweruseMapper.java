@@ -9,5 +9,5 @@ import com.example.springboot3_2vue3.domain.equipment.Yearpoweruse;
  * @DateTime: 2023/6/17 10:56
  **/
 public interface YearpoweruseMapper extends BaseMapper<Yearpoweruse> {
-   int InsertOrUpdatePoweruse(int poweruse);
+   int InsertOrUpdatePoweruse(float poweruse);
 }

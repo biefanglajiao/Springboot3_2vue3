@@ -5,6 +5,7 @@ import com.example.springboot3_2vue3.resp.DeviceusePowerResp;
 import com.example.springboot3_2vue3.service.Deviceuse2Service;
 import com.example.springboot3_2vue3.service.DeviceuseService;
 import com.example.springboot3_2vue3.service.VariationService;
+import com.example.springboot3_2vue3.service.YearpoweruseService;
 import jakarta.annotation.Resource;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -26,6 +27,8 @@ public class equip {
     private  DeviceuseService deviceuseService;
     @Resource
     private Deviceuse2Service deviceuse2Service;
+    @Resource
+    private YearpoweruseService yearpoweruseService;
     @Resource
     private Variation variation;
 
@@ -64,6 +67,15 @@ public class equip {
 
                 variation.setData(list.getPower() * opendeDayTimeHour+beforepower);
                 System.out.println(variationService.insertonedata(variation));
+
+
+
+
+                //——————————————————————————————————————————————定时更新目前耗电总量————————————————————————————
+               Variation variation1= variationService.findsuminfo();
+              yearpoweruseService.InsertOrUpdatePoweruse(variation1.getData());
+
+
             }
         }
 

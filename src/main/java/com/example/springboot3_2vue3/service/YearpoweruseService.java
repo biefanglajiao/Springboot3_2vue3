@@ -14,7 +14,7 @@ public class YearpoweruseService {
     @Resource
     private YearpoweruseMapper yearpoweruseMapper;
 
-    public int InsertOrUpdatePoweruse(int poweruse){
+    public int InsertOrUpdatePoweruse(float poweruse){
         return yearpoweruseMapper.InsertOrUpdatePoweruse(poweruse);
     }
 }
