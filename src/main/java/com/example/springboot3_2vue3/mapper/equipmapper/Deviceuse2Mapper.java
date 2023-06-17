@@ -12,5 +12,5 @@ import java.util.List;
  **/
 public interface Deviceuse2Mapper extends BaseMapper<Deviceuse2> {
 
-    List<Deviceuse2> selectAlltodayById(int equipmentid,String date);
+    List<Deviceuse2> selectAlltodayById(Long equipmentid,String date);
 }

@@ -2,6 +2,7 @@ package com.example.springboot3_2vue3.schedule;
 
 import com.example.springboot3_2vue3.domain.equipment.Variation;
 import com.example.springboot3_2vue3.resp.DeviceusePowerResp;
+import com.example.springboot3_2vue3.service.Deviceuse2Service;
 import com.example.springboot3_2vue3.service.DeviceuseService;
 import com.example.springboot3_2vue3.service.VariationService;
 import jakarta.annotation.Resource;
@@ -24,6 +25,8 @@ public class equip {
     @Resource
     private  DeviceuseService deviceuseService;
     @Resource
+    private Deviceuse2Service deviceuse2Service;
+    @Resource
     private Variation variation;
 
 
@@ -40,6 +43,7 @@ public class equip {
 
         if (!lists.isEmpty()) {
             for (DeviceusePowerResp list : lists) {
+
                 //对于每个开着的设备  每小时计算一次耗电量
                 System.out.println(list.getDate());
                 long opendeTime = startTime - list.getDate();
@@ -49,13 +53,16 @@ public class equip {
                 float opendeTimemin = opendeTime / 1000 / 60;
                 float opendeTimeHour = opendeTimemin / 60;
                 float opendeDayTimeHour = opendeTimeHour % 24;//取余数  过了24小时的话就从0开始
-                System.out.println(opendeTimeHour);
+//                System.out.println(opendeTimeHour);
                 //给小时耗电量统计表赋值
                 variation.setEquipmentid(list.getEquipmentid());
                 System.out.println("list.getPower()"+list.getPower() );
                 System.out.println("opendeTimeHour"+opendeTimeHour);
                 System.out.println("chengji :"+list.getPower() * opendeDayTimeHour);
-                variation.setData(list.getPower() * opendeDayTimeHour);
+
+                Float beforepower= deviceuse2Service.selectAlltodayByIdd(list.getEquipmentid());  //查询今天开启过的现在关闭了的耗电量
+
+                variation.setData(list.getPower() * opendeDayTimeHour+beforepower);
                 System.out.println(variationService.insertonedata(variation));
             }
         }

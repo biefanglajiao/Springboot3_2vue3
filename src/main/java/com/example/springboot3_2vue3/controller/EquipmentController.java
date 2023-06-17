@@ -134,11 +134,13 @@ public class EquipmentController {
             commonResp = deviceuseService.deletdevice(deviceuse);//将设备开启时间放到设备开启表中的对应数据删除
 
 
+         Float beforepower= deviceuse2Service.selectAlltodayByIdd(id);  //查询今天开启过的现在关闭了的耗电量
+
             Deviceuse2 deviceuse2 = new Deviceuse2();
             deviceuse2.setId(ids);
             deviceuse2.setEquipmentid(id);
             deviceuse2.setEnddate(startTime);
-            deviceuse2.setPowerconsumption(poweruse);
+            deviceuse2.setPowerconsumption(poweruse+beforepower);
             deviceuse2Service.addend(deviceuse2);
 
         } else commonResp.setMessage("关闭失败，请稍后刷新重试");
@@ -147,7 +149,7 @@ public class EquipmentController {
 
 
     @GetMapping("test")
-    public CommonResp<Deviceuse2> aa(int equipmentid,String date) {
+    public CommonResp<Deviceuse2> aa(Long equipmentid,String date) {
         CommonResp commonResp = new CommonResp<>();
     commonResp.setContent(  deviceuse2Service.selectAlltodayByIdd(equipmentid));
 
