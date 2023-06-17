@@ -89,7 +89,7 @@ public class EquipmentController {
             commonResp = deviceuseService.opendevice(deviceuse);//将设备开启时间放到表中
 
 
-            //todo 加一个查一下今天上次开启的耗电数据  累加到当前的耗电数据
+
 
 
             Deviceuse2 deviceuse2 = new Deviceuse2();
@@ -120,11 +120,13 @@ public class EquipmentController {
             System.out.println(opendeTimeHour);
             //给小时耗电量统计表赋值
 
-
+//______________________________________________日各种设备使用电量
             Variation variation = new Variation();
             variation.setEquipmentid(deviceusePowerResp.getEquipmentid());
             float poweruse = deviceusePowerResp.getPower() * opendeTimeHour;
-            variation.setData(poweruse);
+            Float beforepower= variationService.selectAlltodayByIdd(id);  //查询今天开启过的现在关闭了的耗电量
+            variation.setData(poweruse+beforepower);//要加上上一次开过的数据
+
             variationService.insertonedata(variation);//记录一下关闭时间的耗电量
 
 
@@ -134,13 +136,14 @@ public class EquipmentController {
             commonResp = deviceuseService.deletdevice(deviceuse);//将设备开启时间放到设备开启表中的对应数据删除
 
 
-         Float beforepower= deviceuse2Service.selectAlltodayByIdd(id);  //查询今天开启过的现在关闭了的耗电量
 
+            System.out.println(beforepower+"       beforepower");
+            System.out.println(poweruse+"       poweruse");
             Deviceuse2 deviceuse2 = new Deviceuse2();
             deviceuse2.setId(ids);
             deviceuse2.setEquipmentid(id);
             deviceuse2.setEnddate(startTime);
-            deviceuse2.setPowerconsumption(poweruse+beforepower);
+            deviceuse2.setPowerconsumption(poweruse);
             deviceuse2Service.addend(deviceuse2);
 
         } else commonResp.setMessage("关闭失败，请稍后刷新重试");
@@ -149,9 +152,9 @@ public class EquipmentController {
 
 
     @GetMapping("test")
-    public CommonResp<Deviceuse2> aa(Long equipmentid,String date) {
+    public CommonResp<Variation> aa(Long equipmentid) {
         CommonResp commonResp = new CommonResp<>();
-    commonResp.setContent(  deviceuse2Service.selectAlltodayByIdd(equipmentid));
+    commonResp.setContent(  variationService.selectAlltodayByIdd(equipmentid));
 
     return commonResp;
     }

@@ -1,8 +1,10 @@
 package com.example.springboot3_2vue3.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.example.springboot3_2vue3.domain.equipment.Deviceuse2;
 import com.example.springboot3_2vue3.domain.equipment.Variation;
 import com.example.springboot3_2vue3.mapper.equipmapper.VariationMapper;
+import com.example.springboot3_2vue3.resp.CommonResp;
 import com.example.springboot3_2vue3.resp.VariationNameResp;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
@@ -75,6 +77,24 @@ public class VariationService {
 
         String format = formatter.format(date);
         return variationMapper.getallclass(format);
+    }
+
+
+    public Float selectAlltodayByIdd(Long equipmentid){
+        //获取今天的日期
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date datems = new Date(System.currentTimeMillis());
+        String date = formatter.format(datems);
+        List<Variation> variations= variationMapper.selectAlltodayById(equipmentid,date);
+
+        if (variations.size()==0){
+            return null;
+        }
+        else {
+            return variations.get(0).getData();
+        }
+
+
     }
 
 }

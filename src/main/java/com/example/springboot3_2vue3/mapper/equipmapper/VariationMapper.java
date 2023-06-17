@@ -1,6 +1,7 @@
 package com.example.springboot3_2vue3.mapper.equipmapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.example.springboot3_2vue3.domain.equipment.Deviceuse2;
 import com.example.springboot3_2vue3.domain.equipment.Temperature;
 import com.example.springboot3_2vue3.domain.equipment.Variation;
 
@@ -16,4 +17,8 @@ public interface VariationMapper extends BaseMapper<Variation> {
     ArrayList<Variation> findAllInfo(String date);
 
     List<Variation> getallclass(String date);
+
+    List<Variation> selectAlltodayById(Long equipmentid, String date);
+
+
 }

@@ -26,4 +26,11 @@
     <select id="getallclass" resultMap="temp">
         select v.equipmentid ,e.name	from variation  v,equipment e where e.id=v.equipmentid and v.date like '${name}%' GROUP BY v.equipmentid
     </select>
+
+
+
+    <select id="selectAlltodayById" resultType="com.example.springboot3_2vue3.domain.equipment.Variation">
+        SELECT * FROM `variation` WHERE equipmentid = #{equipmentid} AND `date` like  '${date}%'
+        ORDER BY  `date` desc
+    </select>
 </mapper>

@@ -31,17 +31,5 @@ public  void  addbegin(Deviceuse2 deviceuse2){
     }
 
 
-    public Float selectAlltodayByIdd(Long equipmentid){
-        //获取今天的日期
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        Date datems = new Date(System.currentTimeMillis());
-        String date = formatter.format(datems);
-        List<Deviceuse2> deviceuse2List=  deviceuse2Mapper.selectAlltodayById(equipmentid,date);
-       if (deviceuse2List.size()==0){
-           return null;
-       }
-else {
-          return deviceuse2List.get(0).getPowerconsumption();
-       }
-    }
+
 }

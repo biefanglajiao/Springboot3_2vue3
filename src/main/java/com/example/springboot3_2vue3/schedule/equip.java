@@ -60,7 +60,7 @@ public class equip {
                 System.out.println("opendeTimeHour"+opendeTimeHour);
                 System.out.println("chengji :"+list.getPower() * opendeDayTimeHour);
 
-                Float beforepower= deviceuse2Service.selectAlltodayByIdd(list.getEquipmentid());  //查询今天开启过的现在关闭了的耗电量
+                Float beforepower= variationService.selectAlltodayByIdd(list.getEquipmentid());  //查询今天开启过的现在关闭了的耗电量
 
                 variation.setData(list.getPower() * opendeDayTimeHour+beforepower);
                 System.out.println(variationService.insertonedata(variation));
