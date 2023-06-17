@@ -294,7 +294,7 @@ export default defineComponent({
      */
     const mychartsXHDN = (todaypoweruse: any) => {
       const mychartXiaoHaoDianNeng = echarts.init(document.getElementById('XiaoHaoDianNeng'));
-      let value = todaypoweruse/1000;
+      let value = todaypoweruse;
       let int = value.toFixed(2);
       let num = 50 * value/100;
 
@@ -636,7 +636,7 @@ export default defineComponent({
 
 
         title: {
-          text: "\n日\n\n设\n\n备\n\n耗\n\n电\n\n量\nkw/h",
+          text: "\n日\n\n设\n\n备\n\n耗\n\n电\n\n量\n wh",
 
           left: "left",
           top: "left",

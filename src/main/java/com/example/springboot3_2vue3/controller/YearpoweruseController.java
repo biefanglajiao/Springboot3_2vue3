@@ -47,4 +47,13 @@ public class YearpoweruseController {
         commonResp.setMessage("成功获取数据");
         return commonResp;
     }
+    //获取所有的用电总量信息
+    @GetMapping("/getallpoweruse")
+    public CommonResp getallPoweruse(){
+        CommonResp commonResp = new CommonResp<>();
+        commonResp.setContent(yearpoweruseService.getAllPoweruse());
+        commonResp.setSuccess(true);
+        commonResp.setMessage("成功获取数据");
+        return commonResp;
+    }
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Author: 常兆海
@@ -31,5 +32,8 @@ public class YearpoweruseService {
         QueryWrapper<Yearpoweruse> queryWrapper = new QueryWrapper<>();
         queryWrapper.like("date", date);
         return yearpoweruseMapper.selectOne(queryWrapper).getPoweruse();
+    }
+    public List<Yearpoweruse> getAllPoweruse(){
+        return yearpoweruseMapper.selectList(null);
     }
 }

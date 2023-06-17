@@ -1,5 +1,6 @@
 package com.example.springboot3_2vue3.domain.equipment;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -11,6 +12,7 @@ import java.util.Date;
  **/
 @Component
 public class Yearpoweruse {
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date date;
     private float poweruse;
 

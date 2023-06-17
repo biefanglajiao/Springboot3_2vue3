@@ -73,18 +73,19 @@ public class equip {
 
                 //——————————————————————————————————————————————定时更新目前耗电总量————————————————————————————
                Variation variation1= variationService.findsuminfo();
-              yearpoweruseService.InsertOrUpdatePoweruse(variation1.getData());
+              yearpoweruseService.InsertOrUpdatePoweruse(variation1.getData()/1000);//wh=>kwh
 
 
             }
         }
 
     }
-    @Scheduled(cron = "0 0 0 * * ?")
+    @Scheduled(cron = "0 59 23 * * ? ")//每天23点59分执行一次
     @Async
     @Transactional
     public void 耗电量天统计(){
-     //todo 直接统计最新的日耗电量  的和
+        Variation variation1= variationService.findsuminfo();
+        yearpoweruseService.InsertOrUpdatePoweruse(variation1.getData()/1000);//wh=>kwh
 
     }
 
