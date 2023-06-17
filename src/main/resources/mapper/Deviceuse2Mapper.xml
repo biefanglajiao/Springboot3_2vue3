@@ -8,6 +8,10 @@
         ORDER BY  begindate desc
     </select>
 
+<select id="selectAllinfo" resultType="com.example.springboot3_2vue3.domain.equipment.Deviceuse2">
+
+    SELECT * FROM `deviceuse2` WHERE enddate IS NOT NULL
+</select>
 
 
 </mapper>

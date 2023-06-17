@@ -142,7 +142,7 @@ public class EquipmentController {
             Deviceuse2 deviceuse2 = new Deviceuse2();
             deviceuse2.setId(ids);
             deviceuse2.setEquipmentid(id);
-            deviceuse2.setEnddate(startTime);
+            deviceuse2.setEnddate(System.currentTimeMillis());
             deviceuse2.setPowerconsumption(poweruse);
             deviceuse2Service.addend(deviceuse2);
 
