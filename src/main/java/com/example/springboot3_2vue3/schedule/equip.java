@@ -43,18 +43,19 @@ public class equip {
                 //对于每个开着的设备  每小时计算一次耗电量
                 System.out.println(list.getDate());
                 long opendeTime = startTime - list.getDate();
-                System.out.println("opendeTime" + opendeTime + "ms");
-                System.out.println("opendeTime" + opendeTime / 1000 + "s");
-                System.out.println("opendeTime" + opendeTime / 1000 / 60 + "min");
+//                System.out.println("opendeTime" + opendeTime + "ms");
+//                System.out.println("opendeTime" + opendeTime / 1000 + "s");
+//                System.out.println("opendeTime" + opendeTime / 1000 / 60 + "min");
                 float opendeTimemin = opendeTime / 1000 / 60;
                 float opendeTimeHour = opendeTimemin / 60;
+                float opendeDayTimeHour = opendeTimeHour % 24;//取余数  过了24小时的话就从0开始
                 System.out.println(opendeTimeHour);
                 //给小时耗电量统计表赋值
                 variation.setEquipmentid(list.getEquipmentid());
                 System.out.println("list.getPower()"+list.getPower() );
                 System.out.println("opendeTimeHour"+opendeTimeHour);
-                System.out.println("chengji :"+list.getPower() * opendeTimeHour);
-                variation.setData(list.getPower() * opendeTimeHour);
+                System.out.println("chengji :"+list.getPower() * opendeDayTimeHour);
+                variation.setData(list.getPower() * opendeDayTimeHour);
                 System.out.println(variationService.insertonedata(variation));
             }
         }
