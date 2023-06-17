@@ -5,6 +5,10 @@ import com.example.springboot3_2vue3.mapper.equipmapper.Deviceuse2Mapper;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
 /**
  * @Author: 常兆海
  * @Description:
@@ -26,4 +30,12 @@ public  void  addbegin(Deviceuse2 deviceuse2){
         deviceuse2Mapper.updateById(deviceuse2);
     }
 
+
+    public List<Deviceuse2> selectAlltodayByIdd(int equipmentid){
+        //获取今天的日期
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date datems = new Date(System.currentTimeMillis());
+        String date = formatter.format(datems);
+        return  deviceuse2Mapper.selectAlltodayById(equipmentid,date);
+    }
 }

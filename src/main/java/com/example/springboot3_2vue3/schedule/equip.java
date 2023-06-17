@@ -61,6 +61,13 @@ public class equip {
         }
 
     }
+    @Scheduled(cron = "0 0 0 * * ?")
+    @Async
+    @Transactional
+    public void 耗电量天统计(){
+     //todo 直接统计最新的日耗电量  的和
+
+    }
 
 
 }

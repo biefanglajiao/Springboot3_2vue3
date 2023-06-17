@@ -76,19 +76,23 @@ public class EquipmentController {
     @RequestMapping("openequip")
     @Transactional
     public CommonResp Openequip(long id) {
+
         CommonResp<Equipment> commonResp = new CommonResp<>();
         if (equipmentService.openequip(id) == 1) {//开启设备
             commonResp.setMessage("设备开启成功");
             long ids = snowFlake.nextId();
             Long date = System.currentTimeMillis();
-            Deviceuse deviceuse=new Deviceuse();
+            Deviceuse deviceuse = new Deviceuse();
             deviceuse.setEquipmentid(id);
             deviceuse.setId(ids);
             deviceuse.setDate(date);
             commonResp = deviceuseService.opendevice(deviceuse);//将设备开启时间放到表中
 
 
-Deviceuse2 deviceuse2=new Deviceuse2();
+            //todo 加一个查一下今天上次开启的耗电数据  累加到当前的耗电数据
+
+
+            Deviceuse2 deviceuse2 = new Deviceuse2();
             deviceuse2.setId(ids);
             deviceuse2.setEquipmentid(id);
             deviceuse2Service.addbegin(deviceuse2);//将开启时间 设备id等信息传入日志表
@@ -108,8 +112,8 @@ Deviceuse2 deviceuse2=new Deviceuse2();
             System.out.println("_______________________________________");
             long startTime = System.currentTimeMillis();
             DeviceusePowerResp deviceusePowerResp = deviceuseService.finone(id);//找到记录
-            System.out.println(deviceusePowerResp.getPower()+          "            power");
-            System.out.println(deviceusePowerResp.getDate()+ "                 date");
+            System.out.println(deviceusePowerResp.getPower() + "            power");
+            System.out.println(deviceusePowerResp.getDate() + "                 date");
             long opendeTime = startTime - deviceusePowerResp.getDate();
             float opendeTimemin = opendeTime / 1000 / 60;
             float opendeTimeHour = opendeTimemin / 60;
@@ -117,22 +121,20 @@ Deviceuse2 deviceuse2=new Deviceuse2();
             //给小时耗电量统计表赋值
 
 
-            Variation variation=new Variation();
+            Variation variation = new Variation();
             variation.setEquipmentid(deviceusePowerResp.getEquipmentid());
             float poweruse = deviceusePowerResp.getPower() * opendeTimeHour;
             variation.setData(poweruse);
             variationService.insertonedata(variation);//记录一下关闭时间的耗电量
 
 
-
-            Deviceuse deviceuse=new Deviceuse();
+            Deviceuse deviceuse = new Deviceuse();
             deviceuse.setEquipmentid(id);
             long ids = deviceuseService.selectByequipmentidGetID(deviceuse.getEquipmentid());
             commonResp = deviceuseService.deletdevice(deviceuse);//将设备开启时间放到设备开启表中的对应数据删除
 
 
-
-            Deviceuse2 deviceuse2=new Deviceuse2();
+            Deviceuse2 deviceuse2 = new Deviceuse2();
             deviceuse2.setId(ids);
             deviceuse2.setEquipmentid(id);
             deviceuse2.setEnddate(startTime);
@@ -144,9 +146,11 @@ Deviceuse2 deviceuse2=new Deviceuse2();
     }
 
 
-
     @GetMapping("test")
-    public  void  aa(Long id){
-        equipmentService.openequip(id);
+    public CommonResp<Deviceuse2> aa(int equipmentid,String date) {
+        CommonResp commonResp = new CommonResp<>();
+    commonResp.setContent(  deviceuse2Service.selectAlltodayByIdd(equipmentid));
+
+    return commonResp;
     }
 }
