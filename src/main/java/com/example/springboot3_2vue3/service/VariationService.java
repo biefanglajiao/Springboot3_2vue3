@@ -88,7 +88,7 @@ public class VariationService {
         List<Variation> variations= variationMapper.selectAlltodayById(equipmentid,date);
 
         if (variations.size()==0){
-            return null;
+            return 0.0f;
         }
         else {
             return variations.get(0).getData();

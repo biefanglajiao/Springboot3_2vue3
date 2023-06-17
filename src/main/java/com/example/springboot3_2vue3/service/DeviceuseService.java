@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  * @Author: 常兆海
- * @Description:
+ * @Description:  开启记录表  记录开启的设备信息
  * @DateTime: 2023/6/16 8:24
  **/
 @Service
@@ -24,12 +24,13 @@ public class DeviceuseService {
     public List<Deviceuse> selectList(){
         return  deciveuseMapper.selectList(null);
     }
+    //根据设备id查id（主键）
 public Long selectByequipmentidGetID(long equipmentid){
     QueryWrapper<Deviceuse> queryWrapper = new QueryWrapper<>();
     queryWrapper.eq("equipmentid",equipmentid);
         return deciveuseMapper.selectOne(queryWrapper).getId();
 }
-
+//开启设备并在开启记录表中添加一条记录
     public CommonResp opendevice(Deviceuse deviceuse){
         QueryWrapper<Deviceuse> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("equipmentid",deviceuse.getEquipmentid());
@@ -42,6 +43,7 @@ public Long selectByequipmentidGetID(long equipmentid){
       } commonResp.setMessage("设备已打开，信息已经记录");
       return commonResp;
     }
+    //关闭设备并在开启记录表中删除一条记录
     public CommonResp deletdevice(Deviceuse deviceuse){
         QueryWrapper<Deviceuse> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("equipmentid",deviceuse.getEquipmentid());
