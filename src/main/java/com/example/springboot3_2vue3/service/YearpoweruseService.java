@@ -1,8 +1,14 @@
 package com.example.springboot3_2vue3.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.example.springboot3_2vue3.domain.equipment.Variation;
+import com.example.springboot3_2vue3.domain.equipment.Yearpoweruse;
 import com.example.springboot3_2vue3.mapper.equipmapper.YearpoweruseMapper;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * @Author: 常兆海
@@ -16,5 +22,14 @@ public class YearpoweruseService {
 
     public int InsertOrUpdatePoweruse(float poweruse){
         return yearpoweruseMapper.InsertOrUpdatePoweruse(poweruse);
+    }
+
+    public  Float getPoweruse(){
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date datems = new Date(System.currentTimeMillis());
+        String date = formatter.format(datems);
+        QueryWrapper<Yearpoweruse> queryWrapper = new QueryWrapper<>();
+        queryWrapper.like("date", date);
+        return yearpoweruseMapper.selectOne(queryWrapper).getPoweruse();
     }
 }

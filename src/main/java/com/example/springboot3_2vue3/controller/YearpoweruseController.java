@@ -37,4 +37,12 @@ public class YearpoweruseController {
         return commonResp;
 
     }
+    @GetMapping("/getpoweruse")
+    public CommonResp getPoweruse(){
+        CommonResp commonResp = new CommonResp<>();
+        commonResp.setContent(yearpoweruseService.getPoweruse());
+        commonResp.setSuccess(true);
+        commonResp.setMessage("成功获取数据");
+        return commonResp;
+    }
 }

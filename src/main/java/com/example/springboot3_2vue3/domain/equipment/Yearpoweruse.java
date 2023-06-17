@@ -12,23 +12,7 @@ import java.util.Date;
 @Component
 public class Yearpoweruse {
     private Date date;
-    private int power;
-
-    @Override
-    public String toString() {
-        return "Yearpoweruse{" +
-                "date=" + date +
-                ", power=" + power +
-                '}';
-    }
-
-    public int getPower() {
-        return power;
-    }
-
-    public void setPower(int power) {
-        this.power = power;
-    }
+    private float poweruse;
 
     public Date getDate() {
         return date;
@@ -36,5 +20,21 @@ public class Yearpoweruse {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public float getPoweruse() {
+        return poweruse;
+    }
+
+    public void setPoweruse(float poweruse) {
+        this.poweruse = poweruse;
+    }
+
+    @Override
+    public String toString() {
+        return "Yearpoweruse{" +
+                "date=" + date +
+                ", poweruse=" + poweruse +
+                '}';
     }
 }

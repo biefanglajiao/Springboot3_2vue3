@@ -37,7 +37,7 @@ public class equip {
     @Scheduled(cron = "0 0 0/1 * * ?")
     @Async
     @Transactional
-//    @Scheduled(cron = "0 0/3 * * * ? ")//没3分钟
+//    @Scheduled(cron = "0 0/5 * * * ? ")//没5分钟
     public void 耗电量小时统计() {
         //获取开着的设备信息包含power所以用resp接
         List<DeviceusePowerResp> lists = deviceuseService.findall();

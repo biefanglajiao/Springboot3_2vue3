@@ -45,8 +45,6 @@ public class VariationService {
     }
 //获取今日所有信息 包含equipment表的name字段
     public List<VariationNameResp> getAllVariationName() {
-        QueryWrapper<Variation> queryWrapper = new QueryWrapper<>();
-
         //获取今天的日期
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date date = new Date(System.currentTimeMillis());
