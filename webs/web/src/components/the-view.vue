@@ -22,10 +22,12 @@
             </a-card>
           </a-col>
           <a-col :span="8">
-            <a-card class="schedule_card2">
+            <div class="schedule_card2">
+            <a-card >
               <div id="XJXH" style="width: 100%;height:200px;"></div>
 
             </a-card>
+            </div>
           </a-col>
         </a-row>
 
@@ -545,47 +547,67 @@ export default defineComponent({
       console.log(allclassinfo,"allclassinfo")
       console.log(allinfo,"allinfo")
       const mychartXiJieXiaoHao = echarts.init(document.getElementById('XJXH'));
-      const  category=[];//开启的设备名的列表
+      const  category: any[]=[];//开启的设备名的列表
       const  categoryid=[];//开启的设备id的列表
 
 
       //将所有的分类信息按分类id和分类名 分别存入数组中
       for (let i=0;i<allclassinfo.length;i++){
         const record=allclassinfo[i];
-       category.push(record.equipment.name);
-       categoryid.push(record.equipmentid);
+       category.push(Tool.copy(record.equipment.name));
+       categoryid.push(Tool.copy(record.equipmentid));
        // console.log(record.equipment.name,"      name")
 
       }
+
       const  records=[];//开启的设备名的对应耗电记录  用来暂时存放某一类的耗电数据
-      const  recordssum=[];//开启的设备名的对应耗电统计   用来按分好的类存放的耗电数据
+      const  recordssum: unknown[]=[];//开启的设备名的对应耗电统计   用来按分好的类存放的耗电数据
       for (let i=0;i<categoryid.length;i++){
         console.log("i",i)
         // console.log(categoryid[i],"      categoryid[i]")
         for (let j=0;j<allinfo.length;j++){
-          console.log("j",j)
+          // console.log("j",j)
           if (allinfo[j].equipmentid==categoryid[i]){
-         records.push([allinfo[j].date,allinfo[j].data]);
-          // console.log(allinfo[j].date,"      allinfo.date")
-          // console.log(allinfo[j].data,"      allinfo.data")
+            // console.log("true")
+            // console.log(records,"      records前")
+            // console.log(allinfo[j].date,"      allinfo.date")
+            // console.log(allinfo[j].data,"      allinfo.data")
+         records.push([Tool.copy(allinfo[j].date),Tool.copy(allinfo[j].data)]);
+
+            // console.log(records,"      records后")
+
 // console.log(j)
           }
 
         }
 
         recordssum.push( Tool.copy(records));//使用深拷贝赋值 防止下面pop操作时对recordssum发生影响
-        console.log(recordssum,"      recordssum               aaaaaaaaaaaaaaaa")
-        for (let k=0;k<records.length;k++){
-         records.pop();
+        // console.log(recordssum,"      recordssum               aaaaaaaaaaaaaaaa")
+        for (let k=0;k<records.length;){//pop元素以后会让他的length变短 所以不能k++
+          // console.log(records.length,"      records.length")
+       records.pop();
+         //  console.log(k,"      k")
+         //  console.log(records.pop(),"      records               bbbbbbbbbbbbbbbbbbb")
         }
+
         // console.log(records,"      records")
-        // console.log(recordssum,"      recordssum")
+        console.log(recordssum,"      recordssum")
       }
       // console.log(category,"category")
       // console.log(categoryid,"categoryid")
       const option = {
-        title:{
-          text:'最近30天阅读量和点赞量'
+
+
+        title: {
+          text: "\n日\n\n设\n\n备\n\n耗\n\n电\n\n量\n",
+
+          left: "left",
+          top: "left",
+          textStyle: {
+            fontSize: 13,
+            color: '#4fe8d6',
+          },
+
         },
         // 提示框组件
         tooltip: {
@@ -609,6 +631,10 @@ export default defineComponent({
         },
         legend: {
           data: category,
+          textStyle: {
+            color: '#b0a7a7',
+            fontSize: 12
+          },
         },
         // 配置x轴
         xAxis: {
@@ -634,60 +660,21 @@ export default defineComponent({
           }
         },
         // 配置折线图数据
-        series: [
-          {
+        series: function(){
+          var serie=[];
+          for( var i=0;i < category.length;i++){
+            var item={
+              smooth: true, // 是否曲线
+              name: category[i],
+              type: 'line',
+              data: recordssum[i],
 
+            }
+            serie.push(item);
+          }
+          return serie;
+        }()
 
-            smooth: true, // 是否曲线
-            name: '折线图1',
-            type: 'line',
-            data: [
-              ['15:02:59', 25],
-              ['15:05:59', 30],
-              ['2023-06-16 16:00:00', 35],
-              [17, 40],
-              [18, 45],
-              [19, 50],
-              [20, 55],
-              [21, 60],
-              [22, 65],
-              [23, 70],
-              [24, 90],
-              [25, 80],
-              [26, 85],
-              [27, 90],
-              [28, 95],
-              [29, 100]
-            ],
-            symbolSize: 5,
-            symbol: 'emptyCircle',
-
-          },
-          {
-            name: '折线图2',
-            type: 'line',
-            data: [
-              [1, 2],
-              [3, 4],
-              [5, 6],
-              [7, 8],
-              [9, 10],
-              [11, 12],
-              [13, 14],
-              [15, 16],
-              [17, 18],
-              [19, 20],
-              [21, 22],
-              [23, 24],
-              [25, 26],
-              [27, 28],
-              [29, 30]
-            ],
-            symbolSize: 5,
-            symbol: 'emptyCircle',
-          },
-
-        ]
       };
 
       mychartXiJieXiaoHao.setOption(option);
