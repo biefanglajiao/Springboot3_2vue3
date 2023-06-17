@@ -97,4 +97,14 @@ public class VariationService {
 
     }
 
+//当前的今日耗电总量
+   public Variation findsuminfo(){
+        //获取今天的日期
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date datems = new Date(System.currentTimeMillis());
+        String date = formatter.format(datems);
+
+        return variationMapper.findsuminfo(date);
+    }
+
 }

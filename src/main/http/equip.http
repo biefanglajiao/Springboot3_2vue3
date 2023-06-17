@@ -10,5 +10,5 @@ GET http://localhost:8080/equipment/openequip?id=7
 GET http://localhost:8080/equipment/closeequip?id=1
 ###
 
-GET http://localhost:8080/equipment/test?equipmentid=1&date=2023-06-17
+GET http://localhost:8080/equipment/test
 

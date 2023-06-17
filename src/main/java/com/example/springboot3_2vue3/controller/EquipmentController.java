@@ -154,7 +154,7 @@ public class EquipmentController {
     @GetMapping("test")
     public CommonResp<Variation> aa(Long equipmentid) {
         CommonResp commonResp = new CommonResp<>();
-    commonResp.setContent(  variationService.selectAlltodayByIdd(equipmentid));
+    commonResp.setContent(  variationService.findsuminfo());
 
     return commonResp;
     }

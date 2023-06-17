@@ -19,6 +19,6 @@ public interface VariationMapper extends BaseMapper<Variation> {
     List<Variation> getallclass(String date);
 
     List<Variation> selectAlltodayById(Long equipmentid, String date);
-
+    Variation findsuminfo(String date);
 
 }

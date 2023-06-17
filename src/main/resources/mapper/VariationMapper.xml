@@ -33,4 +33,13 @@
         SELECT * FROM `variation` WHERE equipmentid = #{equipmentid} AND `date` like  '${date}%'
         ORDER BY  `date` desc
     </select>
+
+    <select id="findsuminfo" resultType="com.example.springboot3_2vue3.domain.equipment.Variation">
+        select SUM(`data`) AS `data` from variation where (equipmentid,`data`) in (
+            select equipmentid,max(`data`) from variation WHERE `date` like  '${date}%' 	group by equipmentid
+        );
+    </select>
+
+
+
 </mapper>
