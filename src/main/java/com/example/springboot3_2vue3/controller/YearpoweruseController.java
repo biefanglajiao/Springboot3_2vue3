@@ -37,6 +37,8 @@ public class YearpoweruseController {
         return commonResp;
 
     }
+
+    //获取今日的用电总量信息
     @GetMapping("/getpoweruse")
     public CommonResp getPoweruse(){
         CommonResp commonResp = new CommonResp<>();

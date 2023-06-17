@@ -23,10 +23,10 @@
           </a-col>
           <a-col :span="8">
             <div class="schedule_card2">
-            <a-card >
-              <div id="XJXH" style="width: 100%;height:200px;"></div>
+              <a-card>
+                <div id="XJXH" style="width: 100%;height:200px;"></div>
 
-            </a-card>
+              </a-card>
             </div>
           </a-col>
         </a-row>
@@ -149,7 +149,7 @@ import axios from "axios";
 
 import {UserOutlined, ArrowUpOutlined, ArrowDownOutlined, LikeOutlined} from '@ant-design/icons-vue';
 import Themarquee from "@/components/the-marquee.vue";
-import { Tool } from '@/utils/tool';
+import {Tool} from '@/utils/tool';
 
 declare let echarts: any;
 export default defineComponent({
@@ -292,250 +292,287 @@ export default defineComponent({
     /****
      * @description: 消耗电能表（仪表盘形式）
      */
-    const mychartsXHDN = () => {
+    const mychartsXHDN = (todaypoweruse: any) => {
       const mychartXiaoHaoDianNeng = echarts.init(document.getElementById('XiaoHaoDianNeng'));
-      const colorStyle = [[1, new echarts.graphic.LinearGradient(
-          0, 0, 1, 0, [
-            {
-              offset: 0,
-              color: 'rgba(22, 148, 255, 0.1)',
+      let value = todaypoweruse/1000;
+      let int = value.toFixed(2);
+      let num = 50 * value/100;
+
+      const  option = {
+        backgroundColor: 'rgba(255,255,255,0)',
+        title: {
+          text: '\n\n\n\n\n今日耗电总量\n{num|' + int + '}kwh',
+          x: 'center',
+          y: 'center',
+          textStyle: {
+            color:'#fff',
+            fontSize:24,
+            rich: {
+              num: {
+                fontSize: 48,
+                color: '#29EEF3',
+              }
             },
-            {
-              offset: 1,
-              color: 'rgba(63, 250, 250, 0.9)',
-            }
-          ]
-      )]]
-      const option = {
-        backgroundColor: "#0b3c66",
+          },
+        },
         series: [
-          //最外的圆圈（外层刻度）
           {
             type: 'gauge',
-            center: [
-              '50%',
-              '55%'
-            ],
-            radius: '90%',
-            startAngle: 220,
-            endAngle: -40,
-            min: 0,
-            max: 100,
-            axisLine: {
-              show: true,
-              lineStyle: {
-                width: 3,
-                color: colorStyle
-              }
-            },
-            axisLabel: {
-              show: 0
-            },
-            axisTick: {
-              lineStyle: {
-                color: 'rgba(63,250,250,0.7)',
-                width: 1
-              },
-              length: 5
-            },
-            splitLine: {
-              length: 8,
-              lineStyle: {
-                color: 'rgba(63,250,250,0.8)',
-                width: 3
-              }
-            },
-          },
-          // 外围刻度（第二层）
-          {
-            type: 'gauge',
-            center: [
-              '50%',
-              '55%'
-            ],
-            radius: '82%', // 1行3个
-            min: 0,
-            max: 100,
-            startAngle: 220,
-            endAngle: -40,
-            axisLine: { // 坐标轴线
-              lineStyle: { // 属性lineStyle控制线条样式
-                color: colorStyle,
-                fontSize: 20,
-                width: 2,
-                opacity: 1, //刻度背景宽度
-              }
-            },
-            splitLine: {
-              show: false
-            },
-            axisLabel: {
-              show: false
-            },
-            axisTick: {
-              show: false
-            },
-          },
-          // 外围刻度（中间有背景颜色那块，包括里面的刻度）
-          {
-            type: 'gauge',
-            center: [
-              '50%',
-              '55%'
-            ],
-            radius: '82%', // 1行3个
-            splitNumber: 10,
-            min: 0,
-            max: 100,
-            startAngle: 220,
-            endAngle: -40,
-            //分隔线样式
-            axisTick: {
-              lineStyle: {
-                color: 'rgba(63,250,250,0.8)',
-                width: 1
-              },
-              length: 5
-            },
-            //刻度样式
-            axisLine: {
-              show: true,
-              lineStyle: {
-                width: 100,
-                color: colorStyle
-              }
-            },
-            //整数分隔线
-            splitLine: {
-              show: true,
-              length: 7,
-              lineStyle: {
-                color: 'rgba(63, 250, 250, 0.8)',
-                width: 2
-              }
-            },
-            //刻度数字
-            axisLabel: {
-              show: true,
-              distance: 1,
-              textStyle: {
-                color: 'rgba(63, 250, 250, 0.8)',
-                fontSize: '10',
-                fontWeight: 'bold'
-              }
-            },
-          },
-          //从外数第三条线
-          {
-            type: 'gauge',
-            center: [
-              '50%',
-              '55%'
-            ],
-            radius: '65%', // 1行3个
-            splitNumber: 10,
-            min: 0,
-            max: 100,
-            startAngle: 220,
-            endAngle: -40,
-            axisLine: { // 坐标轴线
-              lineStyle: { // 属性lineStyle控制线条样式
-                color: colorStyle,
-                fontSize: 5,
-                width: 2,
-                opacity: 1, //刻度背景宽度
-              }
-            },
-            splitLine: {
-              show: false
-            },
-            axisLabel: {
-              show: false
+            radius: '85%',
+            startAngle: 180,
+            endAngle: 0,
+            clockwise: true,
+            splitNumber: 30,
+            zlevel: 10,
+            detail: {
+              offsetCenter: [0, -20],
+              formatter: ' ',
             },
             pointer: {
-              show: false
+              show: true,
             },
             axisTick: {
-              show: false
+              show: false,
             },
-            detail: {
-              show: 0
+            axisLine: {
+              show: false,
+              lineStyle: {
+                color: [[
+                  1, new echarts.graphic.LinearGradient(
+                      0, 0, 1, 0, [{
+                        offset: 0,
+                        color: '#8520DA',
+                      },
+                        {
+                          offset: 1,
+                          color: '#12D9FD',
+                        }
+                      ]
+                  )
+                ],],
+                width: 20,
+              },
+            },
+            splitLine: {
+              show: true,
+              length: 20,
+              lineStyle: {
+                color: '#012c93',
+                width: 4,
+              },
+            },
+            axisLabel: {
+              show: false,
+            },
+            data:{
+              value: 55.33
             }
           },
-          // 内侧指针、数值显示
           {
-            name: '',
-            center: [
-              '50%',
-              '50%'
-            ],
-            type: 'gauge',
-            radius: '74%', // 1行3个
-            splitNumber: 10,
-            min: 0,
-            max: 100,
-            startAngle: 220,
-            endAngle: -40,
-            axisLine: {
-              show: true,
-              lineStyle: {
-                width: 50,
-                color: [
-                  [
-                    1,
-                    new echarts.graphic.LinearGradient(
-                        0, 0, 1, 0, [
-                          {
-                            offset: 0,
-                            color: 'rgba(0, 199, 187, 0)',
-                          },
-                          {
-                            offset: 1,
-                            color: 'rgba(0, 199, 187, 0)',
-                          }
-                        ]
-                    )
-                  ],
-                ]
-              }
+            type: 'pie',
+            name: '内层细圆环',
+            radius: ['79%', '85%'],
+            hoverAnimation: false,
+            zlevel: 2,
+            clockWise: true,
+            startAngle: 180,
+            itemStyle: {
+              normal: {
+                color: '#09dafd',
+              },
             },
-            axisTick: {
-              show: 0,
-            },
-            splitLine: {
-              show: 0,
-            },
-            axisLabel: {
-              show: 0
-            },
-            pointer: {
-              show: true,
-              length: '102%',
-              width: 8,
-              itemStyle: {
-                color: colorStyle
-              }
+            label: {
+              show: false,
             },
             data: [
               {
-                value: 22.8,
-                name: '今日消耗电能\nKWh',
-                title: {
-                  offsetCenter: ['0%', '50%'],
-                  fontSize: 10,
-                  color: '#4fe8d6'
+                value: num,
+                itemStyle: {
+                  normal: {
+                    color: new echarts.graphic.LinearGradient(
+                        0, 0, 1, 0, [{
+                          offset: 0,
+                          color: '#8520DA',
+                        },
+                          {
+                            offset: 1,
+                            color: '#12D9FD',
+                          }
+                        ]),
+                  },
                 },
-                detail: {
-                  offsetCenter: ['0%', '20%'],
-                  valueAnimation: true,
-                  fontSize: 20,
-                  color: '#4fe8d6'
-                }
-              }
-            ]
-          }
-        ]
+              },
+              {
+                value: 50-num,
+                itemStyle: {
+                  normal: {
+                    color: '#21449B',
+                  },
+                },
+              },
+              {
+                value: 50,
+                itemStyle: {
+                  normal: {
+                    label: {
+                      show: false,
+                    },
+                    labelLine: {
+                      show: false,
+                    },
+                    color: 'rgba(0,0,0,0)',
+                    borderWidth: 0,
+                  },
+                  emphasis: {
+                    color: 'rgba(0,0,0,0)',
+                    borderWidth: 0,
+                  },
+                },
+              },
+            ],
+          },
+          {
+            type: 'pie',
+            name: '内层细圆环',
+            radius: ['87%', '88%'],
+            hoverAnimation: false,
+            zlevel: 2,
+            clockWise: true,
+            startAngle: 180,
+            itemStyle: {
+              normal: {
+                color: '#09dafd',
+              },
+            },
+            label: {
+              show: false,
+            },
+            data: [
+              {
+                value: 50,
+                itemStyle: {
+                  normal: {
+                    color: '#09dafd',
+                  },
+                },
+              },
+              {
+                value: 50,
+                itemStyle: {
+                  normal: {
+                    label: {
+                      show: false,
+                    },
+                    labelLine: {
+                      show: false,
+                    },
+                    color: 'rgba(0,0,0,0)',
+                    borderWidth: 0,
+                  },
+                  emphasis: {
+                    color: 'rgba(0,0,0,0)',
+                    borderWidth: 0,
+                  },
+                },
+              },
+            ],
+          },
+          {
+            type: 'pie',
+            name: '内层细圆环',
+            radius: ['92%', '94%'],
+            hoverAnimation: false,
+            zlevel: 2,
+            clockWise: true,
+            startAngle: '180',
+            itemStyle: {
+              normal: {
+                color: '#07b6e3',
+              },
+            },
+            label: {
+              show: false,
+            },
+            data: [
+              {
+                value: 50,
+                itemStyle: {
+                  normal: {
+                    color: '#07b6e3',
+                  },
+                },
+              },
+              {
+                value: 50,
+                itemStyle: {
+                  normal: {
+                    label: {
+                      show: false,
+                    },
+                    labelLine: {
+                      show: false,
+                    },
+                    color: 'rgba(0,0,0,0)',
+                    borderWidth: 0,
+                  },
+                  emphasis: {
+                    color: 'rgba(0,0,0,0)',
+                    borderWidth: 0,
+                  },
+                },
+              },
+            ],
+          },
+          {
+            type: 'pie',
+            name: '内层环',
+            radius: ['80%', '100%'],
+            startAngle: '180',
+            hoverAnimation: false,
+            clockWise: true,
+            zlevel: 0,
+            itemStyle: {
+              normal: {
+                color: '#012c93',
+              },
+            },
+            label: {
+              show: false,
+            },
+            data: [
+              {
+                value: 50,
+                itemStyle: {
+                  normal: {
+                    color: '#012c93',
+                  },
+                },
+              },
+              {
+                value: 50,
+                itemStyle: {
+                  normal: {
+                    label: {
+                      show: false,
+                    },
+                    labelLine: {
+                      show: false,
+                    },
+                    color: 'rgba(0,0,0,0)',
+                    borderWidth: 0,
+                  },
+                  emphasis: {
+                    color: 'rgba(0,0,0,0)',
+                    borderWidth: 0,
+                  },
+                },
+              },
+            ],
+          },
+        ],
       };
+
+
       mychartXiaoHaoDianNeng.setOption(option);
     }
 
@@ -543,36 +580,36 @@ export default defineComponent({
     /***
      * @description: 各个设备的消耗：
      */
-    const mychartXJXH = (allclassinfo:any,allinfo:any) => {
-      console.log(allclassinfo,"allclassinfo")
-      console.log(allinfo,"allinfo")
+    const mychartXJXH = (allclassinfo: any, allinfo: any) => {
+      console.log(allclassinfo, "allclassinfo")
+      console.log(allinfo, "allinfo")
       const mychartXiJieXiaoHao = echarts.init(document.getElementById('XJXH'));
-      const  category: any[]=[];//开启的设备名的列表
-      const  categoryid=[];//开启的设备id的列表
+      const category: any[] = [];//开启的设备名的列表
+      const categoryid = [];//开启的设备id的列表
 
 
       //将所有的分类信息按分类id和分类名 分别存入数组中
-      for (let i=0;i<allclassinfo.length;i++){
-        const record=allclassinfo[i];
-       category.push(Tool.copy(record.equipment.name));
-       categoryid.push(Tool.copy(record.equipmentid));
-       // console.log(record.equipment.name,"      name")
+      for (let i = 0; i < allclassinfo.length; i++) {
+        const record = allclassinfo[i];
+        category.push(Tool.copy(record.equipment.name));
+        categoryid.push(Tool.copy(record.equipmentid));
+        // console.log(record.equipment.name,"      name")
 
       }
 
-      const  records=[];//开启的设备名的对应耗电记录  用来暂时存放某一类的耗电数据
-      const  recordssum: unknown[]=[];//开启的设备名的对应耗电统计   用来按分好的类存放的耗电数据
-      for (let i=0;i<categoryid.length;i++){
-        console.log("i",i)
+      const records = [];//开启的设备名的对应耗电记录  用来暂时存放某一类的耗电数据
+      const recordssum: unknown[] = [];//开启的设备名的对应耗电统计   用来按分好的类存放的耗电数据
+      for (let i = 0; i < categoryid.length; i++) {
+        console.log("i", i)
         // console.log(categoryid[i],"      categoryid[i]")
-        for (let j=0;j<allinfo.length;j++){
+        for (let j = 0; j < allinfo.length; j++) {
           // console.log("j",j)
-          if (allinfo[j].equipmentid==categoryid[i]){
+          if (allinfo[j].equipmentid == categoryid[i]) {
             // console.log("true")
             // console.log(records,"      records前")
             // console.log(allinfo[j].date,"      allinfo.date")
             // console.log(allinfo[j].data,"      allinfo.data")
-         records.push([Tool.copy(allinfo[j].date),Tool.copy(allinfo[j].data)]);
+            records.push([Tool.copy(allinfo[j].date), Tool.copy(allinfo[j].data)]);
 
             // console.log(records,"      records后")
 
@@ -581,17 +618,17 @@ export default defineComponent({
 
         }
 
-        recordssum.push( Tool.copy(records));//使用深拷贝赋值 防止下面pop操作时对recordssum发生影响
+        recordssum.push(Tool.copy(records));//使用深拷贝赋值 防止下面pop操作时对recordssum发生影响
         // console.log(recordssum,"      recordssum               aaaaaaaaaaaaaaaa")
-        for (let k=0;k<records.length;){//pop元素以后会让他的length变短 所以不能k++
+        for (let k = 0; k < records.length;) {//pop元素以后会让他的length变短 所以不能k++
           // console.log(records.length,"      records.length")
-       records.pop();
-         //  console.log(k,"      k")
-         //  console.log(records.pop(),"      records               bbbbbbbbbbbbbbbbbbb")
+          records.pop();
+          //  console.log(k,"      k")
+          //  console.log(records.pop(),"      records               bbbbbbbbbbbbbbbbbbb")
         }
 
         // console.log(records,"      records")
-        console.log(recordssum,"      recordssum")
+        console.log(recordssum, "      recordssum")
       }
       // console.log(category,"category")
       // console.log(categoryid,"categoryid")
@@ -599,7 +636,7 @@ export default defineComponent({
 
 
         title: {
-          text: "\n日\n\n设\n\n备\n\n耗\n\n电\n\n量\n",
+          text: "\n日\n\n设\n\n备\n\n耗\n\n电\n\n量\nkw/h",
 
           left: "left",
           top: "left",
@@ -660,10 +697,10 @@ export default defineComponent({
           }
         },
         // 配置折线图数据
-        series: function(){
-          var serie=[];
-          for( var i=0;i < category.length;i++){
-            var item={
+        series: function () {
+          var serie = [];
+          for (var i = 0; i < category.length; i++) {
+            var item = {
               smooth: true, // 是否曲线
               name: category[i],
               type: 'line',
@@ -768,7 +805,7 @@ export default defineComponent({
               rich: {
                 a: {
                   fontSize: 20,
-                  color: 'rgba(4,127,171,.4)',
+                  color: 'rgba(5,172,231,0.67)',
                   padding: [0, 0, 25, 0],
                 },
                 b: {
@@ -968,36 +1005,53 @@ export default defineComponent({
       axios.get("/variation/getallclass").then((res) => {
         const data = res.data;
         if (data.success) {
- const allclassinfo=data.content;
-          console.log("分类数据 ：                                  ：" , allclassinfo)
+          const allclassinfo = data.content;
+          console.log("分类数据 ：                                  ：", allclassinfo)
 
           allandname(allclassinfo)
         } else {
-          console.log("分类数据 ：                                  ：" , data)
+          console.log("分类数据 ：                                  ：", data)
         }
       })
     }
     //获取日均用电数据
-    const allandname = (allclassinfo:any) => {
+    const allandname = (allclassinfo: any) => {
       axios.get("/variation/allandname").then((res) => {
         const data = res.data;
         if (data.success) {
-const allInfo=data.content;
-          console.log("全部数据  ：                                  ：" , allInfo)
-          mychartXJXH(allclassinfo,allInfo)
+          const allInfo = data.content;
+          console.log("全部数据  ：                                  ：", allInfo)
+          mychartXJXH(allclassinfo, allInfo)
 
 
         } else {
-          console.log("全部数据                  ：" , data)
+          console.log("全部数据                  ：", data)
         }
       })
 
     }
     //____________________________________________________________________获取日耗电量信息结束__________________________________________
+    //___________________________________________________________________获取日总耗电量信息开始__________________________________________
+    const todaypoweruse = ref();
+    const getpoweruse = () => {
+      axios.get("/yearpoweruse/getpoweruse").then((res) => {
+        const data = res.data;
+        if (data.success) {
+          todaypoweruse.value = data.content;
+          mychartsXHDN(todaypoweruse.value);
+        } else {
+          console.log("全部数据                  ：", data)
+        }
+      })
+
+    }
+
+
+    //__________________________________________获取日总耗电量信息结束__________________________________________
     onMounted(() => {
       getStatistic();
       // testEcharts();
-      mychartsXHDN();
+
 
       mychartRL();
       getOpenAndSum();
@@ -1010,6 +1064,8 @@ const allInfo=data.content;
       //----_获取日耗电量信息
 
       getallclass();
+      //---获取日总耗电量信息
+      getpoweruse();
     });
 
     return {
