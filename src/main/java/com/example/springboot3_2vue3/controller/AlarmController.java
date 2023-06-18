@@ -25,6 +25,13 @@ public class AlarmController {
         commonResp.setContent(alarmService.selectAllinfo());
         return commonResp;
     }
+    @GetMapping("/selectAllNoreadinfo")
+    public CommonResp    selectAllNoreadinfo (){
+        CommonResp commonResp=new CommonResp();
+        commonResp.setContent(alarmService.selectAllNoreadinfo());
+        return commonResp;
+    }
+
     @GetMapping("/read/{id}")
     public CommonResp selectAllinfo (@PathVariable  Long id){
         CommonResp commonResp=new CommonResp();

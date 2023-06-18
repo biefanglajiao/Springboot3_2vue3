@@ -40,6 +40,25 @@ public class AlarmService {
       return  alarmResps;
     }
 
+    public List<AlarmResp>     selectAllNoreadinfo(){
+        List<Alarm> alarms = alarmMapper.selectAllNoreadinfo();
+
+        List<AlarmResp> alarmResps = new ArrayList<>();
+        for (Alarm alarm : alarms) {
+            AlarmResp alarmResp = new AlarmResp();
+            alarmResp.setId(alarm.getId());
+            alarmResp.setDescription(alarm.getDescription());
+            alarmResp.setDate(alarm.getDate());
+            alarmResp.setEquipmentid(alarm.getEquipmentid());
+            alarmResp.setRead(alarm.isRead());
+            alarmResp.setLevel(alarm.getLevel());
+            alarmResp.setName(alarm.getEquipment().getName());
+            alarmResps.add(alarmResp);
+        }
+      return  alarmResps;
+    }
+
+
     public int read(Long id){
         UpdateWrapper<Alarm> updateWrapper = new UpdateWrapper();
         updateWrapper.eq("id", id);

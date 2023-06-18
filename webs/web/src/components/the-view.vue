@@ -49,7 +49,7 @@
                 <div style="width: 100%;height:647px;">
                   <a-row>
                     <a-col :span="24">
-                      <a-card style="width: 100%;height:400px;">
+                      <a-card style="width: 100%;height:420px;">
                         <TheMarqueealarm></TheMarqueealarm>
                         <TheMarqueedaily></TheMarqueedaily>
                       </a-card>
@@ -58,11 +58,11 @@
                   <a-row>
                     <a-col :span="9">
                       <a-card color="red">
-                        <div id="ZSBSZYXS" style="width: 100%;height:200%;"></div>
+                        <div id="ZSBSZYXS" style="width: 100%;height:170px;"></div>
 
                       </a-card>
                     </a-col>
-                    <a-col :span="15" style="width: 100%;height:248px;">
+                    <a-col :span="15" style="width: 100%;height:170px;">
                       <div class="schedule_card2">
                         <a-card>
 
@@ -216,7 +216,7 @@ export default defineComponent({
           y: 'center',
           textStyle: {
             color:'#fff',
-            fontSize:24,
+            fontSize:15,
             rich: {
               num: {
                 fontSize: 48,

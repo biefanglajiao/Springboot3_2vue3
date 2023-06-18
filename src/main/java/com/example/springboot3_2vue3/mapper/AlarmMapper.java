@@ -14,4 +14,6 @@ import java.util.List;
 public interface AlarmMapper extends BaseMapper<Alarm> {
 
     List<Alarm> selectAllinfo();
+
+    List<Alarm> selectAllNoreadinfo();
 }

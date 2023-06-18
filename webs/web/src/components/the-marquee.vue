@@ -1,7 +1,7 @@
-<template style="width: 100%;height:248px;">
+<template style="width: 100%;height:148px;">
 
-  <a-carousel autoplay>
-    <div class="card1" style="width: 100%;height:248px;" v-for="item in templists" :key="item.id">
+  <a-carousel autoplay dot-position="left">
+    <div class="card1" style="width: 100%;height:148px;" v-for="item in templists" :key="item.id">
 
       <a-card>
 
@@ -105,7 +105,7 @@ export default defineComponent({
 /* For demo */
 .ant-carousel :deep(.slick-slide) {
   text-align: center;
-  height: 200px;
+  height: 170px;
   line-height: 160px;
   background: #364D790D;
   overflow: hidden;

@@ -1,18 +1,13 @@
 <template style="width: 100%;height:248px;">
 
-  <a-carousel autoplay>
+  <a-carousel autoplay dot-position="left">
     <div class="card1" style="width: 100%;height:248px;" v-for="item in templists" :key="item.id">
 
-      <a-card>
+      <a-card size="small" title="设备未读告警">
 
-        <h1>当前设备为：{{ item.name }}</h1>
-        <h3>位置：{{ item.location }}</h3>
-        <h2 class="aaa" v-if="item.classes&&item.temperatures>28 ">当前温度为：{{ item.temperatures }}℃</h2>
-        <h2 v-else-if="item.classes&&item.temperatures<=28">当前温度为：{{ item.temperatures }}℃</h2>
-
-
-        <h2 class="aaa" v-else-if="!item.classes&&item.temperatures>70 ">当前湿度为：{{ item.temperatures }}%</h2>
-        <h2 v-else>当前湿度为：{{ item.temperatures }}%</h2>
+        <h1>告警设备为：{{ item.name }}</h1>
+        <h3>描述：{{ item.description}}</h3>
+      <h2 class="aaa">等级：{{ item.level}}级</h2>
 
 
       </a-card>
@@ -58,27 +53,22 @@ export default defineComponent({
   setup() {
 
     //============================================================================================================================================================
-    const aa = ref();
-    const a = () => {
-      axios.get("/a/a").then((res) => {
-        // console.log(res.data.content,"aaaaa");
-        aa.value = res.data.content;
-      });
 
-    };
     const templists = ref([
       {
         id: "404",
-        name: '无检测器启动',
-        location: "无",
-        classes: "",
-        temperatures: "",
+        name: '无设备',
+        description: "无",
+        date: "2023-XX-XX X:X:X",
+        equipmentid: 404,
+        read: false,
+        level: 0,
       },
     ])//给他赋初值
 
 
     const tempall = () => {
-      axios.get("/equipment/tempall").then((res) => {
+      axios.get("/alarm/selectAllNoreadinfo").then((res) => {
         // console.log(Tool.isEmpty(templists.value), "              对比")
         const data = res.data;
         if (data.success && !Tool.isEmpty(templists.value)) {
@@ -90,10 +80,10 @@ export default defineComponent({
     }
     onMounted(() => {
       tempall()
-      a();
+
     });
     return {
-      aa,
+
       templists,
     }
 
@@ -105,14 +95,16 @@ export default defineComponent({
 /* For demo */
 .ant-carousel :deep(.slick-slide) {
   text-align: center;
-  height: 200px;
+  height: 180px;
   line-height: 160px;
   background: #364D790D;
   overflow: hidden;
 }
 
 .ant-carousel :deep(.slick-slide div) {
-  color: #1185cc;
+  color: #f80000;
+  font-size: 15px;
+  /*颜色*/
 }
 
 .ant-carousel :deep(.slick-slide .aaa) {
@@ -121,10 +113,3 @@ export default defineComponent({
 
 </style>
 
-<style lang="less" scoped>
-.card1 {
-  :deep( .ant-card ) {
-    background: rgba(255, 255, 255, 0.08);
-  }
-}
-</style>

@@ -1,18 +1,14 @@
 <template style="width: 100%;height:248px;">
 
-  <a-carousel autoplay>
+  <a-carousel autoplay dot-position="left">
     <div class="card1" style="width: 100%;height:248px;" v-for="item in templists" :key="item.id">
 
-      <a-card>
+      <a-card size="small" title="设备使用日志">
 
-        <h1>当前设备为：{{ item.name }}</h1>
-        <h3>位置：{{ item.location }}</h3>
-        <h2 class="aaa" v-if="item.classes&&item.temperatures>28 ">当前温度为：{{ item.temperatures }}℃</h2>
-        <h2 v-else-if="item.classes&&item.temperatures<=28">当前温度为：{{ item.temperatures }}℃</h2>
-
-
-        <h2 class="aaa" v-else-if="!item.classes&&item.temperatures>70 ">当前湿度为：{{ item.temperatures }}%</h2>
-        <h2 v-else>当前湿度为：{{ item.temperatures }}%</h2>
+        <h1>设备名：{{ item.name }}</h1>
+        <h1>开启时间：{{ item.begindate }}</h1>
+        <h1>关闭时间：{{ item.enddate }}</h1>
+       <h2 >本次耗电：{{ item.powerconsumption }}wh</h2>
 
 
       </a-card>
@@ -20,22 +16,7 @@
     </div>
 
   </a-carousel>
-  <!--  </template>-->
 
-  <!--  <a-carousel arrows>-->
-  <!--    <template #prevArrow>-->
-  <!--      <div class="custom-slick-arrow" style="left: 10px; z-index: 1">-->
-  <!--        <left-circle-outlined />-->
-  <!--      </div>-->
-  <!--    </template>-->
-  <!--    <template #nextArrow>-->
-  <!--      <div class="custom-slick-arrow" style="right: 10px" >-->
-  <!--        <right-circle-outlined />-->
-  <!--      </div>-->
-  <!--    </template>-->
-
-  <!-- -->
-  <!--  </a-carousel>-->
 </template>
 <script lang="ts">
 import {LeftCircleOutlined, RightCircleOutlined} from '@ant-design/icons-vue';
@@ -58,27 +39,21 @@ export default defineComponent({
   setup() {
 
     //============================================================================================================================================================
-    const aa = ref();
-    const a = () => {
-      axios.get("/a/a").then((res) => {
-        // console.log(res.data.content,"aaaaa");
-        aa.value = res.data.content;
-      });
 
-    };
+
+
     const templists = ref([
       {
-        id: "404",
-        name: '无检测器启动',
-        location: "无",
-        classes: "",
-        temperatures: "",
+        begindate: "2023-X-X XX:XX:XX",
+        enddate: "2023-X-X XX:XX:XX",
+        powerconsumption: 0.0,
+        name: "无设备使用日志"
       },
     ])//给他赋初值
 
 
     const tempall = () => {
-      axios.get("/equipment/tempall").then((res) => {
+      axios.get("/deviceuse2/selectAllinfo").then((res) => {
         // console.log(Tool.isEmpty(templists.value), "              对比")
         const data = res.data;
         if (data.success && !Tool.isEmpty(templists.value)) {
@@ -90,10 +65,9 @@ export default defineComponent({
     }
     onMounted(() => {
       tempall()
-      a();
+
     });
     return {
-      aa,
       templists,
     }
 
@@ -112,7 +86,8 @@ export default defineComponent({
 }
 
 .ant-carousel :deep(.slick-slide div) {
-  color: #1185cc;
+  color: #003b73; /*标题颜色*/
+  /*color: #1185cc;*/
 }
 
 .ant-carousel :deep(.slick-slide .aaa) {

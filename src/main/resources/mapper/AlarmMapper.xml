@@ -13,7 +13,17 @@
         WHERE  a.equipmentid = b.id
         ORDER BY a.date DESC
 
+    </select> <select id="selectAllNoreadinfo" resultMap="temp">
+
+        SELECT a.*, b.name
+        FROM `alarm` a,
+             equipment b
+        WHERE  a.equipmentid = b.id and a.read = 0
+        ORDER BY a.date DESC
+
     </select>
+
+
 
     <resultMap id="temp" type="com.example.springboot3_2vue3.domain.Alarm">
         <id property="id" column="id"></id>
