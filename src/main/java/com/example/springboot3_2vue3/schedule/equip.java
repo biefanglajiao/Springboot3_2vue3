@@ -1,11 +1,10 @@
 package com.example.springboot3_2vue3.schedule;
 
+import com.example.springboot3_2vue3.Utils.SnowFlake;
+import com.example.springboot3_2vue3.domain.Alarm;
 import com.example.springboot3_2vue3.domain.equipment.Variation;
 import com.example.springboot3_2vue3.resp.DeviceusePowerResp;
-import com.example.springboot3_2vue3.service.Deviceuse2Service;
-import com.example.springboot3_2vue3.service.DeviceuseService;
-import com.example.springboot3_2vue3.service.VariationService;
-import com.example.springboot3_2vue3.service.YearpoweruseService;
+import com.example.springboot3_2vue3.service.*;
 import jakarta.annotation.Resource;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -31,7 +30,10 @@ public class equip {
     private YearpoweruseService yearpoweruseService;
     @Resource
     private Variation variation;
-
+    @Resource
+    private SnowFlake snowFlake;
+@Resource
+private AlarmService alarmService;
 
     //每小时执行一次
     @Scheduled(cron = "0 0 0/1 * * ?")
@@ -75,7 +77,19 @@ public class equip {
                Variation variation1= variationService.findsuminfo();
               yearpoweruseService.InsertOrUpdatePoweruse(variation1.getData()/1000);//wh=>kwh
 
+//__________________________________________________是否有长时间开着的设备=》告警_____________________________________________________
+                //如果开着的时间超过了24小时就报警
+                if (opendeTimeHour > 8) {
+                    //报警
+                    Alarm alarm=new Alarm();
 
+                    alarm.setId(snowFlake.nextId());
+                    alarm.setDescription("设备已经连续使用了超过"+opendeTimeHour+"小时.请检查设备是否正常,并及时关闭设备");
+                    alarm.setEquipmentid(list.getEquipmentid());
+                    alarm.setRead(false);
+                    alarm.setLevel(1);
+                    alarmService.addalarm(alarm);
+                }
             }
         }
 

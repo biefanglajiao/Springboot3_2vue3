@@ -4,7 +4,7 @@ GET http://localhost:8080/equipment/tempall
 GET http://localhost:8080/equipment/equipopen
 ###
 
-GET http://localhost:8080/equipment/openequip?id=8
+GET http://localhost:8080/equipment/openequip?id=1
 ###
 
 GET http://localhost:8080/equipment/closeequip?id=8

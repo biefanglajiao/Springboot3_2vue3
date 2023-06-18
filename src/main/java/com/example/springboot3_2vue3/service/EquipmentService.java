@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.example.springboot3_2vue3.domain.equipment.Equipment;
 import com.example.springboot3_2vue3.mapper.equipmapper.Equipmapper;
 import jakarta.annotation.Resource;
+import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +20,8 @@ import java.util.List;
 public class EquipmentService {
     @Resource
     private Equipmapper equipmapper;
+    @Resource
+    private RocketMQTemplate rocketMQTemplate;
 
 
     public Long finsumnumber(){
@@ -42,6 +45,7 @@ public class EquipmentService {
         UpdateWrapper<Equipment> updateWrapper = new UpdateWrapper();
         updateWrapper.eq("id", id);
         updateWrapper.set("state",  1);
+        rocketMQTemplate.convertAndSend("VOTE_TOPIC","您有一台设备已开启");
       return equipmapper.update(null, updateWrapper);
 
 //        Equipment equipment=new Equipment();
@@ -55,7 +59,7 @@ public class EquipmentService {
         UpdateWrapper<Equipment> updateWrapper = new UpdateWrapper();
         updateWrapper.eq("id", id);
         updateWrapper.set("state",  0);
-
+        rocketMQTemplate.convertAndSend("VOTE_TOPIC","您有一台设备已关闭");
      if (equipmapper.update(null, updateWrapper)==1){
          return true;
      }else
