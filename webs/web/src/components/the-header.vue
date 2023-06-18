@@ -13,8 +13,8 @@
         <a-menu-item key="home" class="menu-left">
           <router-link to="/home">首页</router-link>
         </a-menu-item>
-        <a-menu-item key="admin_book" v-if="user.id">
-          <router-link to="/admin/ebook">电子书管理</router-link>
+        <a-menu-item key="diary" v-if="user.id">
+          <router-link to="/diary">日志</router-link>
         </a-menu-item>
         <a-menu-item key="admin_user" v-if="user.id">
           <router-link to="/admin/user">用户管理</router-link>

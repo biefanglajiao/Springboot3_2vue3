@@ -33,10 +33,10 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import(/* webpackChunkName: "about" */ '../views/about.vue')
   },
   {
-    path: '/admin/ebook',
-    name: 'AdminEbook',
+    path: '/diary',
+    name: 'Diary',
     meta:{loginRequire:true},
-    component: () => import(/* webpackChunkName: "about" */ '../views/admin/admin_ebook.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/diary.vue')
   } ,
   {
     path: '/admin/category',

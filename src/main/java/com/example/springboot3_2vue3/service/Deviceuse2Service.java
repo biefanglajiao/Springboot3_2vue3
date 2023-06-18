@@ -49,6 +49,7 @@ List<Deviceuse2Resp> deviceuse2RespLists = new ArrayList<>();
             deviceuse2Resp.setBegindate(deviceuse2.getBegindate());
             deviceuse2Resp.setEnddate(timeUtils.getTimeStampString(deviceuse2.getEnddate(),"yyyy-MM-dd HH:mm:ss",0));
             deviceuse2Resp.setPowerconsumption(deviceuse2.getPowerconsumption());
+            deviceuse2Resp.setName(deviceuse2.getEquipment().getName());
             deviceuse2RespLists.add(deviceuse2Resp);
      }
      return  deviceuse2RespLists;

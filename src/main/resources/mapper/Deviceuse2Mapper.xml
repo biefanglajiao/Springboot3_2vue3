@@ -8,10 +8,27 @@
         ORDER BY  begindate desc
     </select>
 
-<select id="selectAllinfo" resultType="com.example.springboot3_2vue3.domain.equipment.Deviceuse2">
+<select id="selectAllinfo" resultMap="temp">
 
-    SELECT * FROM `deviceuse2` WHERE enddate IS NOT NULL
+    SELECT a.*,b.name FROM `deviceuse2` a ,equipment b WHERE enddate IS NOT NULL AND a.equipmentid=b.id ORDER BY a.enddate DESC
+
 </select>
+
+    <resultMap id="temp" type="com.example.springboot3_2vue3.domain.equipment.Deviceuse2">
+        <id property="id" column="id"></id>
+        <result property="begindate" column="begindate"></result>
+        <result property="enddate" column="enddate"></result>
+        <result property="equipmentid" column="equipmentid"></result>
+        <result property="powerconsumption" column="powerconsumption"></result>
+        <association property="equipment" column="id" javaType="com.example.springboot3_2vue3.domain.equipment.Equipment">
+            <result property="id" column="id"></result>
+            <result property="name" column="name"></result>
+            <result property="power" column="power"></result>
+            <result property="state" column="state"></result>
+            <result property="location" column="location"></result>
+        </association>
+
+    </resultMap>
 
 
 </mapper>

@@ -1,5 +1,6 @@
 package com.example.springboot3_2vue3.domain.equipment;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +20,8 @@ public class Deviceuse2 {
     private Long enddate;   //关闭时间  后台传
     private float powerconsumption;//每次开启关闭的耗电量
     private Long equipmentid;
+    @TableField(exist = false)
+    private Equipment equipment;
 
     @Override
     public String toString() {
@@ -28,7 +31,16 @@ public class Deviceuse2 {
                 ", enddate=" + enddate +
                 ", powerconsumption=" + powerconsumption +
                 ", equipmentid=" + equipmentid +
+                ", equipment=" + equipment +
                 '}';
+    }
+
+    public Equipment getEquipment() {
+        return equipment;
+    }
+
+    public void setEquipment(Equipment equipment) {
+        this.equipment = equipment;
     }
 
     public Long getEquipmentid() {

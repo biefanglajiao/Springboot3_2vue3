@@ -7,7 +7,7 @@ import java.util.Date;
 
 /**
  * @Author: 常兆海
- * @Description:  返回String格式的endate时间数据
+ * @Description:  返回String格式的endate时间数据  并添加name属性
  * @DateTime: 2023/6/16 8:21
  **/
 //设备开启时间表
@@ -20,6 +20,27 @@ public class Deviceuse2Resp {
     private String enddate;   //关闭时间  后台传
     private float powerconsumption;//每次开启关闭的耗电量
     private Long equipmentid;
+    private  String name;
+
+    @Override
+    public String toString() {
+        return "Deviceuse2Resp{" +
+                "id=" + id +
+                ", begindate=" + begindate +
+                ", enddate='" + enddate + '\'' +
+                ", powerconsumption=" + powerconsumption +
+                ", equipmentid=" + equipmentid +
+                ", name='" + name + '\'' +
+                '}';
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public Long getEquipmentid() {
         return equipmentid;
@@ -43,17 +64,6 @@ public class Deviceuse2Resp {
 
     public void setBegindate(Date begindate) {
         this.begindate = begindate;
-    }
-
-    @Override
-    public String toString() {
-        return "Deviceuse2Resp{" +
-                "id=" + id +
-                ", begindate=" + begindate +
-                ", enddate='" + enddate + '\'' +
-                ", powerconsumption=" + powerconsumption +
-                ", equipmentid=" + equipmentid +
-                '}';
     }
 
     public String getEnddate() {
