@@ -1,6 +1,10 @@
 package com.example.springboot3_2vue3.domain.equipment;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @Author: 常兆海
@@ -11,6 +15,10 @@ import org.springframework.stereotype.Component;
 public class Equipment {
     private Long id;
     private String name;
+    private float power;
+    private String location;
+    private boolean state;
+
 
     @Override
     public String toString() {
@@ -30,10 +38,6 @@ public class Equipment {
     public void setPower(float power) {
         this.power = power;
     }
-
-    private float power;
-    private String location;
-    private boolean state;
 
     public String getName() {
         return name;

@@ -2,28 +2,31 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.1.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
+
     <groupId>com.example</groupId>
     <artifactId>Springboot3_2vue3</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>Springboot3_2vue3</name>
     <description>Springboot3_2vue3</description>
+
     <properties>
         <java.version>17</java.version>
     </properties>
+
     <dependencies>
-        <!--       mybatisplus-->
+        <!--mybatisplus-->
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
             <version>3.5.3.1</version>
         </dependency>
-
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -67,13 +70,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jdbc</artifactId>
         </dependency>
-        <!--        集成sql连接-->
+
+        <!--集成sql连接-->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.32</version>
-            <scope>runtime</scope>
-
+            <version>8.0.26</version>
         </dependency>
         <!--        校验规则依赖-->
         <dependency>

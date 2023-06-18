@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.springboot3_2vue3.mapper.equipmapper.ClassificationOptionMapper">
+
+    <select id=" findAll" parameterType="long" resultMap="classificationOptionMapper">
+        select
+            o.id oid,
+            o.optionName,
+            e.id eid,
+            e.name,
+            e.power,
+            e.state,
+            e.location
+        from classification_option o
+                 left join equipment_classification_option b
+                     on o.id=b.optionId
+                 left join equipment e
+                     on b.eid=e.id
+        where o.id = #{id};
+    </select>
+
+    <resultMap id="classificationOptionMapper" type="com.example.springboot3_2vue3.domain.equipment.ClassificationOption">
+        <id property="id" column="oid"></id>
+        <result property="name" column="optionName"></result>
+        <collection property="equipments" column="eid" ofType="com.example.springboot3_2vue3.domain.equipment.Equipment">
+            <id property="id" column="id"></id>
+            <result property="name" column="name"></result>
+            <result property="power" column="power"></result>
+            <result property="state" column="state"></result>
+            <result property="location" column="location"></result>
+        </collection>
+    </resultMap>
+
+</mapper>
+
+
