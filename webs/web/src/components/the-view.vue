@@ -50,7 +50,8 @@
                   <a-row>
                     <a-col :span="24">
                       <a-card style="width: 100%;height:400px;">
-                        <h1>提醒列表 分两个轮播 一个提醒 一个警告 提醒有一键已读</h1>
+                        <TheMarqueealarm></TheMarqueealarm>
+                        <TheMarqueedaily></TheMarqueedaily>
                       </a-card>
                     </a-col>
                   </a-row>
@@ -152,6 +153,8 @@ import axios from "axios";
 import {UserOutlined, ArrowUpOutlined, ArrowDownOutlined, LikeOutlined} from '@ant-design/icons-vue';
 import Themarquee from "@/components/the-marquee.vue";
 import {Tool} from '@/utils/tool';
+import TheMarqueealarm from "@/components/the-marqueealarm.vue";
+import TheMarqueedaily from "@/components/the-marqueedaily.vue";
 
 declare let echarts: any;
 export default defineComponent({
@@ -163,6 +166,8 @@ export default defineComponent({
     ArrowDownOutlined,
     ArrowUpOutlined,
     Themarquee,
+    TheMarqueealarm,
+    TheMarqueedaily,
   },
 
   setup() {
@@ -193,75 +198,6 @@ export default defineComponent({
 
       myChart.setOption(option);
     };
-    // const init30DayEchaerts=(list:any)=>{
-    //     const mychart = echarts.init(document.getElementById('main'));
-    //
-    //     const xAxis=[];//横坐标
-    //     const seriesView=[];//纵坐标
-    //     const seriesVote=[];//纵坐标
-    //     for (let i=0;i<list.length;i++){
-    //         const record=list[i];
-    //         xAxis.push(record.date);
-    //         seriesView.push(record.viewIncrease);
-    //         seriesVote.push(record.voteIncrease);
-    //     }
-    //     const option={
-    //         title:{
-    //             text:'最近30天阅读量和点赞量'
-    //         },
-    //         tooltip:{
-    //             trigger:'axis'
-    //         },
-    //         legend: {
-    //             data: ['点赞量', '阅读量', ]
-    //         },
-    //         grid: {
-    //             left: '3%',
-    //             right: '4%',
-    //             bottom: '3%',
-    //             containLabel: true
-    //         },
-    //         toolbox: {
-    //             feature: {
-    //                 saveAsImage: {}
-    //             }
-    //         },
-    //         xAxis: {
-    //             type: 'category',
-    //             boundaryGap: false,
-    //             data: xAxis,
-    //         },
-    //         yAxis: {
-    //             type: 'value'
-    //         },
-    //         series: [
-    //             {
-    //                 name: '阅读量',
-    //                 type: 'line',
-    //                 stack: 'Total',
-    //                 smooth: true,
-    //                 data: seriesView,
-    //             },
-    //             {
-    //                 name: '点赞量',
-    //                 type: 'line',
-    //                 stack: 'Total',
-    //                 smooth: true,
-    //                 data: seriesVote
-    //             },]
-    //     };
-    //     mychart.setOption(option);
-    // };
-
-    // const get30DayStatistic=()=>{
-    //     axios.get("/ebook-Snapshot/get-30statistic").then((res)=>{
-    //         const data=res.data;
-    //         if (data.success){
-    //             const list=data.content;
-    //             init30DayEchaerts(list);
-    //         }
-    //     });
-    // };
 
     /****
      * @description: 消耗电能表（仪表盘形式）
