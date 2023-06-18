@@ -8,7 +8,7 @@
               mode="inline"
               style="height: 100%"
           >
-            <a-menu-item key="2" >
+            <a-menu-item key="2">
               <HomeOutlined/>
               <span>告警</span>
             </a-menu-item>
@@ -25,7 +25,7 @@
             </div>
           </template>
           <template #renderItem="{ item }">
-            <div  v-if="item.read==false">
+            <div v-if="item.read==false">
               <a-list-item key="item.title">
                 <template #actions>
            <span>
@@ -38,14 +38,14 @@
 
           </span> <span>
            <PicRightOutlined/>
-            处理：  <a-button type="primary" >我已知晓</a-button>
+            处理：  <a-button type="primary" @click="readstats(item.id)">我已知晓</a-button>
           </span>
 
                 </template>
                 <div class="des">
                   <a-list-item-meta :description="item.description" style="color: #1c1c1c">
                     <template #title>
-                      <h1>告警设备名：  {{ item.name }}</h1>
+                      <h1>告警设备名： {{ item.name }}</h1>
                     </template>
                     <template #avatar>
                       <clock-circle-outlined/>
@@ -65,9 +65,9 @@
             </div>
           </template>
           <template #renderItem="{ item }">
-            <div  v-if="item.read==true">
-            <a-list-item key="item.title">
-              <template #actions>
+            <div v-if="item.read==true">
+              <a-list-item key="item.title">
+                <template #actions>
            <span>
            <ExceptionOutlined/>
             告警等级：
@@ -78,26 +78,25 @@
 
           </span> <span>
            <PicRightOutlined/>
-            处理：  <a-button type="primary" disabled >我已知晓</a-button>
+            处理：  <a-button type="primary" disabled>我已知晓</a-button>
           </span>
 
-              </template>
-              <div class="des">
-              <a-list-item-meta :description="item.description" style="color: #1c1c1c">
-                <template #title>
-                  <h1>告警设备名：  {{ item.name }}</h1>
                 </template>
-                <template #avatar>
-                  <clock-circle-outlined/>
-                </template>
-              </a-list-item-meta>
-              </div>
-             告警时间： {{ item.date }}
-            </a-list-item>
+                <div class="des">
+                  <a-list-item-meta :description="item.description" style="color: #1c1c1c">
+                    <template #title>
+                      <h1>告警设备名： {{ item.name }}</h1>
+                    </template>
+                    <template #avatar>
+                      <clock-circle-outlined/>
+                    </template>
+                  </a-list-item-meta>
+                </div>
+                告警时间： {{ item.date }}
+              </a-list-item>
             </div>
           </template>
         </a-list>
-
 
 
       </a-layout-content>
@@ -116,25 +115,13 @@ import {
   HomeOutlined,
   FireOutlined,
   FileTextOutlined,
-  ClockCircleOutlined,PicLeftOutlined,PicRightOutlined,
-    ExceptionOutlined,
+  ClockCircleOutlined, PicLeftOutlined, PicRightOutlined,
+  ExceptionOutlined,
 } from '@ant-design/icons-vue';
 import {Tool} from "@/utils/tool";
 import {message} from "ant-design-vue";
 
 const listData: Record<string, string>[] = [];
-
-// for (let i = 0; i < 23; i++) {
-//   listData.push({
-//     href: 'https://www.antdv.com/',
-//     title: `ant design vue part ${i}`,
-//     avatar: 'https://joeschmoe.io/api/v1/random',
-//     description:
-//         'Ant Design, a design language for background applications, is refined by Ant UED Team.',
-//     content:
-//         'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
-//   });
-// }
 
 
 export default defineComponent({
@@ -184,8 +171,22 @@ export default defineComponent({
           message.error(data.message);
         }
       });
+
     }
 
+
+    //已读功能开发
+    const readstats = (id:any) => {
+      axios.get("/alarm/read/"+id).then((response) => {//初始化方法
+        const data = response.data;
+        if (data.success) {
+
+          message.success(data.message);
+          handleQuertInfo();
+
+        }
+      });
+    }
 
     onMounted(() => {//生命周期函数
 
@@ -195,7 +196,7 @@ export default defineComponent({
     return {
       diary,
       // pagination,
-
+      readstats,
       handleQuertInfo,
 
       isshow,  //互斥方法显示是否显示欢迎页面

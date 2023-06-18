@@ -2,3 +2,6 @@
 GET http://localhost:8080/alarm/selectAllinfo
 ###
 
+GET http://localhost:8080/alarm/read/1
+###
+

@@ -1,6 +1,8 @@
 package com.example.springboot3_2vue3.service;
 
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.example.springboot3_2vue3.domain.Alarm;
+
 import com.example.springboot3_2vue3.mapper.AlarmMapper;
 import com.example.springboot3_2vue3.resp.AlarmResp;
 import jakarta.annotation.Resource;
@@ -36,5 +38,12 @@ public class AlarmService {
             alarmResps.add(alarmResp);
         }
       return  alarmResps;
+    }
+
+    public int read(Long id){
+        UpdateWrapper<Alarm> updateWrapper = new UpdateWrapper();
+        updateWrapper.eq("id", id);
+        updateWrapper.set("`read`",  1);
+        return alarmMapper.update(null, updateWrapper);
     }
 }

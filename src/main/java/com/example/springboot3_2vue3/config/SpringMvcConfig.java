@@ -29,7 +29,7 @@ public class SpringMvcConfig implements WebMvcConfigurer {
 
 
 
-                        "/alarm/**",
+                        "/alarm/**/**",
                         "/deviceuse2/**",
                         "/yearpoweruse/**",
                         "/equipment/**",
