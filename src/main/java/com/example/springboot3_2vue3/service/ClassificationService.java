@@ -44,8 +44,12 @@ public class ClassificationService {
     }
 
     //根据id查询分类
-    public List<Classification> findAll(Long id){
-        return classificationMapper.findAll(id);
+    public List<Classification> findById(Long id){
+        return classificationMapper.findById(id);
+    }
+
+    public List<Classification> findAllById(Long id){
+        return classificationMapper.findAllById(id);
     }
 
 }

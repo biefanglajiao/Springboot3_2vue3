@@ -27,7 +27,16 @@ public class ClassificationOption {
         return "ClassificationOption{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", equipments=" + equipments +
                 '}';
+    }
+
+    public List<Equipment> getEquipments() {
+        return equipments;
+    }
+
+    public void setEquipments(List<Equipment> equipments) {
+        this.equipments = equipments;
     }
 
     public Long getId() {

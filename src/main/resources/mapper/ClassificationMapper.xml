@@ -2,26 +2,53 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.springboot3_2vue3.mapper.equipmapper.ClassificationOptionMapper">
+<mapper namespace="com.example.springboot3_2vue3.mapper.equipmapper.ClassificationMapper">
 
-    <select id="findAll" parameterType="long" resultMap="classificationMapper">
-        select
-            classification.id cid,
-            classification.className,
-            classification_option.id option_id,
-            classification_option.optionName
+    <select id="findById" parameterType="long" resultMap="classificationMapper">
+        select classification.id        cid,
+               classification.className,
+               classification_option.id oid,
+               classification_option.optionName
         from classification
                  left join classification_option
                            on classification.id = classification_option.classId
         where classification.id = #{id};
     </select>
 
+
+    <select id="findAllById" parameterType="long" resultMap="classificationMapper">
+        select classification.id        cid,
+               classification.className,
+               classification_option.id oid,
+               classification_option.optionName,
+               equipment.id             eid,
+               equipment.location,
+               equipment.`name`,
+               equipment.power,
+               equipment.state
+        from classification
+                 left join classification_option on classification.id = classification_option.classId
+                 LEFT JOIN equipment_classification_option
+                           ON classification_option.id = equipment_classification_option.optionId
+                 LEFT JOIN equipment ON equipment.id = equipment_classification_option.eid
+        where classification.id = #{id};
+    </select>
+
     <resultMap id="classificationMapper" type="com.example.springboot3_2vue3.domain.equipment.Classification">
         <id property="id" column="cid"></id>
-        <result property="name" column="name"></result>
-        <collection property="classificationOptions" column="classId" ofType="com.example.springboot3_2vue3.domain.equipment.ClassificationOption">
-            <id property="id" column="option_id"></id>
+        <result property="name" column="className"></result>
+        <collection property="classificationOptions" column="cid"
+                    ofType="com.example.springboot3_2vue3.domain.equipment.ClassificationOption">
+            <id property="id" column="oid"></id>
             <result property="name" column="optionName"></result>
+            <collection property="equipments" column="oid"
+                        ofType="com.example.springboot3_2vue3.domain.equipment.Equipment">
+                <id property="id" column="eid"></id>
+                <result property="name" column="name"></result>
+                <result property="power" column="power"></result>
+                <result property="state" column="state"></result>
+                <result property="location" column="location"></result>
+            </collection>
         </collection>
     </resultMap>
 

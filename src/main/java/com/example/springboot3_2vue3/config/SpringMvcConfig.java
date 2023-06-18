@@ -27,8 +27,7 @@ public class SpringMvcConfig implements WebMvcConfigurer {
                         "/user/**",
 
 
-
-
+                        "/classification/**",
                         "/alarm/**/**",
                         "/deviceuse2/**",
                         "/yearpoweruse/**",

@@ -19,6 +19,8 @@ import java.util.List;
 public interface ClassificationMapper extends BaseMapper<Classification> {
 
     //根据id查询所有分类
-    List<Classification> findAll(Long id);
+    List<Classification> findById(Long id);
+    List<Classification>  findAllById(Long id);
+
 
 }

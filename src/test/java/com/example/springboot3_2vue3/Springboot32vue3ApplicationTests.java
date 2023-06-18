@@ -1,6 +1,7 @@
 package com.example.springboot3_2vue3;
 
 import com.example.springboot3_2vue3.mapper.TextMapper;
+import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

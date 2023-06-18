@@ -17,6 +17,7 @@ import java.util.List;
 public class Classification {
     @TableId
     private Long id;     //分类id
+    @TableField("className")
     private String name;    //分类名
     @TableField(exist = false)
     private List<ClassificationOption> classificationOptions;   //分类所对应的分类项
