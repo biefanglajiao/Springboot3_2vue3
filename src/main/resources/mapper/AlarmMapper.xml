@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.springboot3_2vue3.mapper.AlarmMapper">
+
+
+    <select id="selectAllinfo" resultMap="temp">
+
+        SELECT a.*, b.name
+        FROM `alarm` a,
+             equipment b
+        WHERE  a.equipmentid = b.id
+        ORDER BY a.date DESC
+
+    </select>
+
+    <resultMap id="temp" type="com.example.springboot3_2vue3.domain.Alarm">
+        <id property="id" column="id"></id>
+        <result property="date" column="date"></result>
+        <result property="level" column="level"></result>
+        <result property="description" column="description"></result>
+        <result property="equipmentid" column="equipmentid"></result>
+        <result property="read" column="read"></result>
+        <association property="equipment" column="id"
+                     javaType="com.example.springboot3_2vue3.domain.equipment.Equipment">
+            <result property="id" column="id"></result>
+            <result property="name" column="name"></result>
+            <result property="power" column="power"></result>
+            <result property="state" column="state"></result>
+            <result property="location" column="location"></result>
+        </association>
+
+    </resultMap>
+
+
+</mapper>
+
+
+
+

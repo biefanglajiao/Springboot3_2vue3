@@ -40,7 +40,6 @@ public  void  addbegin(Deviceuse2 deviceuse2){
 
  public List<Deviceuse2Resp> selectAllinfo(){
      List<Deviceuse2> deviceuse2List = deviceuse2Mapper.selectAllinfo();
-     System.out.println(deviceuse2List);
 List<Deviceuse2Resp> deviceuse2RespLists = new ArrayList<>();
      for (Deviceuse2 deviceuse2 : deviceuse2List) {
             Deviceuse2Resp deviceuse2Resp = new Deviceuse2Resp();

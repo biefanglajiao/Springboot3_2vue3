@@ -1,0 +1,40 @@
+package com.example.springboot3_2vue3.service;
+
+import com.example.springboot3_2vue3.domain.Alarm;
+import com.example.springboot3_2vue3.mapper.AlarmMapper;
+import com.example.springboot3_2vue3.resp.AlarmResp;
+import jakarta.annotation.Resource;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * @Author: 常兆海
+ * @Description:
+ * @DateTime: 2023/6/18 11:47
+ **/
+@Service
+public class AlarmService {
+    @Resource
+    private AlarmMapper alarmMapper;
+
+    public List<AlarmResp> selectAllinfo(){
+        List<Alarm> alarms = alarmMapper.selectAllinfo();
+        System.out.println(alarms+
+                "-------------------");
+        List<AlarmResp> alarmResps = new ArrayList<>();
+        for (Alarm alarm : alarms) {
+            AlarmResp alarmResp = new AlarmResp();
+            alarmResp.setId(alarm.getId());
+            alarmResp.setDescription(alarm.getDescription());
+            alarmResp.setDate(alarm.getDate());
+            alarmResp.setEquipmentid(alarm.getEquipmentid());
+            alarmResp.setRead(alarm.isRead());
+            alarmResp.setLevel(alarm.getLevel());
+            alarmResp.setName(alarm.getEquipment().getName());
+            alarmResps.add(alarmResp);
+        }
+      return  alarmResps;
+    }
+}
