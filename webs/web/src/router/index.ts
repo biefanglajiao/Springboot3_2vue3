@@ -39,10 +39,10 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import(/* webpackChunkName: "about" */ '../views/diary.vue')
   } ,
   {
-    path: '/admin/category',
-    name: 'AdminCategory',
+    path: '/alarm',
+    name: 'Alarm',
     meta:{loginRequire:true},
-    component: () => import(/* webpackChunkName: "about" */ '../views/admin/admin_category.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/alarm.vue')
   },
 // 非惰性 全局加载方式实现
 // import AdminCategory from "@/views/admin/admin_category.vue";

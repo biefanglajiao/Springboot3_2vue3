@@ -16,8 +16,8 @@
         <a-menu-item key="diary" v-if="user.id">
           <router-link to="/diary">日志</router-link>
         </a-menu-item>
-        <a-menu-item key="admin_user" v-if="user.id">
-          <router-link to="/admin/user">用户管理</router-link>
+        <a-menu-item key="alarm" v-if="user.id">
+          <router-link to="/alarm">告警</router-link>
         </a-menu-item>
 
         <a-menu-item key="admin_catepory" v-if="user.id">
