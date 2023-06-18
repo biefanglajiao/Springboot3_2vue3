@@ -53,7 +53,7 @@ export default defineComponent({
 
 
     const tempall = () => {
-      axios.get("/deviceuse2/selectAllinfo").then((res) => {
+      axios.get("/deviceuse2/selectAlltodayinfo").then((res) => {
         // console.log(Tool.isEmpty(templists.value), "              对比")
         const data = res.data;
         if (data.success && !Tool.isEmpty(templists.value)) {

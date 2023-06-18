@@ -1,6 +1,6 @@
-<template style="width: 100%;height:148px;">
+<template >
 
-  <a-carousel autoplay dot-position="left">
+  <a-carousel autoplay dot-position="top">
     <div class="card1" style="width: 100%;height:148px;" v-for="item in templists" :key="item.id">
 
       <a-card>

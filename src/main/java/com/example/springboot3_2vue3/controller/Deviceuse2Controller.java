@@ -25,4 +25,10 @@ public class Deviceuse2Controller {
         commonResp.setContent(deviceuse2Service.selectAllinfo());
         return commonResp;
     }
+    @GetMapping("/selectAlltodayinfo")
+    public CommonResp selectAlltodatinfo (){
+        CommonResp commonResp=new CommonResp();
+        commonResp.setContent(deviceuse2Service.selectAlltodayinfo());
+        return commonResp;
+    }
 }

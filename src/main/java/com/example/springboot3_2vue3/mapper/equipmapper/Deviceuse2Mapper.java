@@ -16,4 +16,6 @@ public interface Deviceuse2Mapper extends BaseMapper<Deviceuse2> {
 
 
     List<Deviceuse2> selectAllinfo();
+
+    List<Deviceuse2> selectAlltodayinfo(String date);
 }

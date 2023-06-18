@@ -1050,7 +1050,7 @@ console.log("年耗电量信息：",list)
 <style lang="less" scoped>
 .schedule_card2 {
   :deep( .ant-card ) {
-    background: #ffffff14;
+    background: rgba(255, 255, 255, 0.07);
 
   }
 

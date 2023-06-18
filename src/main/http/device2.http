@@ -1,1 +1,6 @@
 GET http://localhost:8080/deviceuse2/selectAllinfo
+
+###
+
+GET http://localhost:8080/deviceuse2/selectAlltodayinfo
+
