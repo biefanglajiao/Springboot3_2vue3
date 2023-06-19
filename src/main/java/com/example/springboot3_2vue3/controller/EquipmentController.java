@@ -7,10 +7,10 @@ import com.example.springboot3_2vue3.resp.DeviceusePowerResp;
 import com.example.springboot3_2vue3.resp.TemperatureResp;
 import com.example.springboot3_2vue3.service.*;
 import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.util.DigestUtils;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,9 +83,9 @@ public class EquipmentController {
      * @param id
      * @return
      */
-    @RequestMapping("openequip")
+    @GetMapping("/openequip/{id}")
     @Transactional
-    public CommonResp Openequip(long id) {
+    public CommonResp Openequip(@PathVariable long id) {
 
         CommonResp<Equipment> commonResp = new CommonResp<>();
         if (equipmentService.openequip(id) == 1) {//开启设备
@@ -112,9 +112,9 @@ public class EquipmentController {
     }
 
 
-    @RequestMapping("closeequip")
+    @GetMapping("/closeequip/{id}")
     @Transactional
-    public CommonResp Closeequip(long id) {
+    public CommonResp Closeequip(@PathVariable long id) {
         CommonResp<Equipment> commonResp = new CommonResp<>();
         if (equipmentService.closeequip(id)) {//关闭设备
             commonResp.setMessage("设备关闭成功");
@@ -167,5 +167,16 @@ public class EquipmentController {
     commonResp.setContent(  variationService.findsuminfo());
 
     return commonResp;
+    }
+
+    @PostMapping("/save")//保存书籍  一般保存类用post
+    public CommonResp save(@RequestBody @Valid Equipment equipment) {//json格式的数据要用@RequestBody 注解  from表单格式 就可以直接提交
+
+
+       CommonResp commonResp=new CommonResp();
+
+   commonResp.setSuccess(equipmentService.save(equipment));
+commonResp.setMessage("保存成功");
+        return commonResp;
     }
 }

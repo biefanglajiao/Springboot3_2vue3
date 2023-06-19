@@ -2,6 +2,8 @@ package com.example.springboot3_2vue3.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.example.springboot3_2vue3.Utils.CopyUtils;
+import com.example.springboot3_2vue3.Utils.SnowFlake;
 import com.example.springboot3_2vue3.domain.equipment.Equipment;
 import com.example.springboot3_2vue3.mapper.equipmapper.Equipmapper;
 import jakarta.annotation.Resource;
@@ -22,6 +24,9 @@ public class EquipmentService {
     private Equipmapper equipmapper;
     @Resource
     private RocketMQTemplate rocketMQTemplate;
+    @Resource
+    private SnowFlake snowFlake;
+
 
 
     public Long finsumnumber(){
@@ -70,6 +75,14 @@ public class EquipmentService {
          return false;
 
 
+    }
+    public boolean save(Equipment equipment){
+        Equipment equipment1= CopyUtils.copy(equipment, Equipment.class);//将请求参数更新为实体
+        equipment1.setId(snowFlake.nextId());
+        if (equipmapper.insert(equipment1)==1){
+            return true;
+        }else
+            return false;
     }
 
 

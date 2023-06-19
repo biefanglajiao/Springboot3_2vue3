@@ -78,7 +78,7 @@
 
           </span> <span>
            <PicRightOutlined/>
-            处理：  <a-button type="primary" disabled>我已知晓</a-button>
+            处理：  <a-button type="primary" disabled @click="readstats(item.id)">我已知晓</a-button>
           </span>
 
                 </template>

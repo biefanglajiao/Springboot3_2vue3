@@ -12,7 +12,7 @@
                   v-model:value="param.name"
                   placeholder="设备名"
                   enter-button
-                  @search="handleQuery()"
+                  @search="handleQuery({page:1,size:pagination.pageSize})"
               />
             </a-space>
           </a-form-item>
@@ -38,6 +38,11 @@
             <a-space size="small">
               <a-button type="primary" @click="edit(record)">
                 编辑
+              </a-button>
+              <a-button type="dashed" v-show="record.state" @click="closequip(record.id)">关闭
+              </a-button>
+              <a-button type="ghost" v-show="!record.state"  @click="openequip(record.id)">
+                开启
               </a-button>
 
               <!--              原有的click方法到confirm里  cacel是放弃 这里不做操作  @cancel="cancel"-->
@@ -65,16 +70,16 @@
   <!--  //A:confirm-loading是一个属性，当点击确定按钮时，会调用handleModalOk方法，handleModalOk方法会调用axios的post方法，保存数据，然后重新加载列表-->
   <a-modal title="用户表单" v-model:visible="modalVisible" :confirm-loading="modalLoading" @ok="handleModalOk">
     <a-form :model="equip" :label-col="{ span: 4 }" :wrapper-col="{ span: 14 }" :layout="formLayout">
-      <a-form-item label="登录名">
-        <a-input v-model:value="equip.loginName" :disabled="!!equip.id"/>
+      <a-form-item label="设备名">
+        <a-input v-model:value="equip.name" :disabled="!!equip.id"/>
         <!--        :disabled="equip.id" id是主键，新增时id为空，修改时id不为空，所以新增时可以输入，修改时不可以输入-->
         <!--        !!可以绕过类型校验（前端f12的报错提示）-->
       </a-form-item>
-      <a-form-item label="昵称">
-        <a-input v-model:value="equip.name"/>
+      <a-form-item label="功率">
+        <a-input v-model:value="equip.power"/>
       </a-form-item>
-      <a-form-item label="密码" v-show="!equip.id">
-        <a-input v-model:value="equip.password"/>
+      <a-form-item label="位置" >
+        <a-input v-model:value="equip.location"/>
         <!--        v-show  是否展示、、此时新增显示，编辑不显示-->
       </a-form-item>
     </a-form>
@@ -121,10 +126,7 @@ export default defineComponent({
         title: '功率',
         dataIndex: 'power',
       },
-      {
-        title: '状态',
-        dataIndex: 'state',
-      },
+
       {
         title: '位置',
         dataIndex: 'location',
@@ -146,11 +148,12 @@ export default defineComponent({
     const categoryIds = ref();
     const handleModalOk = () => {//保存
       modalLoading.value = true;
-      equip.value.password = hexMd5(equip.value.password + KEY);
-      axios.post("/equip/save", equip.value).then((response) => {
+
+      axios.post("/equipment/save", equip.value).then((response) => {
         modalLoading.value = false;//有返回就关闭加载
         const data = response.data;//data==common,resp
         if (data.success) {
+          message.success(data.message);
           modalVisible.value = false;//关闭视图
           //重新加载列表
           handleQuery({
@@ -266,7 +269,41 @@ export default defineComponent({
       console.log(pagination);
 
     };
+    /***
+     * 开启设备
+     */
+   const openequip =(id: any)=>{
 
+        axios.get("/equipment/openequip/"+id).then((response) => {//初始化方法
+          const data = response.data;
+          if (data.success) {
+
+            message.success(data.message);
+            handleQuery({
+              page: 1,
+              size: pagination.value.pageSize,
+            });
+
+          }
+        });
+
+    }
+  const closequip =(id: any)=>{
+
+        axios.get("/equipment/closeequip/"+id).then((response) => {//初始化方法
+          const data = response.data;
+          if (data.success) {
+
+            message.success(data.message);
+            handleQuery({
+              page: 1,
+              size: pagination.value.pageSize,
+            });
+
+          }
+        });
+
+    }
 
     /**
      * @方法描述: 初始进入页面就查一次数据
@@ -309,6 +346,10 @@ export default defineComponent({
        */
       categoryIds,
 
+
+      //开关设备
+      openequip,
+      closequip,
     }
   }
 });
