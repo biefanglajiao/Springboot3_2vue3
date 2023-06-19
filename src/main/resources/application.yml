@@ -7,8 +7,16 @@ spring:
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+
     hikari:
       max-lifetime: 120000
+  redis:
+    # Redis本地服务器地址，注意要开启redis服务，即那个redis-server.exe
+    host: 127.0.0.1
+    # Redis服务器端口,默认为6379.若有改动按改动后的来
+    port: 6379
+    #Redis服务器连接密码，默认为空，若有设置按设置的来
+    password:
     #如果需要在一个xml文件中执行多个sql语句 需要在url后面添加：&allowMultiQueries=true
     #  datasource:
     #    driver-class-name: com.mysql.cj.jdbc.Driver

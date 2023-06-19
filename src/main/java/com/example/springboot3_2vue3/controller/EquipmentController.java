@@ -59,6 +59,16 @@ public class EquipmentController {
 
 
     }
+       @RequestMapping("findallinfo")
+    public CommonResp findAllinfo() {
+        CommonResp<List<Equipment>> listCommonResp = new CommonResp<>();
+        listCommonResp.setContent(equipmentService.findAllInfo());
+        return listCommonResp;
+
+
+    }
+
+
 
     //查寻所有已经打开的设备信息
     @RequestMapping("findequipopen")

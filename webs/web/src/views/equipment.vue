@@ -9,10 +9,10 @@
           <a-form-item>
             <a-space direction="vertical">
               <a-input-search
-                  v-model:value="param.loginName"
-                  placeholder="登录名"
+                  v-model:value="param.name"
+                  placeholder="设备名"
                   enter-button
-                  @search="handleQuery({page:1,size:pagination.pageSize})"
+                  @search="handleQuery()"
               />
             </a-space>
           </a-form-item>
@@ -25,7 +25,7 @@
           </a-form-item>
         </a-form>
         <a-table :columns="columns"
-                 :data-source="users"
+                 :data-source="equips"
                  :row-key="record => record.id"
                  :pagination="pagination"
                  :loading="loading"
@@ -38,9 +38,7 @@
               <a-button type="primary" @click="edit(record)">
                 编辑
               </a-button>
-              <a-button type="primary" @click="resetPassword(record)">
-                重置密码
-              </a-button>
+
               <!--              原有的click方法到confirm里  cacel是放弃 这里不做操作  @cancel="cancel"-->
               <a-popconfirm
                   title="删除后不可恢复，是否删除?"
@@ -65,26 +63,26 @@
   <!--  //Q::confirm-loading的含义-->
   <!--  //A:confirm-loading是一个属性，当点击确定按钮时，会调用handleModalOk方法，handleModalOk方法会调用axios的post方法，保存数据，然后重新加载列表-->
   <a-modal title="用户表单" v-model:visible="modalVisible" :confirm-loading="modalLoading" @ok="handleModalOk">
-    <a-form :model="user" :label-col="{ span: 4 }" :wrapper-col="{ span: 14 }" :layout="formLayout">
+    <a-form :model="equip" :label-col="{ span: 4 }" :wrapper-col="{ span: 14 }" :layout="formLayout">
       <a-form-item label="登录名">
-        <a-input v-model:value="user.loginName" :disabled="!!user.id"/>
-<!--        :disabled="user.id" id是主键，新增时id为空，修改时id不为空，所以新增时可以输入，修改时不可以输入-->
+        <a-input v-model:value="equip.loginName" :disabled="!!equip.id"/>
+<!--        :disabled="equip.id" id是主键，新增时id为空，修改时id不为空，所以新增时可以输入，修改时不可以输入-->
 <!--        !!可以绕过类型校验（前端f12的报错提示）-->
       </a-form-item>
       <a-form-item label="昵称">
-        <a-input v-model:value="user.name"/>
+        <a-input v-model:value="equip.name"/>
       </a-form-item>
-      <a-form-item label="密码"  v-show="!user.id">
-        <a-input v-model:value="user.password"/>
+      <a-form-item label="密码"  v-show="!equip.id">
+        <a-input v-model:value="equip.password"/>
 <!--        v-show  是否展示、、此时新增显示，编辑不显示-->
       </a-form-item>
     </a-form>
   </a-modal>
 
   <a-modal title="重置密码" v-model:visible="resetModalVisible" :confirm-loading="resetModalLoading" @ok="handleresetModalOk">
-    <a-form :model="user" :label-col="{ span: 4 }" :wrapper-col="{ span: 14 }" :layout="formLayout">
+    <a-form :model="equip" :label-col="{ span: 4 }" :wrapper-col="{ span: 14 }" :layout="formLayout">
       <a-form-item label="新密码"  >
-        <a-input v-model:value="user.password" />
+        <a-input v-model:value="equip.password" />
 <!--        v-show  是否展示、、此时新增显示，编辑不显示-->
       </a-form-item>
     </a-form>
@@ -105,7 +103,7 @@ export default defineComponent({
   setup() {
     const param = ref();
     param.value = {};
-    const users = ref();
+    const equips = ref();
     const pagination = ref({
       current: 1,
       pageSize: 5,
@@ -114,16 +112,20 @@ export default defineComponent({
     const loading = ref(false);
     const columns = [
       {
-        title: '登录名',
-        dataIndex: 'loginName',
-      },
-      {
-        title: '昵称',
+        title: '设备名',
         dataIndex: 'name',
       },
       {
-        title: '密码',
-        dataIndex: 'password',
+        title: '功率',
+        dataIndex: 'power',
+      },
+      {
+        title: '状态',
+        dataIndex: 'state',
+      },
+      {
+        title: '位置',
+        dataIndex: 'location',
       },
       {
         title: 'Action',
@@ -138,21 +140,18 @@ export default defineComponent({
     const modalVisible = ref<boolean>(false);
     const resetModalLoading = ref<boolean>(false);
     const resetModalVisible = ref<boolean>(false);
-    const user = ref();
+    const equip = ref();
     const categoryIds = ref();
     const handleModalOk = () => {//保存
       modalLoading.value = true;
-      user.value.password=hexMd5(user.value.password+KEY);
-        axios.post("/user/save", user.value).then((response) => {
+      equip.value.password=hexMd5(equip.value.password+KEY);
+        axios.post("/equip/save", equip.value).then((response) => {
           modalLoading.value = false;//有返回就关闭加载
           const data = response.data;//data==common,resp
           if (data.success) {
             modalVisible.value = false;//关闭视图
             //重新加载列表
-            handleQuery({
-              page: pagination.value.current,
-              size: pagination.value.pageSize
-            });
+            handleQuery();
           } else {
             message.error(data.message);
           }
@@ -165,23 +164,20 @@ export default defineComponent({
      */
     const edit = (record: any) => {
       modalVisible.value = true;
-      // user.value = record;
-      user.value = Tool.copy(record);
+      // equip.value = record;
+      equip.value = Tool.copy(record);
     }
 
     const handleresetModalOk = () => {//保存
       resetModalLoading.value = true;
-      user.value.password=hexMd5(user.value.password+KEY);
-        axios.post("/user/reset-password", user.value).then((response) => {
+      equip.value.password=hexMd5(equip.value.password+KEY);
+        axios.post("/equip/reset-password", equip.value).then((response) => {
           resetModalLoading.value = false;//有返回就关闭加载
           const data = response.data;//data==common,resp
           if (data.success) {
             resetModalVisible.value = false;//关闭视图
             //重新加载列表
-            handleQuery({
-              page: pagination.value.current,
-              size: pagination.value.pageSize
-            });
+            handleQuery();
           } else {
             message.error(data.message);
           }
@@ -194,9 +190,9 @@ export default defineComponent({
      */
     const resetPassword= (record: any) => {
       resetModalVisible.value = true;
-      // user.value = record;
-      user.value = Tool.copy(record);
-      user.value.password="";
+      // equip.value = record;
+      equip.value = Tool.copy(record);
+      equip.value.password="";
       //todo 前端密码校验
     }
 
@@ -207,7 +203,7 @@ export default defineComponent({
      */
     const add = () => {
       modalVisible.value = true;
-      user.value = {};
+      equip.value = {};
 
 
     }
@@ -217,40 +213,28 @@ export default defineComponent({
 
 
     const delet = (id: number) => {
-      axios.delete("/user/delete/" + id).then((response) => {
+      axios.delete("/equip/delete/" + id).then((response) => {
 
         const data = response.data;
-
+console.log(data);
 
         //重新加载列表
-        handleQuery({
-          page: pagination.value.current,
-          size: pagination.value.pageSize
-        });
+        handleQuery();
       });
     }
 
     /***
      * @方法描述: 数据查询方法
      */
-    const handleQuery = (params: any) => {
+    const handleQuery = () => {
       loading.value = true;
 
-      axios.get("/user/list", {
-        params: {
-          page: params.page,
-          size: params.size,
-          loginName: param.value.loginName,
-        }
-      }).then((response) => {
+      axios.get("/equipment/findallinfo").then((response) => {
         loading.value = false;
         const data = response.data;
         if (data.success) {
-          users.value = data.content.list;
+          equips.value = data.content.list;
 
-          //重置分页按钮
-          pagination.value.current = params.page;
-          pagination.value.total = data.content.total;
         } else {
           message.error(data.message);
         }
@@ -262,10 +246,7 @@ export default defineComponent({
      * @方法描述: 表格点击页面触发
      */
     const handleTableChange = (pagination: any) => {
-      handleQuery({
-        page: pagination.current,
-        size: pagination.pageSize
-      });
+
 
     };
 
@@ -274,17 +255,13 @@ export default defineComponent({
      * @方法描述: 初始进入页面就查一次数据
      */
     onMounted(() => {
-      handleQuery({
-        page: 1,
-        size: pagination.value.pageSize,
-      });
+      handleQuery();
+
     });
-
-
     return {
       //列表
       param,
-      users,
+      equips,
       pagination,
       columns,
       loading,
@@ -294,7 +271,7 @@ export default defineComponent({
       //   编辑表格相关
       modalLoading,
       modalVisible,
-      user,
+      equip,
       handleModalOk,
       edit,
       add,

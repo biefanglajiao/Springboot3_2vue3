@@ -40,6 +40,10 @@ public class EquipmentService {
         queryWrapper.eq("state",1);
         return equipmapper.selectList(queryWrapper);
     }
+    public List<Equipment> findAllInfo(){
+
+        return equipmapper.selectList(null);
+    }
     //开启设备
     public int openequip(Long id){
         UpdateWrapper<Equipment> updateWrapper = new UpdateWrapper();

@@ -10,5 +10,5 @@ GET http://localhost:8080/equipment/openequip?id=1
 GET http://localhost:8080/equipment/closeequip?id=8
 ###
 
-GET http://localhost:8080/equipment/test
+GET http://localhost:8080/equipment/findallinfo
 
