@@ -16,31 +16,34 @@
 <!--    </a-dropdown>-->
 <!--  </a-row>-->
 <h1>按分类显示</h1>
+
   <a-radio-group >
     <a-radio-button v-for="list in listdad" :key="list.id"   :value=list.name @Click="findallbyid(list.id)" >
 {{list.name}}
     </a-radio-button>
-    <a-carousel autoplay dot-position="left">
-      <div class="card1" style="width: 100%;height:248px;" v-for="item in templists" :key="item.id">
+  </a-radio-group>
+  <div style="overflow-y:hidden ;overflow-x:hidden;height:100%">
+      <div class="card" style="width: 100%;height:148px;" v-for="item in templists" :key="item.id">
+        <a-carousel autoplay dot-position="left">
+<div class="card1" style="width: 100%;height:148px;" v-for="iteminfo in item.equipments" :key="iteminfo.id">
+        <a-card size="small" title="设备信息">
 
-        <a-card size="small" title="设备未读告警">
-
-          <h1>告警设备为：{{ item.name }}</h1>
-          <h3>描述：{{ item.description }}</h3>
+          <h1>子分类：{{ item.name }}    设备名：{{ iteminfo.name }}</h1>
+          <h3></h3>
           <h2 class="aaa">等级：{{ item.level }}级</h2>
 
 
         </a-card>
 
-      </div>
+</div>
 
     </a-carousel>
-
-  </a-radio-group>
-
+      </div>
 
 
 
+
+</div>
 
 
 
@@ -89,7 +92,7 @@ export default defineComponent({
     const templists = ref([
       {
         id: "404",
-        name: '无设备',
+        name: '无分类',
         description: "无",
         date: "2023-XX-XX X:X:X",
         equipmentid: 404,
@@ -97,19 +100,19 @@ export default defineComponent({
         level: 0,
       },
     ])//给他赋初值
+    const templistsall = ref([
+      {
+        id: "404",
+        name: '无设备',
+        power : "0",
+        location: "未知",
+        stste: false,
+
+      },
+    ])//给他赋初值
 
 
-    const tempall = () => {
-      axios.get("/alarm/selectAllNoreadinfo").then((res) => {
-        // console.log(Tool.isEmpty(templists.value), "              对比")
-        const data = res.data;
-        if (data.success && !Tool.isEmpty(templists.value)) {
-          // console.log(data.content,"dataaaaa")
-          templists.value = res.data.content;
-        }
-        // console.log(templists, "11111111````````````````````````````````````")
-      })
-    }
+
     // ______________________________________________________________________获取分类显示板块开始__________________________________________
     const listdad = ref();
     const getdad = () => {
@@ -130,25 +133,29 @@ export default defineComponent({
       axios.get("/classification/selectallById/" + id).then((res) => {
         const data = res.data;
         if (data.success) {
-          const list = data.content;
-          console.log("分类数据 ：                                  ：", list)
+          templists.value = res.data.content[0].classificationOptions;
+          // templistsall.value=res.data.content.classificationOptions.equipments;
+          console.log("分类数据 1：                                  ：", templists.value)
+          console.log("分类数据2 ：                                  ：", templistsall)
         } else {
           console.log("分类数据 ：                                  ：", data)
         }
       })
     }
     onMounted(() => {
-      tempall(),
           getdad(),
           findallbyid(1)
 
     });
+
+
     return {
 
       templists,
 
       listdad,//父分类列表
       findallbyid,
+      templistsall,
     }
 
   }
