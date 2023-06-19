@@ -12,7 +12,7 @@ import java.util.Date;
 public class Alarm {
     private Long id;
     private String description;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss" ,timezone="GMT+8")
     private Date date;
     private Long equipmentid;
     private boolean read;

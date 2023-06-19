@@ -6,6 +6,7 @@ import com.example.springboot3_2vue3.service.AlarmService;
 import com.example.springboot3_2vue3.service.ClassificationService;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -46,8 +47,8 @@ public class ClassificationController {
 
         return resp;
     }
-    @GetMapping("/selectallById")
-    public CommonResp selectAllById(Long id){
+    @GetMapping("/selectallById/{id}")
+    public CommonResp selectAllById(@PathVariable Long id){
         CommonResp resp = new CommonResp<>();
         List<Classification> lists = classificationService.findAllById(id);
         resp.setContent(lists);

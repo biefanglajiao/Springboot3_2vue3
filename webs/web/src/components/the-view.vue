@@ -78,7 +78,11 @@
           </a-col>
           <a-col :span="10">
             <a-card>
-              <div style="width: 100%;height:647px;">设备状态图 按xxxx分类</div>
+              <div style="width: 100%;height:647px;">
+
+
+                <TheMarqueeinfo></TheMarqueeinfo>
+              </div>
             </a-card>
           </a-col>
           <a-col :span="7">
@@ -150,17 +154,18 @@
 import {defineComponent, onMounted, ref} from 'vue';
 import axios from "axios";
 
-import {UserOutlined, ArrowUpOutlined, ArrowDownOutlined, LikeOutlined} from '@ant-design/icons-vue';
+import {UserOutlined, ArrowUpOutlined, ArrowDownOutlined, LikeOutlined,DownOutlined} from '@ant-design/icons-vue';
 import Themarquee from "@/components/the-marquee.vue";
 import {Tool} from '@/utils/tool';
 import TheMarqueealarm from "@/components/the-marqueealarm.vue";
 import TheMarqueedaily from "@/components/the-marqueedaily.vue";
+import TheMarqueeinfo from "@/components/the-marqueeinfo.vue";
 
 declare let echarts: any;
 export default defineComponent({
   name: 'the-welcome',
   components: {
-
+    DownOutlined,
     UserOutlined,
     LikeOutlined,
     ArrowDownOutlined,
@@ -168,36 +173,13 @@ export default defineComponent({
     Themarquee,
     TheMarqueealarm,
     TheMarqueedaily,
+    TheMarqueeinfo,
   },
 
   setup() {
     const statistic = ref();
     statistic.value = {};
-    const testEcharts = () => {
 
-
-      const chartDom = document.getElementById('main');
-      const myChart = echarts.init(chartDom);
-
-
-      const option = {
-        xAxis: {
-          type: 'category',
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-        },
-        yAxis: {
-          type: 'value'
-        },
-        series: [
-          {
-            data: [150, 230, 224, 218, 135, 147, 260],
-            type: 'line'
-          }
-        ]
-      };
-
-      myChart.setOption(option);
-    };
 
     /****
      * @description: 消耗电能表（仪表盘形式）
@@ -944,7 +926,7 @@ export default defineComponent({
           todaypoweruse.value = data.content;
           mychartsXHDN(todaypoweruse.value);
         } else {
-          console.log("全部数据                  ：", data)
+          // console.log("全部数据                  ：", data)
         }
       })
 
@@ -956,7 +938,7 @@ export default defineComponent({
         const data = res.data;
         if (data.success) {
           const list = data.content;
-console.log("年耗电量信息：",list)
+// console.log("年耗电量信息：",list)
        mychartRL(list);
 
         }
@@ -964,6 +946,8 @@ console.log("年耗电量信息：",list)
       });
     }
     //______________________________________________________________________获取年耗电量信息结束__________________________________________
+
+    // ______________________________________________________________________获取分类显示板块结束__________________________________________
 
     onMounted(() => {
 
@@ -994,6 +978,7 @@ console.log("年耗电量信息：",list)
       listyubao,
       //日耗电量统计图
 
+      //分类板块
 
     }
 
