@@ -52,15 +52,16 @@ const routes: Array<RouteRecordRaw> = [
 //     component: AdminCategory,
 //   }
   {
-    path: '/doc',
-    name: 'doc',
-    component: () => import(/* webpackChunkName: "about" */ '../views/doc.vue')
+    path: '/equipment',
+    name: 'equipment',
+    meta:{loginRequire:true},
+    component: () => import(/* webpackChunkName: "about" */ '../views/equipment.vue')
   },
   {
-    path: '/admin/user',
-    name: 'user',
+    path: '/category',
+    name: 'category',
     meta:{loginRequire:true},
-    component: () => import(/* webpackChunkName: "about" */ '../views/admin/admin_user.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/category.vue')
   },
 
 ]
