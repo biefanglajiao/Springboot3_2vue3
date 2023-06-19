@@ -1,52 +1,50 @@
 <template style="width: 100%;height:248px;">
-<!--  <a-row>-->
-<!--    <a-dropdown>-->
-<!--      <a class="ant-dropdown-link" @click.prevent>-->
-<!--        请选择你要选择分类形式-->
-<!--        <DownOutlined/>-->
-<!--      </a>-->
-<!--      <template #overlay>-->
-<!--        <a-menu>-->
-<!--          <a-menu-item v-for="list in listdad" :key="list.id" @click="findallbyid(list.id)">-->
-<!--            {{ list.name }}-->
-<!--          </a-menu-item>-->
+  <!--  <a-row>-->
+  <!--    <a-dropdown>-->
+  <!--      <a class="ant-dropdown-link" @click.prevent>-->
+  <!--        请选择你要选择分类形式-->
+  <!--        <DownOutlined/>-->
+  <!--      </a>-->
+  <!--      <template #overlay>-->
+  <!--        <a-menu>-->
+  <!--          <a-menu-item v-for="list in listdad" :key="list.id" @click="findallbyid(list.id)">-->
+  <!--            {{ list.name }}-->
+  <!--          </a-menu-item>-->
 
-<!--        </a-menu>-->
-<!--      </template>-->
-<!--    </a-dropdown>-->
-<!--  </a-row>-->
-<h1>按分类显示</h1>
+  <!--        </a-menu>-->
+  <!--      </template>-->
+  <!--    </a-dropdown>-->
+  <!--  </a-row>-->
+  <h1>按分类显示</h1>
 
-  <a-radio-group >
-    <a-radio-button v-for="list in listdad" :key="list.id"   :value=list.name @Click="findallbyid(list.id)" >
-{{list.name}}
+  <a-radio-group>
+    <div class="aaa">
+    <a-radio-button v-for="list in listdad" :key="list.id" :value=list.name @Click="findallbyid(list.id)">
+      {{ list.name }}
     </a-radio-button>
+    </div>
   </a-radio-group>
   <div style="overflow-y:hidden ;overflow-x:hidden;height:100%">
-      <div class="card" style="width: 100%;height:148px;" v-for="item in templists" :key="item.id">
-        <a-carousel autoplay dot-position="left">
-<div class="card1" style="width: 100%;height:148px;" v-for="iteminfo in item.equipments" :key="iteminfo.id">
-        <a-card size="small" title="设备信息">
+    <div class="card" style="width: 100%;height:200px;" v-for="item in templists" :key="item.id">
+      <a-carousel autoplay dot-position="left">
+        <div class="card1" style="width: 100%;height:200px;" v-for="iteminfo in item.equipments" :key="iteminfo.id">
+          <a-card size="small" title="设备信息">
 
-          <h1>子分类：{{ item.name }}    设备名：{{ iteminfo.name }}</h1>
-          <h3></h3>
-          <h2 class="aaa">等级：{{ item.level }}级</h2>
-
-
-        </a-card>
-
-</div>
-
-    </a-carousel>
-      </div>
+            <h1>子分类：{{ item.name }} 设备名：{{ iteminfo.name }}</h1>
+            <h3>位置： {{iteminfo.location}}   </h3>
+            <h3>状态：{{iteminfo.state}}</h3>
+            <h2 class="aaa">功率：{{ iteminfo.power }}W</h2>
 
 
+          </a-card>
+
+        </div>
+
+      </a-carousel>
+    </div>
 
 
-</div>
-
-
-
+  </div>
 
 
   <!--  </template>-->
@@ -104,13 +102,12 @@ export default defineComponent({
       {
         id: "404",
         name: '无设备',
-        power : "0",
+        power: "0",
         location: "未知",
         stste: false,
 
       },
     ])//给他赋初值
-
 
 
     // ______________________________________________________________________获取分类显示板块开始__________________________________________
@@ -143,7 +140,7 @@ export default defineComponent({
       })
     }
     onMounted(() => {
-          getdad(),
+      getdad(),
           findallbyid(1)
 
     });
@@ -166,7 +163,7 @@ export default defineComponent({
 /* For demo */
 .ant-carousel :deep(.slick-slide) {
   text-align: center;
-  height: 180px;
+  height: 200px;
   line-height: 160px;
   background: #364D790D;
   overflow: hidden;
@@ -180,6 +177,9 @@ export default defineComponent({
 
 .ant-carousel :deep(.slick-slide .aaa) {
   color: #dc0000;
+}
+.aaa :deep(.ant-radio-button-wrapper){
+  background: rgba(41, 144, 246, 0.62);
 }
 
 </style>
