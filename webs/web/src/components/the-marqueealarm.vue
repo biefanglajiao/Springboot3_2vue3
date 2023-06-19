@@ -1,6 +1,6 @@
 <template style="width: 100%;height:248px;">
 
-  <a-carousel autoplay dot-position="left">
+  <a-carousel autoplay dot-position="bottom">
     <div class="card1" style="width: 100%;height:248px;" v-for="item in templists" :key="item.id">
 
       <a-card size="small" title="设备未读告警">
@@ -12,7 +12,7 @@
 
       </a-card>
 
-    </div>
+   aaaaa </div>
 
   </a-carousel>
   <!--  </template>-->

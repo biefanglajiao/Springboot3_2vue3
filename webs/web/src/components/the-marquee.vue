@@ -71,8 +71,8 @@ export default defineComponent({
         id: "404",
         name: '无检测器启动',
         location: "无",
-        classes: "",
-        temperatures: "",
+        classes: "xx",
+        temperatures: "xx",
       },
     ])//给他赋初值
 
@@ -81,7 +81,7 @@ export default defineComponent({
       axios.get("/equipment/tempall").then((res) => {
         // console.log(Tool.isEmpty(templists.value), "              对比")
         const data = res.data;
-        if (data.success && !Tool.isEmpty(templists.value)) {
+        if (data.success && !Tool.isEmpty(data.content)) {
           // console.log(data.content,"dataaaaa")
           templists.value = res.data.content;
         }
@@ -91,6 +91,7 @@ export default defineComponent({
     onMounted(() => {
       tempall()
       a();
+      console.log(templists, "1111111")
     });
     return {
       aa,

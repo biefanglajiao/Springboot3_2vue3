@@ -50,7 +50,9 @@
                   <a-row>
                     <a-col :span="24">
                       <a-card style="width: 100%;height:420px;">
+                        <div>
                         <TheMarqueealarm></TheMarqueealarm>
+                        </div>
                         <TheMarqueedaily></TheMarqueedaily>
                       </a-card>
                     </a-col>
