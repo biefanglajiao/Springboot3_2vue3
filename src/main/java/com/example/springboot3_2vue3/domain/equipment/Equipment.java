@@ -1,6 +1,8 @@
 package com.example.springboot3_2vue3.domain.equipment;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -13,6 +15,7 @@ import java.util.List;
  **/
 @Component
 public class Equipment {
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
     private String name;
     private float power;

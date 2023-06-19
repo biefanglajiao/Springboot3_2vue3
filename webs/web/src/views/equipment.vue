@@ -30,6 +30,7 @@
                  :pagination="pagination"
                  :loading="loading"
                  @change="handleTableChange"
+
         >
 
           <template v-slot:action="{text,record}">
@@ -66,24 +67,25 @@
     <a-form :model="equip" :label-col="{ span: 4 }" :wrapper-col="{ span: 14 }" :layout="formLayout">
       <a-form-item label="登录名">
         <a-input v-model:value="equip.loginName" :disabled="!!equip.id"/>
-<!--        :disabled="equip.id" id是主键，新增时id为空，修改时id不为空，所以新增时可以输入，修改时不可以输入-->
-<!--        !!可以绕过类型校验（前端f12的报错提示）-->
+        <!--        :disabled="equip.id" id是主键，新增时id为空，修改时id不为空，所以新增时可以输入，修改时不可以输入-->
+        <!--        !!可以绕过类型校验（前端f12的报错提示）-->
       </a-form-item>
       <a-form-item label="昵称">
         <a-input v-model:value="equip.name"/>
       </a-form-item>
-      <a-form-item label="密码"  v-show="!equip.id">
+      <a-form-item label="密码" v-show="!equip.id">
         <a-input v-model:value="equip.password"/>
-<!--        v-show  是否展示、、此时新增显示，编辑不显示-->
+        <!--        v-show  是否展示、、此时新增显示，编辑不显示-->
       </a-form-item>
     </a-form>
   </a-modal>
 
-  <a-modal title="重置密码" v-model:visible="resetModalVisible" :confirm-loading="resetModalLoading" @ok="handleresetModalOk">
+  <a-modal title="重置密码" v-model:visible="resetModalVisible" :confirm-loading="resetModalLoading"
+           @ok="handleresetModalOk">
     <a-form :model="equip" :label-col="{ span: 4 }" :wrapper-col="{ span: 14 }" :layout="formLayout">
-      <a-form-item label="新密码"  >
-        <a-input v-model:value="equip.password" />
-<!--        v-show  是否展示、、此时新增显示，编辑不显示-->
+      <a-form-item label="新密码">
+        <a-input v-model:value="equip.password"/>
+        <!--        v-show  是否展示、、此时新增显示，编辑不显示-->
       </a-form-item>
     </a-form>
   </a-modal>
@@ -144,19 +146,22 @@ export default defineComponent({
     const categoryIds = ref();
     const handleModalOk = () => {//保存
       modalLoading.value = true;
-      equip.value.password=hexMd5(equip.value.password+KEY);
-        axios.post("/equip/save", equip.value).then((response) => {
-          modalLoading.value = false;//有返回就关闭加载
-          const data = response.data;//data==common,resp
-          if (data.success) {
-            modalVisible.value = false;//关闭视图
-            //重新加载列表
-            handleQuery();
-          } else {
-            message.error(data.message);
-          }
+      equip.value.password = hexMd5(equip.value.password + KEY);
+      axios.post("/equip/save", equip.value).then((response) => {
+        modalLoading.value = false;//有返回就关闭加载
+        const data = response.data;//data==common,resp
+        if (data.success) {
+          modalVisible.value = false;//关闭视图
+          //重新加载列表
+          handleQuery({
+            page: pagination.value.current,
+            size: pagination.value.pageSize
+          });
+        } else {
+          message.error(data.message);
+        }
 
-        });
+      });
 
     };
     /***
@@ -170,32 +175,34 @@ export default defineComponent({
 
     const handleresetModalOk = () => {//保存
       resetModalLoading.value = true;
-      equip.value.password=hexMd5(equip.value.password+KEY);
-        axios.post("/equip/reset-password", equip.value).then((response) => {
-          resetModalLoading.value = false;//有返回就关闭加载
-          const data = response.data;//data==common,resp
-          if (data.success) {
-            resetModalVisible.value = false;//关闭视图
-            //重新加载列表
-            handleQuery();
-          } else {
-            message.error(data.message);
-          }
+      equip.value.password = hexMd5(equip.value.password + KEY);
+      axios.post("/equip/reset-password", equip.value).then((response) => {
+        resetModalLoading.value = false;//有返回就关闭加载
+        const data = response.data;//data==common,resp
+        if (data.success) {
+          resetModalVisible.value = false;//关闭视图
+          //重新加载列表
+          handleQuery({
+            page: pagination.value.current,
+            size: pagination.value.pageSize
+          });
+        } else {
+          message.error(data.message);
+        }
 
-        });
+      });
 
     };
     /***
      *@方法描述: 单击重置密码按钮方法
      */
-    const resetPassword= (record: any) => {
+    const resetPassword = (record: any) => {
       resetModalVisible.value = true;
       // equip.value = record;
       equip.value = Tool.copy(record);
-      equip.value.password="";
+      equip.value.password = "";
       //todo 前端密码校验
     }
-
 
 
     /***
@@ -216,25 +223,31 @@ export default defineComponent({
       axios.delete("/equip/delete/" + id).then((response) => {
 
         const data = response.data;
-console.log(data);
+        console.log(data);
 
         //重新加载列表
-        handleQuery();
+        handleQuery({
+          page: pagination.value.current,
+          size: pagination.value.pageSize
+        });
       });
     }
 
     /***
      * @方法描述: 数据查询方法
      */
-    const handleQuery = () => {
+    const handleQuery = (params: any) => {
       loading.value = true;
 
       axios.get("/equipment/findallinfo").then((response) => {
         loading.value = false;
         const data = response.data;
         if (data.success) {
-          equips.value = data.content.list;
-
+          equips.value = data.content;
+          console.log("equips.value", equips.value);
+          //重置分页按钮
+          pagination.value.current = params.page;
+          pagination.value.total = data.content.total;
         } else {
           message.error(data.message);
         }
@@ -246,7 +259,11 @@ console.log(data);
      * @方法描述: 表格点击页面触发
      */
     const handleTableChange = (pagination: any) => {
-
+      handleQuery({
+        page: pagination.current,
+        size: pagination.pageSize
+      });
+      console.log(pagination);
 
     };
 
@@ -255,7 +272,10 @@ console.log(data);
      * @方法描述: 初始进入页面就查一次数据
      */
     onMounted(() => {
-      handleQuery();
+      handleQuery({
+        page: 1,
+        size: pagination.value.pageSize,
+      });
 
     });
     return {
