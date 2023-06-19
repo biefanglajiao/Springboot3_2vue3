@@ -85,6 +85,12 @@ public class EquipmentService {
             return false;
     }
 
+    public boolean  delete(long id) {
+      if (equipmapper.deleteById(id)==1)
+      {
+          return true;}
+      else {return false;}
 
+    }
 
 }

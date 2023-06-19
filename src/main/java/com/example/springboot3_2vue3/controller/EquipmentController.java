@@ -179,4 +179,16 @@ public class EquipmentController {
 commonResp.setMessage("保存成功");
         return commonResp;
     }
+
+    @DeleteMapping("/delete/{id}")//删除书籍  一般保存类用post
+    public CommonResp delete(@PathVariable long id) {//@PathVariable 用于获取url中的数据
+       CommonResp commonResp=new CommonResp();
+      if(equipmentService.delete(id)){
+        commonResp.setSuccess(true);
+       commonResp.setMessage("删除成功");}else {
+            commonResp.setSuccess(false);
+            commonResp.setMessage("删除失败");
+      }
+        return commonResp;
+    }
 }

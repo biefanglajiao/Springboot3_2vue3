@@ -223,16 +223,21 @@ export default defineComponent({
 
 
     const delet = (id: number) => {
-      axios.delete("/equip/delete/" + id).then((response) => {
+      axios.delete("/equipment/delete/" + id).then((response) => {
 
         const data = response.data;
-        console.log(data);
+        if (data.success) {
+          message.success(data.message);
 
-        //重新加载列表
-        handleQuery({
-          page: pagination.value.current,
-          size: pagination.value.pageSize
-        });
+          //重新加载列表
+          handleQuery({
+            page: pagination.value.current,
+            size: pagination.value.pageSize
+          });
+        } else {
+          message.error(data.message);
+        }
+
       });
     }
 
