@@ -1,18 +1,22 @@
 package com.example.springboot3_2vue3.resp;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+
 /**
  * @Author: 常兆海
  * @Description:检测器字段Temperature表+equipment表 name location字段
  * @DateTime: 2023/6/15 9:10
  **/
 public class TemperatureResp {
+    @JsonSerialize(using = ToStringSerializer.class)
     private int id;
 
     private double temperatures;
     private boolean level;
 
     private boolean classes;
-
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long equipid;
     private String location;
     private String name;

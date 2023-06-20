@@ -1,6 +1,8 @@
 package com.example.springboot3_2vue3.resp;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -13,6 +15,7 @@ import java.util.Date;
 //设备开启时间表
 @Component
 public class Deviceuse2Resp {
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss" ,timezone="GMT+8")//这个是返回给前端的格式
     private Date begindate;  //开启时间  写这个记录的时候自动添加

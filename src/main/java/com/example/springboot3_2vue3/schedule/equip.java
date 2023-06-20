@@ -36,10 +36,10 @@ public class equip {
 private AlarmService alarmService;
 
     //每小时执行一次
-//    @Scheduled(cron = "0 0 0/1 * * ?")
+    @Scheduled(cron = "0 0 0/1 * * ?")
     @Async
     @Transactional
-   @Scheduled(cron = "0 0/5 * * * ? ")//没5分钟
+//   @Scheduled(cron = "0 0/5 * * * ? ")//没5分钟
     public void 耗电量小时统计() {
         //获取开着的设备信息包含power所以用resp接
         List<DeviceusePowerResp> lists = deviceuseService.findall();

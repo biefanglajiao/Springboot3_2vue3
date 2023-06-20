@@ -1,14 +1,19 @@
 package com.example.springboot3_2vue3.resp;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+
 /**
  * @Author: 常兆海
  * @Description: 接收所有开着的设备信息  包含功率Deviceuse表+equipment表的power字段
  * @DateTime: 2023/6/16 9:58
  **/
 public class DeviceusePowerResp {
-
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long date;
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long equipmentid;
     private float power;
 

@@ -1,6 +1,8 @@
 package com.example.springboot3_2vue3.resp;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 import java.util.Date;
 
@@ -10,6 +12,7 @@ import java.util.Date;
  * @DateTime: 2023/6/18 11:40
  **/
 public class AlarmResp {
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
     private String description;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss" ,timezone="GMT+8")
