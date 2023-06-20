@@ -175,7 +175,7 @@ public class EquipmentController {
 
        CommonResp commonResp=new CommonResp();
 
-   commonResp.setSuccess(equipmentService.save(equipment));
+   commonResp.setContent(equipmentService.update(equipment));
 commonResp.setMessage("保存成功");
         return commonResp;
     }

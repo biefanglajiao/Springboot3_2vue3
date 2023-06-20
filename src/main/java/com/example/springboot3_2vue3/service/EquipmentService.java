@@ -99,4 +99,8 @@ public class EquipmentService {
         return equipmapper.selectList(queryWrapper);
     }
 
+    public int update(Equipment equipment){
+        return   equipmapper.updateById(equipment);
+    }
+
 }
