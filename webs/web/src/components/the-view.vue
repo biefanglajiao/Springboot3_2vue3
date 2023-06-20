@@ -91,6 +91,7 @@
           </a-col>
 
           <a-col :span="7">
+            <div class="schedule_card2">
             <!--            天气接口-->
             <a-card>
               <div style="width: 100%;height:647px;">
@@ -143,7 +144,7 @@
               </div>
             </a-card>
 
-
+            </div>
           </a-col>
         </a-row>
 
