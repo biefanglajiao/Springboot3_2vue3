@@ -198,8 +198,10 @@ export default defineComponent({
     const eqid = ref();
     //单击分类编辑
     const editcagory = (record: any) => {
+      equip.value = Tool.copy(record);
+      console.log("equp!!!!!!!!!!!!!!!!!!!!!!!!!!!!", equip)
       cagoryModalVisible.value = true;
-      eqid.value = record;
+      eqid.value = equip.value;
       console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!",eqid)
       // axios.get("/classification/selectAll").then((response) => {
       //
@@ -222,10 +224,10 @@ export default defineComponent({
     }
 //定义一个list数组
 
-    const handleresetModalOk = () => {//保存
-      const list :number[]= [];
+    const handleresetModalOk = () => {//分类编辑的保存
+      const list : any[]= [];
       resetModalLoading.value = true;
-    console.log("!!!!!!!!adadadadada!!!!!!!!!!!!!!!!!!!!",categoryIds.value)
+    // console.log("!!!!!!!!adadadadada!!!!!!!!!!!!!!!!!!!!",categoryIds.value)
 
       list.push(eqid.value)
       categoryIds.value.forEach((item: any) => {
@@ -233,13 +235,15 @@ export default defineComponent({
         list.push(item.classificationOptions.ids)
       })
 
-      console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!",list)
+
    //取出categoryIds内的
       axios.post("/classification/save", list).then((response) => {
         resetModalLoading.value = false;//有返回就关闭加载
         const data = response.data;//data==common,resp
         if (data.success) {
-          resetModalVisible.value = false;//关闭视图
+          cagoryModalVisible.value = false;//关闭视图
+          message.success(data.message);
+
           //重新加载列表
           handleQuery({
             page: pagination.value.current,
