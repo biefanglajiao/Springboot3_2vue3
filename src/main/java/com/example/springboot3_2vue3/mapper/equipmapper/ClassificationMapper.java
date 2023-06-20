@@ -23,4 +23,7 @@ public interface ClassificationMapper extends BaseMapper<Classification> {
     List<Classification>  findAllById(Long id);
 
 
+    List<Classification>  findAllchild();
+
+
 }

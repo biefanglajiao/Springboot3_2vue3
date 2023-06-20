@@ -50,6 +50,8 @@ public class ClassificationService {
 
     public List<Classification> findAllById(Long id){
         return classificationMapper.findAllById(id);
+    } public List<Classification> findAllchild(){
+        return classificationMapper.findAllchild();
     }
 
 }

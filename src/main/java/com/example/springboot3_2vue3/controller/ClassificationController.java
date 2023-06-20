@@ -1,14 +1,13 @@
 package com.example.springboot3_2vue3.controller;
 
 import com.example.springboot3_2vue3.domain.equipment.Classification;
+import com.example.springboot3_2vue3.domain.equipment.Equipment;
 import com.example.springboot3_2vue3.resp.CommonResp;
 import com.example.springboot3_2vue3.service.AlarmService;
 import com.example.springboot3_2vue3.service.ClassificationService;
 import jakarta.annotation.Resource;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -51,6 +50,27 @@ public class ClassificationController {
     public CommonResp selectAllById(@PathVariable Long id){
         CommonResp resp = new CommonResp<>();
         List<Classification> lists = classificationService.findAllById(id);
+        resp.setContent(lists);
+
+
+        return resp;
+    }
+
+    @GetMapping("/selectallchild")
+    public CommonResp selectAllchild(){
+        CommonResp resp = new CommonResp<>();
+        List<Classification> lists = classificationService.findAllchild();
+        resp.setContent(lists);
+
+
+        return resp;
+    }
+    @PostMapping("/save")
+    public CommonResp selectAllchild(@RequestBody @Valid Classification classification){
+
+        System.out.println(classification);
+        CommonResp resp = new CommonResp<>();
+        List<Classification> lists = classificationService.findAllchild();
         resp.setContent(lists);
 
 

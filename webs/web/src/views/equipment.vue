@@ -44,6 +44,9 @@
               <a-button type="ghost" v-show="!record.state"  @click="openequip(record.id)">
                 开启
               </a-button>
+              <a-button type="primary" @click="editcagory(record.id)">
+                分类编辑
+              </a-button>
 
               <!--              原有的click方法到confirm里  cacel是放弃 这里不做操作  @cancel="cancel"-->
               <a-popconfirm
@@ -85,12 +88,20 @@
     </a-form>
   </a-modal>
 
-  <a-modal title="重置密码" v-model:visible="resetModalVisible" :confirm-loading="resetModalLoading"
+  <a-modal title="分类编辑" v-model:visible="cagoryModalVisible" :confirm-loading="resetModalLoading"
            @ok="handleresetModalOk">
-    <a-form :model="equip" :label-col="{ span: 4 }" :wrapper-col="{ span: 14 }" :layout="formLayout">
-      <a-form-item label="新密码">
-        <a-input v-model:value="equip.password"/>
-        <!--        v-show  是否展示、、此时新增显示，编辑不显示-->
+    <a-form :model="categoryIds" :label-col="{ span: 4 }" :wrapper-col="{ span: 14 }" :layout="formLayout">
+      <a-form-item label="">
+        <div v-for="cagoryid in categoryIds" :key="cagoryid.id">{{cagoryid.name}}
+          <a-select
+              ref="select"
+              v-model:value="cagoryid.classificationOptions.id"
+              style="width: 120px"
+              @focus="focus"
+          >
+            <a-select-option v-for="cagory in cagoryid.classificationOptions" :key="cagory.id" :value="cagory.id">{{cagory.name}}</a-select-option>
+          </a-select>
+        </div>
       </a-form-item>
     </a-form>
   </a-modal>
@@ -99,7 +110,7 @@
 <script lang="ts">
 import {defineComponent, onMounted, ref} from 'vue';
 import axios from "axios";
-import {message} from "ant-design-vue";
+import {CascaderProps, message} from "ant-design-vue";
 import {Tool} from '@/utils/tool';
 // 对外部引用爆红的解决方法
 declare let hexMd5: any;
@@ -140,15 +151,17 @@ export default defineComponent({
         slots: {customRender: 'action'}
       }
     ];
-    /*****
-     * @方法描述: 编辑表单的提交
-     */
+
     const modalLoading = ref<boolean>(false);
     const modalVisible = ref<boolean>(false);
+    const cagoryModalVisible = ref<boolean>(false);
     const resetModalLoading = ref<boolean>(false);
     const resetModalVisible = ref<boolean>(false);
     const equip = ref();
-    const categoryIds = ref();
+
+    /*****
+     * @方法描述: 编辑表单的提交
+     */
     const handleModalOk = () => {//保存
       modalLoading.value = true;
 
@@ -179,10 +192,35 @@ export default defineComponent({
       equip.value = Tool.copy(record);
     }
 
+    let options: CascaderProps['options'] = [];
+    const categoryIds = ref();
+    //单击分类编辑
+    const editcagory = (record: any) => {
+      cagoryModalVisible.value = true;
+      // axios.get("/classification/selectAll").then((response) => {
+      //
+      //   const data = response.data;//data==common,resp
+      //   if (data.success){
+      //     categoryIds.value=data.content;
+      //     console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!",categoryIds)
+      //   }
+      // });
+      axios.get("/classification/selectallchild").then((response) => {
+
+        const data = response.data;//data==common,resp
+        if (data.success){
+          categoryIds.value=data.content;
+            console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!",categoryIds)
+        }
+      });
+
+
+    }
+
     const handleresetModalOk = () => {//保存
       resetModalLoading.value = true;
-      equip.value.password = hexMd5(equip.value.password + KEY);
-      axios.post("/equip/reset-password", equip.value).then((response) => {
+    console.log("!!!!!!!!adadadadada!!!!!!!!!!!!!!!!!!!!",categoryIds.value)
+      axios.post("/classification/save", categoryIds.value).then((response) => {
         resetModalLoading.value = false;//有返回就关闭加载
         const data = response.data;//data==common,resp
         if (data.success) {
@@ -363,6 +401,10 @@ export default defineComponent({
        * 分类相关
        */
       categoryIds,
+      editcagory,
+      cagoryModalVisible,
+      options,
+
 
 
       //开关设备

@@ -34,6 +34,18 @@
         where classification.id = #{id};
     </select>
 
+    <select id="findAllchild"  resultMap="classificationMapper">
+        select classification.id        cid,
+               classification.className,
+               classification_option.id oid,
+               classification_option.optionName
+        from classification
+                 left join classification_option on classification.id = classification_option.classId
+                 LEFT JOIN equipment_classification_option
+                           ON classification_option.id = equipment_classification_option.optionId
+
+    </select>
+
     <resultMap id="classificationMapper" type="com.example.springboot3_2vue3.domain.equipment.Classification">
         <id property="id" column="cid"></id>
         <result property="name" column="className"></result>
