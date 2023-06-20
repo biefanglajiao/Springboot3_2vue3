@@ -12,7 +12,7 @@
                   v-model:value="param.name"
                   placeholder="设备名"
                   enter-button
-                  @search="handleQuery({page:1,size:pagination.pageSize})"
+                  @search="handleQueryserch({page:1,size:pagination.pageSize },param.name)"
               />
             </a-space>
           </a-form-item>
@@ -202,12 +202,22 @@ export default defineComponent({
     /***
      *@方法描述: 单击重置密码按钮方法
      */
-    const resetPassword = (record: any) => {
-      resetModalVisible.value = true;
-      // equip.value = record;
-      equip.value = Tool.copy(record);
-      equip.value.password = "";
-      //todo 前端密码校验
+    const handleQueryserch = (params: any,searchValue: string) => {
+      loading.value = true;
+
+      axios.get("/equipment/selectbyname/"+searchValue).then((response) => {
+        loading.value = false;
+        const data = response.data;
+        if (data.success) {
+          equips.value = data.content;
+          console.log("equips.value", equips.value);
+          //重置分页按钮
+          pagination.value.current = params.page;
+          pagination.value.total = data.content.total;
+        } else {
+          message.error(data.message);
+        }
+      });
     }
 
 
@@ -347,7 +357,7 @@ export default defineComponent({
       resetModalLoading,
       resetModalVisible,
       handleresetModalOk,
-      resetPassword,
+      handleQueryserch,
 
       /**
        * 分类相关

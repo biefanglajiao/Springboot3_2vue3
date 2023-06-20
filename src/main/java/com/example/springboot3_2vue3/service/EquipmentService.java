@@ -93,4 +93,10 @@ public class EquipmentService {
 
     }
 
+    public List<Equipment> selectByname(String name){
+        QueryWrapper<Equipment> queryWrapper = new QueryWrapper<>();
+        queryWrapper.like("name",name);
+        return equipmapper.selectList(queryWrapper);
+    }
+
 }

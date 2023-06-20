@@ -11,4 +11,9 @@ GET http://localhost:8080/equipment/closeequip?id=8
 ###
 
 GET http://localhost:8080/equipment/findallinfo
+###
+
+GET http://localhost:8080/equipment/selectbyname/空
+
+
 

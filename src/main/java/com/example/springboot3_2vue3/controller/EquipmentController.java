@@ -191,4 +191,11 @@ commonResp.setMessage("保存成功");
       }
         return commonResp;
     }
+
+    @GetMapping("/selectbyname/{name}")
+    public CommonResp selectbyname(@PathVariable String name) {
+        CommonResp<List<Equipment>> listCommonResp = new CommonResp<>();
+        listCommonResp.setContent(equipmentService.selectByname(name));
+        return listCommonResp;
+    }
 }
