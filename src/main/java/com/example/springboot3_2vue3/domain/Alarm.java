@@ -1,7 +1,13 @@
 package com.example.springboot3_2vue3.domain;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.example.springboot3_2vue3.domain.equipment.Equipment;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
+import java.lang.reflect.Type;
 import java.util.Date;
 
 /**
@@ -10,10 +16,13 @@ import java.util.Date;
  * @DateTime: 2023/6/18 11:33
  **/
 public class Alarm {
+    @TableId(type= IdType.INPUT)
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
     private String description;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss" ,timezone="GMT+8")
     private Date date;
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long equipmentid;
     private boolean read;
     private int level;

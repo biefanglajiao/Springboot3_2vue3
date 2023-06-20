@@ -22,7 +22,10 @@
         ORDER BY a.date DESC
 
     </select>
+    <insert id="insertAlarm"    parameterType="com.example.springboot3_2vue3.domain.Alarm">
 
+insert into alarm (id,`level`,description,equipmentid,`read`) values (#{id},#{level},#{description},#{equipmentid},#{read})
+    </insert>
 
 
     <resultMap id="temp" type="com.example.springboot3_2vue3.domain.Alarm">

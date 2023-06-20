@@ -1,5 +1,7 @@
 package com.example.springboot3_2vue3.domain.equipment;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -12,8 +14,11 @@ import java.util.Date;
 //设备开启时间表
 @Component
 public class Deviceuse {
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long    date;
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long equipmentid;
 
     @Override

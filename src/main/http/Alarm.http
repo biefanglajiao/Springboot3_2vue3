@@ -7,4 +7,6 @@ GET http://localhost:8080/alarm/selectAllNoreadinfo
 
 GET http://localhost:8080/alarm/read/1
 ###
+GET http://localhost:8080/alarm/insert
+###
 

@@ -928,8 +928,13 @@ export default defineComponent({
       axios.get("/yearpoweruse/getpoweruse").then((res) => {
         const data = res.data;
         if (data.success) {
+          console.log("日总耗电量信息~~~~~~~~~~~~~~~~~~~~~~：", data.content)
+          if (Tool.isEmpty(data.content)){
+            mychartsXHDN(1);
+          }
+          else {
           todaypoweruse.value = data.content;
-          mychartsXHDN(todaypoweruse.value);
+          mychartsXHDN(todaypoweruse.value);}
         } else {
           // console.log("全部数据                  ：", data)
         }

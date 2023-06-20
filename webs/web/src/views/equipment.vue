@@ -121,6 +121,9 @@ export default defineComponent({
       {
         title: '设备名',
         dataIndex: 'name',
+      }, {
+        title: '设备id',
+        dataIndex: 'id',
       },
       {
         title: '功率',

@@ -69,8 +69,9 @@ public class AlarmService {
         return alarmMapper.update(null, updateWrapper);
     }
 
-    public  int addalarm(Alarm alarm){
+    public  boolean addalarm(Alarm alarm){
         rocketMQTemplate.convertAndSend("VOTE_TOPIC","【请注意】，你有一条告警信息，请及时查看！！");
-        return alarmMapper.insert(alarm);
+        System.out.println(alarm.getDescription()+"-------------------");
+        return alarmMapper.insertAlarm(alarm);
     }
 }

@@ -2,6 +2,8 @@ package com.example.springboot3_2vue3.domain.equipment;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 import java.util.List;
 
@@ -16,6 +18,7 @@ import java.util.List;
  */
 public class Classification {
     @TableId
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;     //分类id
     @TableField("className")
     private String name;    //分类名

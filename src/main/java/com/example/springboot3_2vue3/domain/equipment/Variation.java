@@ -2,6 +2,8 @@ package com.example.springboot3_2vue3.domain.equipment;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -17,6 +19,7 @@ public class Variation {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss" ,timezone="GMT+8")
     private Date date;//记录时间
     private float data;//耗电量
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long equipmentid;//对用设备id
 
     @TableField(exist = false)
