@@ -66,12 +66,11 @@ public class ClassificationController {
         return resp;
     }
     @PostMapping("/save")
-    public CommonResp selectAllchild(@RequestBody @Valid Classification classification){
+    public CommonResp selectAllchild(@RequestBody List<Integer> list){
 
-        System.out.println(classification);
+        System.out.println(list);
+
         CommonResp resp = new CommonResp<>();
-        List<Classification> lists = classificationService.findAllchild();
-        resp.setContent(lists);
 
 
         return resp;

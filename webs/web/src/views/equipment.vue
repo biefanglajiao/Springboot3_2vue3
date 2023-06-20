@@ -91,11 +91,12 @@
   <a-modal title="分类编辑" v-model:visible="cagoryModalVisible" :confirm-loading="resetModalLoading"
            @ok="handleresetModalOk">
     <a-form :model="categoryIds" :label-col="{ span: 4 }" :wrapper-col="{ span: 14 }" :layout="formLayout">
-      <a-form-item label="">
+      <a-form-item :label=eqid>
+        <br>
         <div v-for="cagoryid in categoryIds" :key="cagoryid.id">{{cagoryid.name}}
           <a-select
               ref="select"
-              v-model:value="cagoryid.classificationOptions.id"
+              v-model:value="cagoryid.classificationOptions.ids"
               style="width: 120px"
               @focus="focus"
           >
@@ -192,11 +193,14 @@ export default defineComponent({
       equip.value = Tool.copy(record);
     }
 
-    let options: CascaderProps['options'] = [];
+
     const categoryIds = ref();
+    const eqid = ref();
     //单击分类编辑
     const editcagory = (record: any) => {
       cagoryModalVisible.value = true;
+      eqid.value = record;
+      console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!",eqid)
       // axios.get("/classification/selectAll").then((response) => {
       //
       //   const data = response.data;//data==common,resp
@@ -216,11 +220,22 @@ export default defineComponent({
 
 
     }
+//定义一个list数组
 
     const handleresetModalOk = () => {//保存
+      const list :number[]= [];
       resetModalLoading.value = true;
     console.log("!!!!!!!!adadadadada!!!!!!!!!!!!!!!!!!!!",categoryIds.value)
-      axios.post("/classification/save", categoryIds.value).then((response) => {
+
+      list.push(eqid.value)
+      categoryIds.value.forEach((item: any) => {
+        //将ids放入list中
+        list.push(item.classificationOptions.ids)
+      })
+
+      console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!",list)
+   //取出categoryIds内的
+      axios.post("/classification/save", list).then((response) => {
         resetModalLoading.value = false;//有返回就关闭加载
         const data = response.data;//data==common,resp
         if (data.success) {
@@ -238,7 +253,7 @@ export default defineComponent({
 
     };
     /***
-     *@方法描述: 单击重置密码按钮方法
+     *@方法描述: 单击查询方法
      */
     const handleQueryserch = (params: any,searchValue: string) => {
       loading.value = true;
@@ -403,7 +418,7 @@ export default defineComponent({
       categoryIds,
       editcagory,
       cagoryModalVisible,
-      options,
+eqid,
 
 
 
