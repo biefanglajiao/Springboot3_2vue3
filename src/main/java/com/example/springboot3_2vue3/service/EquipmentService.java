@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.example.springboot3_2vue3.Utils.CopyUtils;
 import com.example.springboot3_2vue3.Utils.SnowFlake;
 import com.example.springboot3_2vue3.domain.equipment.Equipment;
-import com.example.springboot3_2vue3.mapper.equipmapper.Equipmapper;
+import com.example.springboot3_2vue3.mapper.equipmapper.EquipMapper;
 import jakarta.annotation.Resource;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ import java.util.List;
 @Service
 public class EquipmentService {
     @Resource
-    private Equipmapper equipmapper;
+    private EquipMapper equipmapper;
     @Resource
     private RocketMQTemplate rocketMQTemplate;
     @Resource
@@ -76,13 +76,16 @@ public class EquipmentService {
 
 
     }
-    public boolean save(Equipment equipment){
+    public int insert(Equipment equipment){
         Equipment equipment1= CopyUtils.copy(equipment, Equipment.class);//将请求参数更新为实体
+        System.out.println(equipment1);
         equipment1.setId(snowFlake.nextId());
-        if (equipmapper.insert(equipment1)==1){
-            return true;
-        }else
-            return false;
+        return equipmapper.insert(equipment1);
+//        if (equipmapper.insertinfo(equipment1)==1){
+//            return true;
+//        }else
+//            return false;
+
     }
 
     public boolean  delete(long id) {

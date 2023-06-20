@@ -2,6 +2,7 @@ package com.example.springboot3_2vue3.controller;
 
 import com.example.springboot3_2vue3.Utils.SnowFlake;
 import com.example.springboot3_2vue3.domain.equipment.*;
+import com.example.springboot3_2vue3.mapper.equipmapper.Equipment_Classification_OptionMapper;
 import com.example.springboot3_2vue3.resp.CommonResp;
 import com.example.springboot3_2vue3.resp.DeviceusePowerResp;
 import com.example.springboot3_2vue3.resp.TemperatureResp;
@@ -38,6 +39,8 @@ public class EquipmentController {
     private DeviceuseService deviceuseService;
     @Resource
     private Deviceuse2Service deviceuse2Service;
+    @Resource
+    private Equipment_Classification_OptionMapper equipmentClassificationOptionMapper;
 
     @RequestMapping("/all")
     public CommonResp findOpenAndAll() {
@@ -174,7 +177,9 @@ public class EquipmentController {
 
 
        CommonResp commonResp=new CommonResp();
-
+if (equipment.getId()==null){
+    commonResp.setContent(equipmentService.insert(equipment ));
+}
    commonResp.setContent(equipmentService.update(equipment));
 commonResp.setMessage("保存成功");
         return commonResp;
@@ -184,6 +189,7 @@ commonResp.setMessage("保存成功");
     public CommonResp delete(@PathVariable long id) {//@PathVariable 用于获取url中的数据
        CommonResp commonResp=new CommonResp();
       if(equipmentService.delete(id)){
+          equipmentClassificationOptionMapper.deleteByeid(id);//删除这个设备对应的分类表的数据
         commonResp.setSuccess(true);
        commonResp.setMessage("删除成功");}else {
             commonResp.setSuccess(false);
