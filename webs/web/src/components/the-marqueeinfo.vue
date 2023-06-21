@@ -24,9 +24,9 @@
     </a-radio-button>
     </div>
   </a-radio-group>
-  <div style="overflow-y:hidden ;overflow-x:hidden;height:100%">
+  <div >
     <div class="card" style="width: 100%;height:200px;" v-for="item in templists" :key="item.id">
-      <a-carousel autoplay dot-position="left">
+      <a-carousel autoplay dot-position="top">
         <div class="card1" style="width: 100%;height:200px;" v-for="iteminfo in item.equipments" :key="iteminfo.id">
           <a-card size="small" title="设备信息">
 

@@ -1,6 +1,6 @@
 <template style="width: 100%;height:248px;">
-
-  <a-carousel autoplay dot-position="left">
+<div class="qqq">
+  <a-carousel autoplay dot-position="top">
     <div class="card1" style="width: 100%;height:248px;" v-for="item in templists" :key="item.id">
 
       <a-card size="small" title="设备使用日志">
@@ -16,7 +16,7 @@
     </div>
 
   </a-carousel>
-
+</div>
 </template>
 <script lang="ts">
 import {LeftCircleOutlined, RightCircleOutlined} from '@ant-design/icons-vue';
@@ -100,6 +100,12 @@ export default defineComponent({
 .card1 {
   :deep( .ant-card ) {
     background: rgba(255, 255, 255, 0.08);
+  }
+}
+
+.qqq{
+  :deep(.ant-carousel .slick-slider .slick-vertical .slick-initialized){
+    height: 200px;
   }
 }
 </style>

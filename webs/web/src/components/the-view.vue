@@ -49,10 +49,10 @@
                 <div style="width: 100%;height:647px;">
                   <a-row>
                     <a-col :span="24">
-                      <a-card style="width: 100%;height:420px;">
-                        <div>
+                      <a-card class="adad" style="width: 100%;height:420px;">
+
                         <TheMarqueealarm></TheMarqueealarm>
-                        </div>
+
                         <TheMarqueedaily></TheMarqueedaily>
                       </a-card>
                     </a-col>
@@ -1053,5 +1053,12 @@ export default defineComponent({
   :deep( .ant-card-bordered ) {
     border: 1px dotted #008cff;
   }
+}
+.adad{
+  :deep( .ant-card-body ) {
+    height: 420px;
+
+  }
+
 }
 </style>

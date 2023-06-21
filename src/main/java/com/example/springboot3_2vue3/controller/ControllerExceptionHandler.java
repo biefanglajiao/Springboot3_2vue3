@@ -52,7 +52,7 @@ private static final Logger LOG = LoggerFactory.getLogger(ControllerExceptionHan
     public CommonResp validExceptionHandler(Exception e) {
         CommonResp comminResp = new CommonResp<>();
         comminResp.setSuccess(false);
-        comminResp.setMessage("业务异常：请联系常兆海处理,联系也没用 我也不会看异常");
+        comminResp.setMessage("业务异常：我也不会看异常");
         LOG.error("系统异常",e);
         return comminResp;
     }
