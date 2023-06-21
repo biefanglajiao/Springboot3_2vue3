@@ -16,7 +16,7 @@ import java.util.Date;
 @Component
 public class Variation {
     private int id;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss" ,timezone="GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss" )
     private Date date;//记录时间
     private float data;//耗电量
     @JsonSerialize(using = ToStringSerializer.class)

@@ -20,9 +20,9 @@
           <router-link to="/alarm">告警</router-link>
         </a-menu-item>
 
-        <a-menu-item key="category" v-if="user.id">
-          <router-link to="/category">分类管理</router-link>
-        </a-menu-item>
+<!--        <a-menu-item key="category" v-if="user.id">-->
+<!--          <router-link to="/category">分类管理</router-link>-->
+<!--        </a-menu-item>-->
         <a-menu-item key="equipment" v-if="user.id">
           <router-link to="/equipment">设备管理</router-link>
         </a-menu-item>

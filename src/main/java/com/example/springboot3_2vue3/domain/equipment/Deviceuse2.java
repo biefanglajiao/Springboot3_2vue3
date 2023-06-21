@@ -18,7 +18,7 @@ import java.util.Date;
 public class Deviceuse2 {
     @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss" ,timezone="GMT+8")//这个是返回给前端的格式
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")//这个是返回给前端的格式
     private Date begindate;  //开启时间  写这个记录的时候自动添加
     @JsonSerialize(using = ToStringSerializer.class)
     private Long enddate;   //关闭时间  后台传
