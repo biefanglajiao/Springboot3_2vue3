@@ -36,7 +36,8 @@ public class equip {
 private AlarmService alarmService;
 
     //每小时执行一次
-    @Scheduled(cron = "0 0 0/1 * * ?")
+//    @Scheduled(cron = "0 0 0/1 * * ?")
+    @Scheduled(cron = "0 0/30 * * * ? ")
     @Async
     @Transactional
 //   @Scheduled(cron = "0 0/5 * * * ? ")//没5分钟
