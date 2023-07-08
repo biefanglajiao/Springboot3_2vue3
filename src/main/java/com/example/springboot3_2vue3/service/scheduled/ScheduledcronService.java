@@ -18,7 +18,11 @@ public class ScheduledcronService {
 
 
     public Scheduledcron findByCronKey(String cronKey) {
-        return scheduledcronMapper.findByCronKey(cronKey);
+
+
+        Scheduledcron byCronKey = scheduledcronMapper.findByCronKey(cronKey);
+//        System.out.println(byCronKey.isStatus()+"!!!!!!!");
+        return byCronKey;
     }
 
 
