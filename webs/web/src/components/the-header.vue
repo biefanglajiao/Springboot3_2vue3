@@ -26,6 +26,9 @@
         <a-menu-item key="equipment" v-if="user.id">
           <router-link to="/equipment">设备管理</router-link>
         </a-menu-item>
+        <a-menu-item key="scheduled" v-if="user.id">
+          <router-link to="/scheduled">定时任务</router-link>
+        </a-menu-item>
         <a-menu-item key="about" v-else>
           <router-link to="/about">关于我们</router-link>
         </a-menu-item>
