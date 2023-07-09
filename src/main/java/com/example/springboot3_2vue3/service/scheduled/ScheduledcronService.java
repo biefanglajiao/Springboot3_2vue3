@@ -1,6 +1,8 @@
 package com.example.springboot3_2vue3.service.scheduled;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.springboot3_2vue3.Utils.ScheduledUtils;
+import com.example.springboot3_2vue3.domain.equipment.Equipment;
 import com.example.springboot3_2vue3.domain.scheduled.Scheduledcron;
 import com.example.springboot3_2vue3.mapper.scheduled.ScheduledcronMapper;
 import jakarta.annotation.Resource;
@@ -62,6 +64,13 @@ public class ScheduledcronService {
     }
     //根据cronKey模糊查询
 
+
+    public List<Scheduledcron> findByExplanLike(String explan){
+        QueryWrapper<Scheduledcron> queryWrapper = new QueryWrapper<>();
+        queryWrapper.like("explan",explan);
+        return scheduledcronMapper.selectList(queryWrapper);
+
+    }
 
 
 

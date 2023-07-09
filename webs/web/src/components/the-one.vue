@@ -10,7 +10,7 @@
             <a-space direction="vertical">
               <a-input-search
                   v-model:value="param.name"
-                  placeholder="设备名"
+                  placeholder="根据描述查询"
                   enter-button
                   @search="handleQueryserch({page:1,size:pagination.pageSize },param.name)"
               />
@@ -121,11 +121,8 @@
 <script lang="ts">
 import {defineComponent, onMounted, ref} from 'vue';
 import axios from "axios";
-import {CascaderProps, message} from "ant-design-vue";
+import { message} from "ant-design-vue";
 import {Tool} from '@/utils/tool';
-// 对外部引用爆红的解决方法
-declare let hexMd5: any;
-declare let KEY: any;
 
 export default defineComponent({
   name: 'AdminUser',
@@ -141,17 +138,17 @@ export default defineComponent({
     const loading = ref(false);
     const columns = [
       {
-        title: '任务对应操作',
-        dataIndex: 'cronkey',
-      }, {
+        title: '描述',
+        dataIndex: 'explan',
+      },
+     {
         title: '表达式',
         dataIndex: 'cronexpression',
       },
       {
-        title: '描述',
-        dataIndex: 'explan',
+        title: '任务对应操作',
+        dataIndex: 'cronkey',
       },
-
       {
         title: '状态',
         key: 'status',
@@ -274,7 +271,7 @@ export default defineComponent({
     const handleQueryserch = (params: any,searchValue: string) => {
       loading.value = true;
 
-      axios.get("/scheduledment/selectbyname/"+searchValue).then((response) => {
+      axios.get("/scheduled/selectbyname/"+searchValue).then((response) => {
         loading.value = false;
         const data = response.data;
         if (data.success) {
@@ -303,7 +300,7 @@ export default defineComponent({
      * @方法描述: 删除按钮方法
      */
 
-
+//todo 根据描述查询    根据操作分类  根据状态分类
     const delet = (id: number) => {
       axios.delete("/scheduled/delete/" + id).then((response) => {
 
