@@ -220,4 +220,13 @@ commonResp.setMessage("保存成功");
         listCommonResp.setContent(equipmentService.selectByname(name));
         return listCommonResp;
     }
+    //根据设备位置查询设备信息
+    @GetMapping("/selectbylocation/{location}")
+    public CommonResp selectbylocation(@PathVariable String location) {
+        CommonResp<List<Equipment>> listCommonResp = new CommonResp<>();
+        listCommonResp.setContent(equipmentService.selectBylocation(location));
+        return listCommonResp;
+    }
+
+
 }

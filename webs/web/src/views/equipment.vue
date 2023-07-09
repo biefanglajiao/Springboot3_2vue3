@@ -19,10 +19,10 @@
           <a-form-item>
             <a-space direction="vertical">
               <a-input-search
-                  v-model:value="param.name"
+                  v-model:value="param.location"
                   placeholder="根据位置查询"
                   enter-button
-                  @search="handleQueryserch({page:1,size:pagination.pageSize },param.name)"
+                  @search="handleQueryserchlocation({page:1,size:pagination.pageSize },param.location)"
               />
             </a-space>
           </a-form-item>
@@ -302,12 +302,32 @@ export default defineComponent({
 
     };
     /***
-     *@方法描述: 单击查询方法
+     *@方法描述: 单击查询方法--设备名查询
      */
     const handleQueryserch = (params: any,searchValue: string) => {
       loading.value = true;
 
       axios.get("/equipment/selectbyname/"+searchValue).then((response) => {
+        loading.value = false;
+        const data = response.data;
+        if (data.success) {
+          equips.value = data.content;
+          console.log("equips.value", equips.value);
+          //重置分页按钮
+          pagination.value.current = params.page;
+          pagination.value.total = data.content.total;
+        } else {
+          message.error(data.message);
+        }
+      });
+    }
+    /***
+     *@方法描述: 单击查询方法----位置查询
+     */
+    const handleQueryserchlocation = (params: any,searchValue: string) => {
+      loading.value = true;
+
+      axios.get("/equipment/selectbylocation/"+searchValue).then((response) => {
         loading.value = false;
         const data = response.data;
         if (data.success) {
@@ -499,6 +519,7 @@ const statussearch =(status: any)=>{
       resetModalVisible,
       handleresetModalOk,
       handleQueryserch,
+      handleQueryserchlocation,
 
       /**
        * 分类相关

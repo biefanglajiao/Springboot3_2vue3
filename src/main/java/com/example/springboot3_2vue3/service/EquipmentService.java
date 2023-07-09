@@ -109,6 +109,11 @@ public class EquipmentService {
         queryWrapper.like("name", name);
         return equipmapper.selectList(queryWrapper);
     }
+    public List<Equipment> selectBylocation(String location) {
+        QueryWrapper<Equipment> queryWrapper = new QueryWrapper<>();
+        queryWrapper.like("location", location);
+        return equipmapper.selectList(queryWrapper);
+    }
 
     public int update(Equipment equipment) {
         return equipmapper.updateById(equipment);
@@ -137,4 +142,6 @@ public class EquipmentService {
 
 
     }
+
+
 }
