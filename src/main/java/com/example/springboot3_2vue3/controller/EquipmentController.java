@@ -1,7 +1,9 @@
 package com.example.springboot3_2vue3.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.springboot3_2vue3.Utils.SnowFlake;
 import com.example.springboot3_2vue3.domain.equipment.*;
+import com.example.springboot3_2vue3.domain.scheduled.Scheduledcron;
 import com.example.springboot3_2vue3.mapper.equipmapper.Equipment_Classification_OptionMapper;
 import com.example.springboot3_2vue3.resp.CommonResp;
 import com.example.springboot3_2vue3.resp.DeviceusePowerResp;
@@ -69,6 +71,20 @@ public class EquipmentController {
         return listCommonResp;
 
 
+    }
+    @GetMapping("/selectbystatus/{status}")
+    public CommonResp selectbystatus(@PathVariable int status) {
+
+        CommonResp<List<Equipment>> listCommonResp = new CommonResp<>();
+        listCommonResp.setContent(equipmentService.selectbystatus(status));
+        return listCommonResp;
+    }
+    @GetMapping("/selectbypower/{power}")
+    public CommonResp selectbypower(@PathVariable int power) {
+
+        CommonResp<List<Equipment>> listCommonResp = new CommonResp<>();
+        listCommonResp.setContent(equipmentService.selectbypower(power));
+        return listCommonResp;
     }
 
 

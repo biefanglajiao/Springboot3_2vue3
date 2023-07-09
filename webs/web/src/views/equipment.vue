@@ -10,7 +10,17 @@
             <a-space direction="vertical">
               <a-input-search
                   v-model:value="param.name"
-                  placeholder="设备名"
+                  placeholder="根据设备名查询"
+                  enter-button
+                  @search="handleQueryserch({page:1,size:pagination.pageSize },param.name)"
+              />
+            </a-space>
+          </a-form-item>
+          <a-form-item>
+            <a-space direction="vertical">
+              <a-input-search
+                  v-model:value="param.name"
+                  placeholder="根据位置查询"
                   enter-button
                   @search="handleQueryserch({page:1,size:pagination.pageSize },param.name)"
               />
@@ -22,6 +32,42 @@
                 新增
               </a-button>
             </p>
+          </a-form-item>
+          <a-form-item>
+            <a-dropdown>
+              <template #overlay>
+                <a-menu >
+                  <a-menu-item  key="1 ">
+                    <a-button @click="statussearch(1)">
+                      <tag-outlined/>
+                      根据状态查询-开
+                    </a-button>
+                  </a-menu-item>
+                  <a-menu-item  key="2"     >
+                    <a-button @click="statussearch(0)">
+                      <tag-outlined/>
+                      根据状态查询-关
+                    </a-button>
+                  </a-menu-item>
+                  <a-menu-item  key="3"  >
+                    <a-button @click="powersearch(1)">
+                      <UserOutlined/>
+                      根据功率排序-升
+                    </a-button>
+                  </a-menu-item>
+                  <a-menu-item  key="4" >
+                    <a-button @click="powersearch(0)">
+                      <UserOutlined/>
+                      根据功率排序-降
+                    </a-button>
+                  </a-menu-item>
+                </a-menu>
+              </template>
+              <a-button @click="handleQuery">
+                选择展现形式（默认）
+                <DownOutlined/>
+              </a-button>
+            </a-dropdown>
           </a-form-item>
         </a-form>
         <a-table :columns="columns"
@@ -111,14 +157,13 @@
 <script lang="ts">
 import {defineComponent, onMounted, ref} from 'vue';
 import axios from "axios";
-import {CascaderProps, message} from "ant-design-vue";
+import {message} from "ant-design-vue";
 import {Tool} from '@/utils/tool';
-// 对外部引用爆红的解决方法
-declare let hexMd5: any;
-declare let KEY: any;
+import {DownOutlined, TagOutlined, UserOutlined} from "@ant-design/icons-vue";
 
 export default defineComponent({
   name: 'AdminUser',
+  components: {UserOutlined, TagOutlined, DownOutlined},
   setup() {
     const param = ref();
     param.value = {};
@@ -290,8 +335,6 @@ export default defineComponent({
     /***
      * @方法描述: 删除按钮方法
      */
-
-
     const delet = (id: number) => {
       axios.delete("/equipment/delete/" + id).then((response) => {
 
@@ -363,6 +406,10 @@ export default defineComponent({
         });
 
     }
+    /***
+     * 关闭设备
+     * @param id
+     */
   const closequip =(id: any)=>{
 
         axios.get("/equipment/closeequip/"+id).then((response) => {//初始化方法
@@ -379,7 +426,44 @@ export default defineComponent({
         });
 
     }
+    /***
+     * @方法描述: 按状态分类展示方法
+     */
+const statussearch =(status: any)=>{
 
+      axios.get("/equipment/selectbystatus/"+status).then((response) => {//初始化方法
+        const data = response.data;
+        if (data.success) {
+          equips.value = data.content;
+          console.log("equips.value", equips.value);
+          //重置分页按钮
+          pagination.value.current = 1;
+          pagination.value.total = data.content.total;
+        } else {
+          message.error(data.message);
+        }
+      });
+
+    }
+    /***
+     * @方法描述: 按功率排序展示方法
+     */
+    const powersearch =(power: any)=>{
+
+      axios.get("/equipment/selectbypower/"+power).then((response) => {//初始化方法
+        const data = response.data;
+        if (data.success) {
+          equips.value = data.content;
+          console.log("equips.value", equips.value);
+          //重置分页按钮
+          pagination.value.current = 1;
+          pagination.value.total = data.content.total;
+        } else {
+          message.error(data.message);
+        }
+      });
+
+    }
     /**
      * @方法描述: 初始进入页面就查一次数据
      */
@@ -429,6 +513,12 @@ eqid,
       //开关设备
       openequip,
       closequip,
+
+
+      //按状态分类展示
+      statussearch,
+      //按功率排序展示
+      powersearch,
     }
   }
 });

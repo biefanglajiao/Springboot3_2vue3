@@ -28,25 +28,25 @@
               <template #overlay>
                 <a-menu >
                   <a-menu-item  key="1 ">
-                    <a-button @click="statuschange(1)">
+                    <a-button @click="statussearch(1)">
                     <tag-outlined/>
                     根据状态查询-开
                     </a-button>
                   </a-menu-item>
                   <a-menu-item  key="2"     >
-                    <a-button @click="statuschange(0)">
+                    <a-button @click="statussearch(0)">
                     <tag-outlined/>
                     根据状态查询-关
                     </a-button>
                   </a-menu-item>
                   <a-menu-item  key="3"  >
-                    <a-button @click="operationchange(1)">
+                    <a-button @click="operationsearch(1)">
                     <UserOutlined/>
                     根据操作查询-开启设备
                     </a-button>
                   </a-menu-item>
                   <a-menu-item  key="4" >
-                    <a-button @click="operationchange(0)">
+                    <a-button @click="operationsearch(0)">
                     <UserOutlined/>
                     根据操作查询-关闭设备
                     </a-button>
@@ -344,7 +344,7 @@ export default defineComponent({
     /***
      * @方法描述: 根据状态分类
      */
-    const  statuschange =(key:any)=>{
+    const  statussearch =(key:any)=>{
       axios.get("/scheduled/selectbystatus/"+key).then((response) => {
         const data = response.data;
         if (data.success) {
@@ -360,7 +360,7 @@ export default defineComponent({
     /***
      * @方法描述: 根据操作分类
      */
-    const  operationchange =(key:any)=>{
+    const  operationsearch =(key:any)=>{
       axios.get("/scheduled/selectbyoperation/"+key).then((response) => {
         const data = response.data;
         if (data.success) {
@@ -516,8 +516,8 @@ export default defineComponent({
       openscheduled,
       closscheduled,
       //分类展示
-      statuschange,
-      operationchange,
+      statussearch,
+      operationsearch,
 
     }
   }

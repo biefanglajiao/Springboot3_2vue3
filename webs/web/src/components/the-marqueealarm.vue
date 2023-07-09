@@ -36,8 +36,6 @@
 import {LeftCircleOutlined, RightCircleOutlined} from '@ant-design/icons-vue';
 import {defineComponent, onMounted, ref} from 'vue';
 import axios from "axios";
-
-declare let echarts: any;
 import {Tool} from "@/utils/tool";
 
 export default defineComponent({
@@ -68,7 +66,7 @@ export default defineComponent({
 
 
     const tempall = () => {
-      axios.get("/alarm/selectAllNoreadinfo").then((res) => {
+      axios.get("/alarm/selectAllinfoNoread").then((res) => {
         // console.log(Tool.isEmpty(templists.value), "              对比")
         const data = res.data;
         if (data.success && !Tool.isEmpty(templists.value)) {
