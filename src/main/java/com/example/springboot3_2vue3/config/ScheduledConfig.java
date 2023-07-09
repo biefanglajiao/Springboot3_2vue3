@@ -44,12 +44,19 @@ public class ScheduledConfig implements SchedulingConfigurer {
             }
             Assert.isAssignable(ScheduledOfTask.class, task.getClass(), "定时任务类必须实现ScheduledOfTask接口");
             // 可以通过改变数据库数据进而实现动态改变执行周期
-            taskRegistrar.addTriggerTask(((Runnable) task),
-                    triggerContext -> {
-                        String cronExpression = cronRepository.findByCronKey(springScheduledCron.getCronkey()).getCronexpression();
-                        return new CronTrigger(cronExpression).nextExecutionTime(triggerContext).toInstant();
-                    }
-            );
+            for (Scheduledcron cron : cronRepository.findByCronKey(springScheduledCron.getCronkey())) {
+                String cronexpression = cron.getCronexpression();
+                taskRegistrar.addTriggerTask(((Runnable) task),
+                        triggerContext -> {
+
+//                        String cronExpression = cronRepository.findByCronKey(springScheduledCron.getCronkey()).getCronexpression();
+//                        return new CronTrigger(cronExpression).nextExecutionTime(triggerContext).toInstant();
+                            return new CronTrigger(cronexpression).nextExecutionTime(triggerContext).toInstant();
+                        }
+                );
+
+            }
+
         }
     }
     @Bean

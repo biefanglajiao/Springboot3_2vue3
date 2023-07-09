@@ -25,23 +25,26 @@
           </a-form-item>
         </a-form>
         <a-table :columns="columns"
-                 :data-source="equips"
+                 :data-source="scheduleds"
                  :row-key="record => record.id"
                  :pagination="pagination"
                  :loading="loading"
                  @change="handleTableChange"
 
         >
-
+            <template v-slot:status="text">
+              <a-tag v-if="text.state" color="green">开启</a-tag>
+              <a-tag v-else color="red">关闭</a-tag>
+            </template>
           <template v-slot:action="{text,record}">
 
             <a-space size="small">
               <a-button type="primary" @click="edit(record)">
                 编辑
               </a-button>
-              <a-button type="dashed" v-show="record.state" @click="closequip(record.id)">关闭
+              <a-button type="dashed" v-show="record.state" @click="closscheduled(record.id)">关闭
               </a-button>
-              <a-button type="ghost" v-show="!record.state"  @click="openequip(record.id)">
+              <a-button type="ghost" v-show="!record.state"  @click="openscheduled(record.id)">
                 开启
               </a-button>
               <a-button type="primary" @click="editcagory(record.id)">
@@ -71,19 +74,26 @@
   </a-layout-content>
   <!--  //Q::confirm-loading的含义-->
   <!--  //A:confirm-loading是一个属性，当点击确定按钮时，会调用handleModalOk方法，handleModalOk方法会调用axios的post方法，保存数据，然后重新加载列表-->
-  <a-modal title="用户表单" v-model:visible="modalVisible" :confirm-loading="modalLoading" @ok="handleModalOk">
-    <a-form :model="equip" :label-col="{ span: 4 }" :wrapper-col="{ span: 14 }" :layout="formLayout">
-      <a-form-item label="设备名">
-        <a-input v-model:value="equip.name" :disabled="!!equip.id"/>
-        <!--        :disabled="equip.id" id是主键，新增时id为空，修改时id不为空，所以新增时可以输入，修改时不可以输入-->
+  <a-modal title="定时任务表单" v-model:visible="modalVisible" :confirm-loading="modalLoading" @ok="handleModalOk">
+    <a-form :model="scheduled" :label-col="{ span: 4 }" :wrapper-col="{ span: 14 }" >
+      <a-form-item label="描述">
+        <a-input v-model:value="scheduled.explan" :disabled="!!scheduled.id"/>
+        <!--        :disabled="scheduled.id" id是主键，新增时id为空，修改时id不为空，所以新增时可以输入，修改时不可以输入-->
         <!--        !!可以绕过类型校验（前端f12的报错提示）-->
       </a-form-item>
-      <a-form-item label="功率">
-        <a-input v-model:value="equip.power"/>
+      <a-form-item label="表达式">
+        <a-input v-model:value="scheduled.cronexpression"/>
       </a-form-item>
-      <a-form-item label="位置" >
-        <a-input v-model:value="equip.location"/>
-        <!--        v-show  是否展示、、此时新增显示，编辑不显示-->
+      <a-form-item label="任务操作" >
+        <a-select
+            ref="select"
+            v-model:value="scheduled.cronkey"
+            style="width: 120px"
+            @focus="focus"
+        >
+          <a-select-option value="START_PACKAGE">开启设备</a-select-option>
+          <a-select-option value="STOP_PACKAGE">关闭设备</a-select-option>
+        </a-select>
       </a-form-item>
     </a-form>
   </a-modal>
@@ -122,7 +132,7 @@ export default defineComponent({
   setup() {
     const param = ref();
     param.value = {};
-    const equips = ref();
+    const scheduleds = ref();
     const pagination = ref({
       current: 1,
       pageSize: 5,
@@ -131,23 +141,24 @@ export default defineComponent({
     const loading = ref(false);
     const columns = [
       {
-        title: '设备名',
-        dataIndex: 'name',
+        title: '任务对应操作',
+        dataIndex: 'cronkey',
       }, {
-        title: '设备id',
-        dataIndex: 'id',
+        title: '表达式',
+        dataIndex: 'cronexpression',
       },
       {
-        title: '功率',
-        dataIndex: 'power',
+        title: '描述',
+        dataIndex: 'explan',
       },
 
       {
-        title: '位置',
-        dataIndex: 'location',
+        title: '状态',
+        key: 'status',
+        slots: {customRender: 'status'}
       },
       {
-        title: 'Action',
+        title: '操作',
         key: 'action',
         slots: {customRender: 'action'}
       }
@@ -158,7 +169,7 @@ export default defineComponent({
     const cagoryModalVisible = ref<boolean>(false);
     const resetModalLoading = ref<boolean>(false);
     const resetModalVisible = ref<boolean>(false);
-    const equip = ref();
+    const scheduled = ref();
 
     /*****
      * @方法描述: 编辑表单的提交
@@ -166,7 +177,7 @@ export default defineComponent({
     const handleModalOk = () => {//保存
       modalLoading.value = true;
 
-      axios.post("/equipment/save", equip.value).then((response) => {
+      axios.post("/scheduled/addorupdate", scheduled.value).then((response) => {
         modalLoading.value = false;//有返回就关闭加载
         const data = response.data;//data==common,resp
         if (data.success) {
@@ -179,6 +190,7 @@ export default defineComponent({
           });
         } else {
           message.error(data.message);
+          modalVisible.value = false;//关闭视图
         }
 
       });
@@ -189,8 +201,8 @@ export default defineComponent({
      */
     const edit = (record: any) => {
       modalVisible.value = true;
-      // equip.value = record;
-      equip.value = Tool.copy(record);
+      // scheduled.value = record;
+      scheduled.value = Tool.copy(record);
     }
 
 
@@ -198,10 +210,10 @@ export default defineComponent({
     const eqid = ref();
     //单击分类编辑
     const editcagory = (record: any) => {
-      equip.value = Tool.copy(record);
-      console.log("equp!!!!!!!!!!!!!!!!!!!!!!!!!!!!", equip)
+      scheduled.value = Tool.copy(record);
+      console.log("equp!!!!!!!!!!!!!!!!!!!!!!!!!!!!", scheduled)
       cagoryModalVisible.value = true;
-      eqid.value = equip.value;
+      eqid.value = scheduled.value;
       console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!",eqid)
       // axios.get("/classification/selectAll").then((response) => {
       //
@@ -262,12 +274,12 @@ export default defineComponent({
     const handleQueryserch = (params: any,searchValue: string) => {
       loading.value = true;
 
-      axios.get("/equipment/selectbyname/"+searchValue).then((response) => {
+      axios.get("/scheduledment/selectbyname/"+searchValue).then((response) => {
         loading.value = false;
         const data = response.data;
         if (data.success) {
-          equips.value = data.content;
-          console.log("equips.value", equips.value);
+          scheduleds.value = data.content;
+          console.log("scheduleds.value", scheduleds.value);
           //重置分页按钮
           pagination.value.current = params.page;
           pagination.value.total = data.content.total;
@@ -283,7 +295,7 @@ export default defineComponent({
      */
     const add = () => {
       modalVisible.value = true;
-      equip.value = {};
+      scheduled.value = {};
 
 
     }
@@ -293,7 +305,7 @@ export default defineComponent({
 
 
     const delet = (id: number) => {
-      axios.delete("/equipment/delete/" + id).then((response) => {
+      axios.delete("/scheduled/delete/" + id).then((response) => {
 
         const data = response.data;
         if (data.success) {
@@ -317,12 +329,12 @@ export default defineComponent({
     const handleQuery = (params: any) => {
       loading.value = true;
 
-      axios.get("/equipment/findallinfo").then((response) => {
+      axios.get("/scheduled/findall").then((response) => {
         loading.value = false;
         const data = response.data;
         if (data.success) {
-          equips.value = data.content;
-          console.log("equips.value", equips.value);
+          scheduleds.value = data.content;
+          console.log("scheduleds.value", scheduleds.value);
           //重置分页按钮
           pagination.value.current = params.page;
           pagination.value.total = data.content.total;
@@ -347,9 +359,9 @@ export default defineComponent({
     /***
      * 开启设备
      */
-    const openequip =(id: any)=>{
+    const openscheduled =(id: any)=>{
 
-      axios.get("/equipment/openequip/"+id).then((response) => {//初始化方法
+      axios.get("/scheduledment/openscheduled/"+id).then((response) => {//初始化方法
         const data = response.data;
         if (data.success) {
 
@@ -363,9 +375,9 @@ export default defineComponent({
       });
 
     }
-    const closequip =(id: any)=>{
+    const closscheduled =(id: any)=>{
 
-      axios.get("/equipment/closeequip/"+id).then((response) => {//初始化方法
+      axios.get("/scheduledment/closescheduled/"+id).then((response) => {//初始化方法
         const data = response.data;
         if (data.success) {
 
@@ -393,7 +405,7 @@ export default defineComponent({
     return {
       //列表
       param,
-      equips,
+      scheduleds,
       pagination,
       columns,
       loading,
@@ -403,7 +415,7 @@ export default defineComponent({
       //   编辑表格相关
       modalLoading,
       modalVisible,
-      equip,
+      scheduled,
       handleModalOk,
       edit,
       add,
@@ -427,8 +439,8 @@ export default defineComponent({
 
 
       //开关设备
-      openequip,
-      closequip,
+      openscheduled,
+      closscheduled,
     }
   }
 });

@@ -24,13 +24,16 @@ public interface ScheduledOfTask extends Runnable {
     @Override
     default void run() {
         ScheduledcronService repository= SpringUtils.getBean(ScheduledcronService.class);
-        Scheduledcron scheduledCron = repository.findByCronKey(this.getClass().getName());
-        if (!scheduledCron.isStatus()) {  //1是启用 0是禁用  默认是1为false
+        for (Scheduledcron scheduledCron: repository.findByCronKey(this.getClass().getName())) {
             System.out.println(scheduledCron.isStatus());
-            // 任务是禁用状态
-            return;
+
+            if (!scheduledCron.isStatus()) {  //1是启用 0是禁用  默认是1为false
+                System.out.println(scheduledCron.isStatus());
+                // 任务是禁用状态
+                return;
+            }
+            execute();
         }
-        execute();
     }
 
 }
