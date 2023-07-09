@@ -87,4 +87,24 @@ public class ScheduledController {
         commonResp.setMessage("查询成功");
         return commonResp;
     }
+
+    //根据状态查询
+    @GetMapping("/selectbystatus/{status}")
+    public CommonResp selectbystatus(@PathVariable String status) {
+        CommonResp commonResp = new CommonResp();
+        List<Scheduledcron> scheduledcron = scheduledcronService.findByStatus(status);
+        commonResp.setContent(scheduledcron);
+        commonResp.setMessage("查询成功");
+        return commonResp;
+    }
+
+    //根据任务对应操作查询
+    @GetMapping("/selectbyoperation/{key}")
+    public CommonResp selectbyoperation(@PathVariable String key) {
+        CommonResp commonResp = new CommonResp();
+        List<Scheduledcron> scheduledcron = scheduledcronService.findByCronkey(key);
+        commonResp.setContent(scheduledcron);
+        commonResp.setMessage("查询成功");
+        return commonResp;
+    }
 }

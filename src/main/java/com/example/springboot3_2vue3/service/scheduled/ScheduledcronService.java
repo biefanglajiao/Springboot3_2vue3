@@ -20,6 +20,8 @@ public class ScheduledcronService {
 
     @Resource
     private ScheduledcronMapper scheduledcronMapper;
+    @Resource
+    private ScheduledUtils scheduledUtils;
 
 
     public List<Scheduledcron> findByCronKey(String cronKey) {
@@ -50,17 +52,8 @@ public class ScheduledcronService {
     //查询所有
     public List<Scheduledcron> selectAll(){
         List<Scheduledcron> scheduledcrons = scheduledcronMapper.selectList(null);
-        for (Scheduledcron scheduledcron : scheduledcrons) {
-            if (scheduledcron.getCronkey().equals(ScheduledUtils.TEST_PACKAGE)){
-                scheduledcron.setCronkey("测试");
-            }else if (scheduledcron.getCronkey().equals(ScheduledUtils.START_PACKAGE)){
-                scheduledcron.setCronkey("开启定时任务");
-            }
-            else if (scheduledcron.getCronkey().equals(ScheduledUtils.STOP_PACKAGE)){
-                scheduledcron.setCronkey("关闭定时任务");
-            }
-        }
-        return scheduledcrons;
+
+        return  scheduledUtils.codeToWord(scheduledcrons);
     }
     //根据cronKey模糊查询
 
@@ -73,7 +66,22 @@ public class ScheduledcronService {
     }
 
 
+    public List<Scheduledcron> findByStatus(String status) {
+        QueryWrapper<Scheduledcron> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("status",status);
+        List<Scheduledcron> scheduledcrons = scheduledcronMapper.selectList(queryWrapper);
+        return scheduledUtils.codeToWord(scheduledcrons);//返回转化过的
+    }
 
+    public List<Scheduledcron> findByCronkey(String key) {
 
-
+        QueryWrapper<Scheduledcron> queryWrapper = new QueryWrapper<>();
+        if (key.equals("1")){
+            queryWrapper.eq("cronkey",ScheduledUtils.START_PACKAGE);
+        }else if (key.equals("0")){
+            queryWrapper.eq("cronkey",ScheduledUtils.STOP_PACKAGE);
+        }
+        List<Scheduledcron> scheduledcrons = scheduledcronMapper.selectList(queryWrapper);
+        return scheduledUtils.codeToWord(scheduledcrons);
+    }
 }

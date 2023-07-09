@@ -23,6 +23,42 @@
               </a-button>
             </p>
           </a-form-item>
+          <a-form-item>
+            <a-dropdown>
+              <template #overlay>
+                <a-menu >
+                  <a-menu-item  key="1 ">
+                    <a-button @click="statuschange(1)">
+                    <tag-outlined/>
+                    根据状态查询-开
+                    </a-button>
+                  </a-menu-item>
+                  <a-menu-item  key="2"     >
+                    <a-button @click="statuschange(0)">
+                    <tag-outlined/>
+                    根据状态查询-关
+                    </a-button>
+                  </a-menu-item>
+                  <a-menu-item  key="3"  >
+                    <a-button @click="operationchange(1)">
+                    <UserOutlined/>
+                    根据操作查询-开启设备
+                    </a-button>
+                  </a-menu-item>
+                  <a-menu-item  key="4" >
+                    <a-button @click="operationchange(0)">
+                    <UserOutlined/>
+                    根据操作查询-关闭设备
+                    </a-button>
+                  </a-menu-item>
+                </a-menu>
+              </template>
+              <a-button @click="handleQuery">
+                选择展现形式（默认）
+                <DownOutlined/>
+              </a-button>
+            </a-dropdown>
+          </a-form-item>
         </a-form>
         <a-table :columns="columns"
                  :data-source="scheduleds"
@@ -32,10 +68,10 @@
                  @change="handleTableChange"
 
         >
-            <template v-slot:status="text">
-              <a-tag v-if="text.state" color="green">开启</a-tag>
-              <a-tag v-else color="red">关闭</a-tag>
-            </template>
+          <template v-slot:status="text">
+            <a-tag v-if="text.state" color="green">开启</a-tag>
+            <a-tag v-else color="red">关闭</a-tag>
+          </template>
           <template v-slot:action="{text,record}">
 
             <a-space size="small">
@@ -44,7 +80,7 @@
               </a-button>
               <a-button type="dashed" v-show="record.state" @click="closscheduled(record.id)">关闭
               </a-button>
-              <a-button type="ghost" v-show="!record.state"  @click="openscheduled(record.id)">
+              <a-button type="ghost" v-show="!record.state" @click="openscheduled(record.id)">
                 开启
               </a-button>
               <a-button type="primary" @click="editcagory(record.id)">
@@ -75,7 +111,7 @@
   <!--  //Q::confirm-loading的含义-->
   <!--  //A:confirm-loading是一个属性，当点击确定按钮时，会调用handleModalOk方法，handleModalOk方法会调用axios的post方法，保存数据，然后重新加载列表-->
   <a-modal title="定时任务表单" v-model:visible="modalVisible" :confirm-loading="modalLoading" @ok="handleModalOk">
-    <a-form :model="scheduled" :label-col="{ span: 4 }" :wrapper-col="{ span: 14 }" >
+    <a-form :model="scheduled" :label-col="{ span: 4 }" :wrapper-col="{ span: 14 }">
       <a-form-item label="描述">
         <a-input v-model:value="scheduled.explan" :disabled="!!scheduled.id"/>
         <!--        :disabled="scheduled.id" id是主键，新增时id为空，修改时id不为空，所以新增时可以输入，修改时不可以输入-->
@@ -84,7 +120,7 @@
       <a-form-item label="表达式">
         <a-input v-model:value="scheduled.cronexpression"/>
       </a-form-item>
-      <a-form-item label="任务操作" >
+      <a-form-item label="任务操作">
         <a-select
             ref="select"
             v-model:value="scheduled.cronkey"
@@ -103,14 +139,16 @@
     <a-form :model="categoryIds" :label-col="{ span: 4 }" :wrapper-col="{ span: 14 }" :layout="formLayout">
       <a-form-item :label=eqid>
         <br>
-        <div v-for="cagoryid in categoryIds" :key="cagoryid.id">{{cagoryid.name}}
+        <div v-for="cagoryid in categoryIds" :key="cagoryid.id">{{ cagoryid.name }}
           <a-select
               ref="select"
               v-model:value="cagoryid.classificationOptions.ids"
               style="width: 120px"
               @focus="focus"
           >
-            <a-select-option v-for="cagory in cagoryid.classificationOptions" :key="cagory.id" :value="cagory.id">{{cagory.name}}</a-select-option>
+            <a-select-option v-for="cagory in cagoryid.classificationOptions" :key="cagory.id" :value="cagory.id">
+              {{ cagory.name }}
+            </a-select-option>
           </a-select>
         </div>
       </a-form-item>
@@ -121,10 +159,16 @@
 <script lang="ts">
 import {defineComponent, onMounted, ref} from 'vue';
 import axios from "axios";
-import { message} from "ant-design-vue";
+import {message} from "ant-design-vue";
 import {Tool} from '@/utils/tool';
+import {UserOutlined, DownOutlined, TagOutlined} from '@ant-design/icons-vue';
 
 export default defineComponent({
+  components: {
+    UserOutlined,
+    DownOutlined,
+    TagOutlined,
+  },
   name: 'AdminUser',
   setup() {
     const param = ref();
@@ -141,7 +185,7 @@ export default defineComponent({
         title: '描述',
         dataIndex: 'explan',
       },
-     {
+      {
         title: '表达式',
         dataIndex: 'cronexpression',
       },
@@ -211,7 +255,7 @@ export default defineComponent({
       console.log("equp!!!!!!!!!!!!!!!!!!!!!!!!!!!!", scheduled)
       cagoryModalVisible.value = true;
       eqid.value = scheduled.value;
-      console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!",eqid)
+      console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!", eqid)
       // axios.get("/classification/selectAll").then((response) => {
       //
       //   const data = response.data;//data==common,resp
@@ -223,9 +267,9 @@ export default defineComponent({
       axios.get("/classification/selectallchild").then((response) => {
 
         const data = response.data;//data==common,resp
-        if (data.success){
-          categoryIds.value=data.content;
-          console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!",categoryIds)
+        if (data.success) {
+          categoryIds.value = data.content;
+          console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!", categoryIds)
         }
       });
 
@@ -234,7 +278,7 @@ export default defineComponent({
 //定义一个list数组
 
     const handleresetModalOk = () => {//分类编辑的保存
-      const list : any[]= [];
+      const list: any[] = [];
       resetModalLoading.value = true;
       // console.log("!!!!!!!!adadadadada!!!!!!!!!!!!!!!!!!!!",categoryIds.value)
 
@@ -268,10 +312,10 @@ export default defineComponent({
     /***
      *@方法描述: 单击查询方法
      */
-    const handleQueryserch = (params: any,searchValue: string) => {
+    const handleQueryserch = (params: any, searchValue: string) => {
       loading.value = true;
 
-      axios.get("/scheduled/selectbyname/"+searchValue).then((response) => {
+      axios.get("/scheduled/selectbyname/" + searchValue).then((response) => {
         loading.value = false;
         const data = response.data;
         if (data.success) {
@@ -296,11 +340,45 @@ export default defineComponent({
 
 
     }
+    //todo 根据描述查询    根据操作分类  根据状态分类
+    /***
+     * @方法描述: 根据状态分类
+     */
+    const  statuschange =(key:any)=>{
+      axios.get("/scheduled/selectbystatus/"+key).then((response) => {
+        const data = response.data;
+        if (data.success) {
+          scheduleds.value = data.content;
+          //重置分页按钮
+          pagination.value.current = 1;
+          pagination.value.total = data.content.total;
+        } else {
+          message.error(data.message);
+        }
+      });
+    }
+    /***
+     * @方法描述: 根据操作分类
+     */
+    const  operationchange =(key:any)=>{
+      axios.get("/scheduled/selectbyoperation/"+key).then((response) => {
+        const data = response.data;
+        if (data.success) {
+          scheduleds.value = data.content;
+          //重置分页按钮
+          pagination.value.current = 1;
+          pagination.value.total = data.content.total;
+        } else {
+          message.error(data.message);
+        }
+      });
+    }
+
     /***
      * @方法描述: 删除按钮方法
      */
 
-//todo 根据描述查询    根据操作分类  根据状态分类
+
     const delet = (id: number) => {
       axios.delete("/scheduled/delete/" + id).then((response) => {
 
@@ -356,9 +434,9 @@ export default defineComponent({
     /***
      * 开启设备
      */
-    const openscheduled =(id: any)=>{
+    const openscheduled = (id: any) => {
 
-      axios.get("/scheduledment/openscheduled/"+id).then((response) => {//初始化方法
+      axios.get("/scheduledment/openscheduled/" + id).then((response) => {//初始化方法
         const data = response.data;
         if (data.success) {
 
@@ -372,9 +450,9 @@ export default defineComponent({
       });
 
     }
-    const closscheduled =(id: any)=>{
+    const closscheduled = (id: any) => {
 
-      axios.get("/scheduledment/closescheduled/"+id).then((response) => {//初始化方法
+      axios.get("/scheduledment/closescheduled/" + id).then((response) => {//初始化方法
         const data = response.data;
         if (data.success) {
 
@@ -434,10 +512,13 @@ export default defineComponent({
       eqid,
 
 
-
       //开关设备
       openscheduled,
       closscheduled,
+      //分类展示
+      statuschange,
+      operationchange,
+
     }
   }
 });
