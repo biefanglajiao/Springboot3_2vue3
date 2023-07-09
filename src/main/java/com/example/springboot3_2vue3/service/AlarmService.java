@@ -74,4 +74,22 @@ public class AlarmService {
         System.out.println(alarm.getDescription()+"-------------------");
         return alarmMapper.insertAlarm(alarm);
     }
+
+    public List<AlarmResp> selectAllinfoRead() {
+        List<Alarm> alarms = alarmMapper.selectAllinfoRead();
+
+        List<AlarmResp> alarmResps = new ArrayList<>();
+        for (Alarm alarm : alarms) {
+            AlarmResp alarmResp = new AlarmResp();
+            alarmResp.setId(alarm.getId());
+            alarmResp.setDescription(alarm.getDescription());
+            alarmResp.setDate(alarm.getDate());
+            alarmResp.setEquipmentid(alarm.getEquipmentid());
+            alarmResp.setRead(alarm.isRead());
+            alarmResp.setLevel(alarm.getLevel());
+            alarmResp.setName(alarm.getEquipment().getName());
+            alarmResps.add(alarmResp);
+        }
+        return alarmResps;
+    }
 }

@@ -19,16 +19,19 @@ public class Deviceuse2Controller {
 
     @Resource
     private Deviceuse2Service deviceuse2Service;
+    //查询所有的数据
     @GetMapping("/selectAllinfo")
     public CommonResp selectAllinfo (){
         CommonResp commonResp=new CommonResp();
         commonResp.setContent(deviceuse2Service.selectAllinfo());
         return commonResp;
     }
+  //  查询所有的今天数据
     @GetMapping("/selectAlltodayinfo")
     public CommonResp selectAlltodatinfo (){
         CommonResp commonResp=new CommonResp();
         commonResp.setContent(deviceuse2Service.selectAlltodayinfo());
         return commonResp;
     }
+
 }

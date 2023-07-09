@@ -25,8 +25,16 @@ public class AlarmController {
         commonResp.setContent(alarmService.selectAllinfo());
         return commonResp;
     }
-    @GetMapping("/selectAllNoreadinfo")
-    public CommonResp    selectAllNoreadinfo (){
+    //查询所有的已读数据
+    @GetMapping("/selectAllinfoRead")
+    public CommonResp selectAllinforead (){
+        CommonResp commonResp=new CommonResp();
+        commonResp.setContent(alarmService.selectAllinfoRead());
+        return commonResp;
+    }
+    //查询所有的未读数据
+    @GetMapping("/selectAllinfoNoread")
+    public CommonResp selectAllinfonoread (){
         CommonResp commonResp=new CommonResp();
         commonResp.setContent(alarmService.selectAllNoreadinfo());
         return commonResp;

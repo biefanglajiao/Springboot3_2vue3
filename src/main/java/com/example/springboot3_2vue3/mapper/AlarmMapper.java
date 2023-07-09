@@ -16,6 +16,7 @@ public interface AlarmMapper extends BaseMapper<Alarm> {
     List<Alarm> selectAllinfo();
 
     List<Alarm> selectAllNoreadinfo();
+    List<Alarm> selectAllinfoRead();
 
     boolean  insertAlarm(Alarm alarm);
 }

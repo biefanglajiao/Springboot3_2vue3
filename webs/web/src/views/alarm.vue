@@ -17,7 +17,7 @@
       </a-layout-sider>
       <a-layout-content :style="{ padding: '0 24px', minHeight: '400px' }">
 
-        <a-list item-layout="vertical" size="large" :pagination="pagination" :data-source="diary">
+        <a-list item-layout="vertical" size="large" :pagination="pagination" :data-source="diarynoread">
           <template #header>
             <div>
               <b>设备使用未读告警</b>
@@ -57,7 +57,7 @@
             </div>
           </template>
         </a-list>
-        <a-list item-layout="vertical" size="large" :pagination="pagination" :data-source="diary">
+        <a-list item-layout="vertical" size="large" :pagination="pagination" :data-source="diaryread">
           <template #header>
             <div>
               <b>设备使用已读告警</b>
@@ -118,7 +118,6 @@ import {
   ClockCircleOutlined, PicLeftOutlined, PicRightOutlined,
   ExceptionOutlined,
 } from '@ant-design/icons-vue';
-import {Tool} from "@/utils/tool";
 import {message} from "ant-design-vue";
 
 const listData: Record<string, string>[] = [];
@@ -152,21 +151,39 @@ export default defineComponent({
     };
 
 
-    const diary = ref();
+    const diaryread = ref();
+    const diarynoread = ref();
 
     const isshow = ref(true);
 
     /***
-     * @方法描述: 全部日志信息查询方法
+     * @方法描述: 全部日志信息已读查询方法
      */
-    const handleQuertInfo = () => {
-      axios.get("/alarm/selectAllinfo").then((response) => {//初始化方法
+    const handleQuertInfoRead = () => {
+      axios.get("/alarm/selectAllinfoRead").then((response) => {//初始化方法
         const data = response.data;
         if (data.success) {
 
-          diary.value = data.content;
+          diaryread.value = data.content;
           // console.log(response)
-          console.log("diaryssssssssssssssssssssss", diary.value)
+          console.log("diaryssssssssssssssssssssss", diaryread.value)
+        } else {
+          message.error(data.message);
+        }
+      });
+
+    }
+    /***
+     * @方法描述: 全部日志信息未读查询方法
+     */
+    const handleQuertInfoNoRead = () => {
+      axios.get("/alarm/selectAllinfoNoread").then((response) => {//初始化方法
+        const data = response.data;
+        if (data.success) {
+
+          diarynoread.value = data.content;
+          // console.log(response)
+          console.log("diaryssssssssssssssssssssss", diarynoread.value)
         } else {
           message.error(data.message);
         }
@@ -180,9 +197,9 @@ export default defineComponent({
       axios.get("/alarm/read/"+id).then((response) => {//初始化方法
         const data = response.data;
         if (data.success) {
-
+          handleQuertInfoNoRead();
+          handleQuertInfoRead();
           message.success(data.message);
-          handleQuertInfo();
 
         }
       });
@@ -190,14 +207,23 @@ export default defineComponent({
 
     onMounted(() => {//生命周期函数
 
-      handleQuertInfo();
+    handleQuertInfoNoRead();
+    handleQuertInfoRead();
     });
 
     return {
-      diary,
+      //已读未读数据
+      diaryread,
+      diarynoread,
+
+
       // pagination,
       readstats,
-      handleQuertInfo,
+
+      //已读未读方法
+      handleQuertInfoNoRead,
+      handleQuertInfoRead,
+
 
       isshow,  //互斥方法显示是否显示欢迎页面
 

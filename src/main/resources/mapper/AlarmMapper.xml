@@ -13,12 +13,22 @@
         WHERE  a.equipmentid = b.id
         ORDER BY a.date DESC
 
-    </select> <select id="selectAllNoreadinfo" resultMap="temp">
+    </select>
+    <select id="selectAllNoreadinfo" resultMap="temp">
 
         SELECT a.*, b.name
         FROM `alarm` a,
              equipment b
         WHERE  a.equipmentid = b.id and a.read = 0
+        ORDER BY a.date DESC
+
+    </select>
+    <select id="selectAllinfoRead" resultMap="temp">
+
+        SELECT a.*, b.name
+        FROM `alarm` a,
+             equipment b
+        WHERE  a.equipmentid = b.id and a.read = 1
         ORDER BY a.date DESC
 
     </select>
