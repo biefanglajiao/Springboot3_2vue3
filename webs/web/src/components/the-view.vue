@@ -18,9 +18,9 @@
           </a-col>
           <a-col :span="13">
             <div class="schedule_card2">
-            <a-card>
-              <div id="RiLi" style="width: 100%;height:200px;"></div>
-            </a-card>
+              <a-card>
+                <div id="RiLi" style="width: 100%;height:200px;"></div>
+              </a-card>
             </div>
           </a-col>
           <a-col :span="8">
@@ -80,69 +80,69 @@
           </a-col>
           <a-col :span="10">
             <div class="schedule_card2">
-            <a-card>
-              <div style="width: 100%;height:647px;">
+              <a-card>
+                <div style="width: 100%;height:647px;">
 
 
-                <TheMarqueeinfo></TheMarqueeinfo>
-              </div>
-            </a-card>
+                  <TheMarqueeinfo></TheMarqueeinfo>
+                </div>
+              </a-card>
             </div>
           </a-col>
 
           <a-col :span="7">
             <div class="schedule_card2">
-            <!--            天气接口-->
-            <a-card>
-              <div style="width: 100%;height:647px;">
-                <a-card style="width: 100%;height:400px;">
+              <!--            天气接口-->
+              <a-card>
+                <div style="width: 100%;height:647px;">
+                  <a-card style="width: 100%;height:400px;">
 
 
-                  <div class="container">
-                    <div class="nav">
-                      <div class="time">上次更新时间：{{ listnow.reporttime }}</div>
+                    <div class="container">
+                      <div class="nav">
+                        <div class="time">上次更新时间：{{ listnow.reporttime }}</div>
+                      </div>
+                      <div>
+                        <div class="city-info"><p class="city">{{ listnow.province }}省 {{ listnow.city }}</p>
+                          <p class="weather">天气： {{ listnow.weather }}</p>
+                          <h2 class="temp"><em></em>温度： {{ listnow.temperature }}℃ </h2>
+                          <div class="detail"><span>风力：{{ listnow.windpower }}级</span>|
+                            <span>风向：{{ listnow.winddirection }}</span>| <span>空气湿度：{{ listnow.humidity }}</span>
+                          </div>
+                        </div>
+                        <div class="future">
+                          <div class="time">上次更新时间：{{ listyubao.reporttime }}</div>
+                          <div class="group"> 明天： <span
+                              class="tm">白天: {{ listyubao.dayweather0 }} {{
+                              listyubao.daytemp0
+                            }}℃ {{ listyubao.daypower0 }}级 {{ listyubao.daywind0 }}风  </span> <span
+                              class="tm"> 夜间: {{ listyubao.nightweather0 }} {{
+                              listyubao.nighttemp0
+                            }} ℃ {{ listyubao.nightpower0 }}级 {{ listyubao.nightwind0 }}风             </span>
+                          </div>
+                          <div class="group"> 后天： <span
+                              class="tm">白天: {{ listyubao.dayweather1 }} {{
+                              listyubao.daytemp1
+                            }}℃ {{ listyubao.daypower1 }}级 {{ listyubao.daywind1 }}风  </span> <span
+                              class="tm"> 夜间: {{ listyubao.nightweather1 }} {{
+                              listyubao.nighttemp1
+                            }} ℃ {{ listyubao.nightpower1 }}级 {{ listyubao.nightwind1 }}风             </span>
+                          </div>
+                        </div>
+                      </div>
                     </div>
+
+
+                  </a-card>
+                  <a-card style="width: 100%;height:248px;">
                     <div>
-                      <div class="city-info"><p class="city">{{ listnow.province }}省 {{ listnow.city }}</p>
-                        <p class="weather">天气： {{ listnow.weather }}</p>
-                        <h2 class="temp"><em></em>温度： {{ listnow.temperature }}℃ </h2>
-                        <div class="detail"><span>风力：{{ listnow.windpower }}级</span>|
-                          <span>风向：{{ listnow.winddirection }}</span>| <span>空气湿度：{{ listnow.humidity }}</span>
-                        </div>
-                      </div>
-                      <div class="future">
-                        <div class="time">上次更新时间：{{ listyubao.reporttime }}</div>
-                        <div class="group"> 明天： <span
-                            class="tm">白天: {{ listyubao.dayweather0 }} {{
-                            listyubao.daytemp0
-                          }}℃ {{ listyubao.daypower0 }}级 {{ listyubao.daywind0 }}风  </span> <span
-                            class="tm"> 夜间: {{ listyubao.nightweather0 }} {{
-                            listyubao.nighttemp0
-                          }} ℃ {{ listyubao.nightpower0 }}级 {{ listyubao.nightwind0 }}风             </span>
-                        </div>
-                        <div class="group"> 后天： <span
-                            class="tm">白天: {{ listyubao.dayweather1 }} {{
-                            listyubao.daytemp1
-                          }}℃ {{ listyubao.daypower1 }}级 {{ listyubao.daywind1 }}风  </span> <span
-                            class="tm"> 夜间: {{ listyubao.nightweather1 }} {{
-                            listyubao.nighttemp1
-                          }} ℃ {{ listyubao.nightpower1 }}级 {{ listyubao.nightwind1 }}风             </span>
-                        </div>
-                      </div>
+                      <h1>当前为xxxxx模式 全部都展示（轮播图） 按钮确定形式</h1>
                     </div>
-                  </div>
 
+                  </a-card>
 
-                </a-card>
-                <a-card style="width: 100%;height:248px;">
-                  <div>
-                    <h1>当前为xxxxx模式 全部都展示（轮播图） 按钮确定形式</h1>
-                  </div>
-
-                </a-card>
-
-              </div>
-            </a-card>
+                </div>
+              </a-card>
 
             </div>
           </a-col>
@@ -160,7 +160,7 @@
 import {defineComponent, onMounted, ref} from 'vue';
 import axios from "axios";
 
-import {UserOutlined, ArrowUpOutlined, ArrowDownOutlined, LikeOutlined,DownOutlined} from '@ant-design/icons-vue';
+import {UserOutlined, ArrowUpOutlined, ArrowDownOutlined, LikeOutlined, DownOutlined} from '@ant-design/icons-vue';
 import Themarquee from "@/components/the-marquee.vue";
 import {Tool} from '@/utils/tool';
 import TheMarqueealarm from "@/components/the-marqueealarm.vue";
@@ -194,17 +194,17 @@ export default defineComponent({
       const mychartXiaoHaoDianNeng = echarts.init(document.getElementById('XiaoHaoDianNeng'));
       let value = todaypoweruse;
       let int = value.toFixed(2);
-      let num = 50 * value/100;
+      let num = 50 * value / 100;
 
-      const  option = {
+      const option = {
         backgroundColor: 'rgba(255,255,255,0)',
         title: {
           text: '\n\n\n\n\n今日耗电总量\n{num|' + int + '}kwh',
           x: 'center',
           y: 'center',
           textStyle: {
-            color:'#fff',
-            fontSize:15,
+            color: '#fff',
+            fontSize: 15,
             rich: {
               num: {
                 fontSize: 48,
@@ -262,7 +262,7 @@ export default defineComponent({
             axisLabel: {
               show: false,
             },
-            data:{
+            data: {
               value: 55.33
             }
           },
@@ -301,7 +301,7 @@ export default defineComponent({
                 },
               },
               {
-                value: 50-num,
+                value: 50 - num,
                 itemStyle: {
                   normal: {
                     color: '#21449B',
@@ -618,7 +618,7 @@ export default defineComponent({
     /*****
      * @description: 日历图
      */
-    const mychartRL = (list:any) => {
+    const mychartRL = (list: any) => {
       const mychartRiLi = echarts.init(document.getElementById("RiLi"));
       const datas: unknown[][] = [];//开启的设备id的列表
 
@@ -630,13 +630,14 @@ export default defineComponent({
 
 
       }
+
       // console.log(datas, "datas~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
       function getVirtulData() {
-        var data =datas;
+        var data = datas;
         return data;
       }
 
-     const option = {
+      const option = {
         backgroundColor: 'rgba(89,148,246,0.22)',
         title: {
           top: 5,
@@ -930,12 +931,12 @@ export default defineComponent({
         const data = res.data;
         if (data.success) {
           console.log("日总耗电量信息~~~~~~~~~~~~~~~~~~~~~~：", data.content)
-          if (Tool.isEmpty(data.content)){
-            mychartsXHDN(1);
+          if (Tool.isEmpty(data.content)) {
+            mychartsXHDN(0.0);
+          } else {
+            todaypoweruse.value = data.content;
+            mychartsXHDN(todaypoweruse.value);
           }
-          else {
-          todaypoweruse.value = data.content;
-          mychartsXHDN(todaypoweruse.value);}
         } else {
           // console.log("全部数据                  ：", data)
         }
@@ -950,7 +951,7 @@ export default defineComponent({
         if (data.success) {
           const list = data.content;
 // console.log("年耗电量信息：",list)
-       mychartRL(list);
+          mychartRL(list);
 
         }
 
@@ -963,7 +964,6 @@ export default defineComponent({
     onMounted(() => {
 
       // testEcharts();
-
 
 
       getOpenAndSum();
@@ -1054,7 +1054,8 @@ export default defineComponent({
     border: 1px dotted #008cff;
   }
 }
-.adad{
+
+.adad {
   :deep( .ant-card-body ) {
     height: 420px;
 

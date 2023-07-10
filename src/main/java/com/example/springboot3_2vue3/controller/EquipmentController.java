@@ -155,7 +155,7 @@ public class EquipmentController {
             float poweruse = deviceusePowerResp.getPower() * opendeTimeHour;
             Float beforepower= variationService.selectAlltodayByIdd(id);  //查询今天开启过的现在关闭了的耗电量
             variation.setData(poweruse+beforepower);//要加上上一次开过的数据
-
+//todo    关闭运算有问题  待解决
             variationService.insertonedata(variation);//记录一下关闭时间的耗电量
 
 
@@ -173,7 +173,7 @@ public class EquipmentController {
             deviceuse2.setEquipmentid(id);
             deviceuse2.setEnddate(System.currentTimeMillis());
             deviceuse2.setPowerconsumption(poweruse);
-            deviceuse2Service.addend(deviceuse2);
+            deviceuse2Service.addend(deviceuse2);//在日志表中加入日志信息--本次使用耗电量
 
         } else commonResp.setMessage("关闭失败，请稍后刷新重试");
         return commonResp;

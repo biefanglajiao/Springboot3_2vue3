@@ -69,7 +69,7 @@ export default defineComponent({
       axios.get("/alarm/selectAllinfoNoread").then((res) => {
         // console.log(Tool.isEmpty(templists.value), "              对比")
         const data = res.data;
-        if (data.success && !Tool.isEmpty(templists.value)) {
+        if (data.success && !Tool.isEmpty(data.content)) {
           // console.log(data.content,"dataaaaa")
           templists.value = res.data.content;
         }

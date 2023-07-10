@@ -21,19 +21,27 @@ public class YearpoweruseService {
     @Resource
     private YearpoweruseMapper yearpoweruseMapper;
 
-    public int InsertOrUpdatePoweruse(float poweruse){
+    public int InsertOrUpdatePoweruse(float poweruse) {
         return yearpoweruseMapper.InsertOrUpdatePoweruse(poweruse);
     }
 
-    public  Float getPoweruse(){
+    public Float getPoweruse() {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date datems = new Date(System.currentTimeMillis());
         String date = formatter.format(datems);
         QueryWrapper<Yearpoweruse> queryWrapper = new QueryWrapper<>();
         queryWrapper.like("date", date);
-        return yearpoweruseMapper.selectOne(queryWrapper).getPoweruse();
+        //查询是否存在今天的数据
+        if (yearpoweruseMapper.selectOne(queryWrapper) == null) {
+            //如果不存在则返回0
+            return 0f;
+
+        } else {
+            return yearpoweruseMapper.selectOne(queryWrapper).getPoweruse();
+        }
     }
-    public List<Yearpoweruse> getAllPoweruse(){
+
+    public List<Yearpoweruse> getAllPoweruse() {
         return yearpoweruseMapper.selectList(null);
     }
 }
