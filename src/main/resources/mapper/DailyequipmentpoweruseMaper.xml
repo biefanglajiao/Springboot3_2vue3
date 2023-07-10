@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.springboot3_2vue3.mapper.scheduled.DailyequipmentpoweruseMapper">
+    <select id="selectAlltodayById" resultType="com.example.springboot3_2vue3.domain.scheduled.Dailyequipmentpoweruse">
+        SELECT *
+        FROM `dailyequipmentpoweruse`
+        WHERE equipmentid = #{equipmentid}
+          AND `date` like '${date}%'
+        ORDER BY `date` desc
+    </select>
+
+    <insert id="InsertPoweruse" parameterType="com.example.springboot3_2vue3.domain.scheduled.Dailyequipmentpoweruse">
+        INSERT into dailyequipmentpoweruse (date, poweruse, id, equipmentid)
+        values (curdate(), #{poweruse}, #{id}, #{equipmentid})
+    </insert>
+    <update id="updatePoweruse" parameterType="com.example.springboot3_2vue3.domain.scheduled.Dailyequipmentpoweruse">
+        UPDATE dailyequipmentpoweruse
+        SET poweruse = #{poweruse}
+        WHERE equipmentid = #{equipmentid
+        }
+          AND `date` = curdate()
+    </update>
+
+
+</mapper>
+

@@ -23,24 +23,24 @@ public class equip {
     @Resource
     private VariationService variationService;
     @Resource
-    private  DeviceuseService deviceuseService;
+    private DeviceuseService deviceuseService;
     @Resource
-    private Deviceuse2Service deviceuse2Service;
+    private DailyequipmentpoweruseService dailyequipmentpoweruseService;
     @Resource
     private YearpoweruseService yearpoweruseService;
     @Resource
     private Variation variation;
     @Resource
     private SnowFlake snowFlake;
-@Resource
-private AlarmService alarmService;
+    @Resource
+    private AlarmService alarmService;
 
     //每小时执行一次
 //    @Scheduled(cron = "0 0 0/1 * * ?")
-    @Scheduled(cron = "0 0/30 * * * ? ")
+//    @Scheduled(cron = "0 0/30 * * * ? ")
     @Async
     @Transactional
-//   @Scheduled(cron = "0 0/5 * * * ? ")//没5分钟
+    @Scheduled(cron = "0 0/1 * * * ? ")//没1分钟
     public void 耗电量小时统计() {
         //获取开着的设备信息包含power所以用resp接
         List<DeviceusePowerResp> lists = deviceuseService.findall();
@@ -51,7 +51,7 @@ private AlarmService alarmService;
             for (DeviceusePowerResp list : lists) {
 
                 //对于每个开着的设备  每小时计算一次耗电量
-                System.out.println(list.getDate());
+//                System.out.println(list.getDate());
                 long opendeTime = startTime - list.getDate();
 //                System.out.println("opendeTime" + opendeTime + "ms");
 //                System.out.println("opendeTime" + opendeTime / 1000 + "s");
@@ -62,30 +62,33 @@ private AlarmService alarmService;
 //                System.out.println(opendeTimeHour);
                 //给小时耗电量统计表赋值
                 variation.setEquipmentid(list.getEquipmentid());
-                System.out.println("list.getPower()"+list.getPower() );
-                System.out.println("opendeTimeHour"+opendeTimeHour);
-                System.out.println("chengji :"+list.getPower() * opendeDayTimeHour);
+//                System.out.println("list.getPower()"+list.getPower() );
+//                System.out.println("opendeTimeHour"+opendeTimeHour);
+//                System.out.println("chengji :"+list.getPower() * opendeDayTimeHour);
 
-                Float beforepower= variationService.selectAlltodayByIdd(list.getEquipmentid());  //查询今天开启过的现在关闭了的耗电量
+//                Float beforepower= variationService.selectAlltodayByIdd(list.getEquipmentid());
+                //查询今天开启过的现在关闭了的耗电量
+                Float beforepower = dailyequipmentpoweruseService.selectAlltodayByIdd(list.getEquipmentid());
+                //查日志表的  有没有今天的数据 有的化 加上去 没有的话就是0
 
-                variation.setData(list.getPower() * opendeDayTimeHour+beforepower);
-                System.out.println(variationService.insertonedata(variation));
-
-
+//                System.out.println("beforepower"+beforepower);
+                variation.setData(list.getPower() * opendeDayTimeHour + beforepower);
+                boolean insertonedata = variationService.insertonedata(variation);
+                System.out.println("小时记录：" + insertonedata);
 
 
                 //——————————————————————————————————————————————定时更新目前耗电总量————————————————————————————
-               Variation variation1= variationService.findsuminfo();
-              yearpoweruseService.InsertOrUpdatePoweruse(variation1.getData()/1000);//wh=>kwh
+                Variation variation1 = variationService.findsuminfo();
+                yearpoweruseService.InsertOrUpdatePoweruse(variation1.getData() / 1000);//wh=>kwh
 
 //__________________________________________________是否有长时间开着的设备=》告警_____________________________________________________
                 //如果开着的时间超过了24小时就报警
                 if (opendeTimeHour > 8) {
                     //报警
-                    Alarm alarm=new Alarm();
+                    Alarm alarm = new Alarm();
 
                     alarm.setId(snowFlake.nextId());
-                    alarm.setDescription("设备id"+list.getEquipmentid()+"已经连续使用了超过"+opendeTimeHour+"小时.请检查设备是否正常,并及时关闭设备");
+                    alarm.setDescription("设备id" + list.getEquipmentid() + "已经连续使用了超过" + opendeTimeHour + "小时.请检查设备是否正常,并及时关闭设备");
                     alarm.setEquipmentid(list.getEquipmentid());
                     alarm.setRead(false);
                     alarm.setLevel(1);
@@ -95,12 +98,13 @@ private AlarmService alarmService;
         }
 
     }
+
     @Scheduled(cron = "0 59 23 * * ? ")//每天23点59分执行一次
     @Async
     @Transactional
-    public void 耗电量天统计(){
-        Variation variation1= variationService.findsuminfo();
-        yearpoweruseService.InsertOrUpdatePoweruse(variation1.getData()/1000);//wh=>kwh
+    public void 耗电量天统计() {
+        Variation variation1 = variationService.findsuminfo();
+        yearpoweruseService.InsertOrUpdatePoweruse(variation1.getData() / 1000);//wh=>kwh
 
     }
 
